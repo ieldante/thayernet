@@ -1,0 +1,15 @@
+numpy
+pandas
+matplotlib
+scipy
+scikit-image
+scikit-learn
+h5py
+torch
+torchvision
+tqdm
+pyyaml
+jupyterlab
+ipykernel
+nbformat
+nbconvert

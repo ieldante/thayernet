@@ -1,0 +1,36 @@
+# Default configuration for controlled synthetic deblending experiments.
+
+dataset_path: data/Galaxy10_DECals.h5
+output_dir: outputs
+seed: 42
+
+splits:
+  train_frac: 0.70
+  val_frac: 0.15
+  test_frac: 0.15
+
+blending:
+  n_train_blends: 500
+  n_val_blends: 100
+  n_test_blends: 100
+  max_shift: 56
+  brightness_range: [0.5, 1.2]
+  blur_range: [0.0, 0.3]
+  noise_range: [0.0, 0.01]
+  # Rotation is disabled by default to avoid stress-test artifacts.
+  # Use [0.0, 180.0] only for explicit rotation robustness experiments.
+  rotation_range: [0.0, 0.0]
+
+model:
+  in_channels: 3
+  out_channels: 3
+  base_channels: 32
+  norm: true
+
+training:
+  batch_size: 8
+  num_epochs: 10
+  learning_rate: 0.001
+  weight_decay: 0.0
+  device: auto
+  checkpoint_path: outputs/unet_checkpoint.pth
