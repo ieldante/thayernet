@@ -1,99 +1,158 @@
 # Methodology
 
-## Why Synthetic Blending
-
-Real astronomical blends often do not provide clean ground-truth target images. Synthetic blending starts from isolated galaxy cutouts and creates controlled overlaps, so the target, contaminant, and blending parameters are known. This makes direct reconstruction metrics possible and allows performance to be stratified by blend difficulty.
+Thayer-Net is a controlled synthetic galaxy deblending benchmark. The project
+starts from Galaxy10 DECaLS cutouts with known target images, creates synthetic
+foreground-only blends, and evaluates whether compact U-Nets can reconstruct the
+target better than simple baselines.
 
 ## Split Before Blending
 
-Original Galaxy10 DECaLS images are split into train, validation, and test subsets before any synthetic blends are generated. This prevents the same original galaxy from appearing in both training and evaluation examples, even if it is paired with different contaminants. Without this ordering, validation or test metrics could be inflated by leakage.
+Original images are split into train, validation, and test subsets before any
+synthetic blends are generated. This prevents source-image leakage: the same
+original galaxy cannot appear in both training and evaluation examples, even if
+paired with different contaminants.
 
-## Blending in Brief
+The first-pass direct and residual experiments use:
 
-Each synthetic example starts with two normalized RGB galaxy cutouts: a target and a contaminant. The target remains the supervised ground truth. The contaminant image is background-subtracted, reduced to a soft central-source foreground mask, optionally rotated, shifted, brightness-scaled, and added onto the target. Optional blur and noise are applied as controlled degradations. The output is stored as a dictionary containing the original target, original contaminant, blended image, and metadata describing the sampled perturbations and estimated source sizes.
+- 5,000 training blends
+- 800 validation blends
+- 800 normal held-out test blends
+- fixed split seed 42
 
-The important design choice is that the contaminant is added as extracted foreground light, not as a full rectangular image patch. This makes the synthetic task closer to deblending overlapping light profiles and avoids teaching the model artifacts from pasted cutout boundaries.
+## Synthetic Blending
 
-## Full Technical Blending Procedure
+Each blend starts with two normalized RGB cutouts:
 
-The current implementation in `src/blend.py` follows this sequence:
+- target: the supervised clean image to recover
+- contaminant: a second galaxy whose foreground light is added to the target
 
-1. Background estimation: the code estimates a per-channel background from border pixels. The median is used because it is less sensitive to bright central galaxy structure than a mean.
-2. Foreground construction: the estimated background is subtracted from the contaminant and negative residuals are clipped to zero. This produces a candidate foreground image.
-3. Central-source detection: the RGB foreground is converted to a grayscale intensity image. A robust border statistic and an Otsu-style threshold are combined with a high percentile threshold to identify the bright core of the central source.
-4. Component selection: connected components are labeled, and the component closest to the image center is selected, with a mild preference for larger components. This assumes Galaxy10 DECaLS cutouts are centered on the labeled galaxy.
-5. Halo-aware expansion: the selected binary component is dilated, then Gaussian-smoothed into a soft mask. This expands the mask beyond the bright core so faint halo light and galaxy outskirts are not immediately discarded.
-6. Aperture tapering: a soft circular aperture fades the mask before it reaches the image boundaries. This is meant to preserve central diffuse structure while avoiding square or edge-shaped remnants from the original cutout.
-7. Residual suppression: very faint masked values are set to zero. This reduces the chance of pasting low-level background noise as if it were contaminant galaxy light.
-8. Optional contaminant rotation: if enabled, only the extracted contaminant foreground is rotated. Rotation is disabled by default because interpolation can introduce faint artifacts, especially when foreground isolation is imperfect.
-9. Shift and scaling: the extracted contaminant foreground is shifted without wraparound and multiplied by a sampled brightness factor.
-10. Blend formation: the shifted contaminant foreground is added to the target image and clipped to `[0, 1]`.
-11. Controlled degradations: optional blur and Gaussian noise can be applied to simulate harder reconstruction settings. These are intentionally conservative in the default config.
-12. Metadata recording: the blend stores shift, rotation, brightness, blur, noise, source areas, source radii, size ratio, and a heuristic difficulty label.
+The contaminant is not pasted as a full rectangular cutout. Instead,
+`src/blend.py` estimates a per-channel background from border pixels, subtracts
+it, isolates the centered foreground source, and adds only that foreground light
+to the target. This avoids teaching the model square cutout boundaries or pasted
+background noise.
 
-This procedure creates a known-input/known-target reconstruction problem: the model receives the blended image and is trained to recover the unmodified target. The contaminant is retained for visualization and analysis, but it is not the supervised output.
+## Foreground Extraction and Halo-Aware Masking
 
-## TODO: Size Normalization and Related Controls
+Foreground extraction follows a deliberately conservative sequence:
 
-Future iterations should add a more explicit treatment of apparent galaxy size before blending:
+1. Estimate the image background from border pixels.
+2. Subtract the background and clip negative foreground values to zero.
+3. Detect the bright central source using robust border statistics, an Otsu-style
+   threshold, and a high percentile threshold.
+4. Select the connected component nearest the cutout center, with a mild
+   preference for larger components.
+5. Dilate and Gaussian-smooth the source mask so diffuse halos and outskirts are
+   retained.
+6. Apply a soft circular aperture so the mask fades before reaching image
+   borders.
+7. Suppress very faint residual values to limit background leakage.
 
-- Estimate a stable source radius for each original image and inspect its distribution across the dataset.
-- Consider normalizing target and contaminant size so the experiment can separate overlap difficulty from raw apparent-size differences.
-- Add an option to stratify or match pairs by source radius, morphology label, or brightness percentile.
-- Track whether size normalization improves metric stability across difficulty bins.
-- Compare native-size blending against normalized-size blending as an ablation, rather than replacing the current behavior without measurement.
-- Revisit point-spread-function and background matching if the project moves from controlled synthetic blends toward more observationally realistic simulations.
+This makes the synthetic task closer to overlapping light profiles than naive
+image-patch addition. It is still synthetic and does not fully model sky
+backgrounds, PSFs, detector effects, or source clustering.
 
-## Foreground Extraction
+## Blend Perturbations
 
-The contaminant is not pasted as a full rectangular cutout. Instead, the code estimates the image background, subtracts it, isolates the central source foreground, and adds only that foreground light to the target. This reduces artificial square boundaries and makes the synthetic blend closer to the intended physical setup: extra galaxy light superimposed on another galaxy image.
+The generator samples shift, brightness, blur, noise, and optional rotation.
+Rotation is disabled in the main checkpoint and stress-test settings because
+interpolation can introduce artifacts when foreground isolation is imperfect.
 
-## Halo-Aware Masking
-
-Galaxy outskirts and diffuse halos are scientifically relevant and visually important. The mask therefore starts from the central bright component, dilates it, smooths it, and applies a soft central aperture. This keeps extended light while tapering the mask before it reaches the image edges. Very faint residuals are suppressed to limit background leakage.
-
-## Optional Rotation
-
-Rotation can increase orientation diversity, but it is risky because interpolation can introduce faint angular or polygon-like artifacts if the foreground isolation is imperfect. For that reason, rotation is disabled in the default configuration. A wide rotation range, such as `[0.0, 180.0]`, should be treated as a stress test and inspected visually.
-
-## Blend Difficulty Labels
-
-Each blend stores the sampled shift, brightness, blur, noise, and estimated source-size metadata. Difficulty is assigned heuristically from:
-
-- Smaller contaminant shifts, which increase overlap.
-- Brighter contaminants, which make the target harder to recover.
-- Higher blur or noise, which reduce recoverable structure.
-- Large target/contaminant size differences, which can complicate separation.
-
-The labels are analysis aids rather than physical truth. They should be checked against metric trends and visual examples.
+The normal held-out blends use the default controlled ranges from
+`configs/default.yaml`. The hard stress test concentrates harder conditions:
+small shifts, brighter contaminants, similar-or-larger contaminant sizes where
+possible, no rotation, and a non-trivial affected-region mask.
 
 ## Baselines
 
-Baselines define what a lightweight learned model must beat.
+Baselines define what the learned models must beat:
 
 - Identity baseline: returns the blended image unchanged.
-- Threshold baseline: thresholds the blended image, keeps the largest connected foreground component, and zeros out the rest.
+- Threshold baseline: thresholds the blended image, keeps the largest connected
+  foreground component, and zeros out the rest.
 
-These are intentionally simple. They are useful because they are fast, interpretable, and reveal whether the learned model is doing more than copying the input.
+The threshold baseline is intentionally simple and sometimes poor. Its value is
+as a transparent non-learning reference, not as a competitive survey algorithm.
 
-## Error Metrics
+## Model Formulations
 
-- MSE: mean squared pixel error; emphasizes large deviations.
-- MAE: mean absolute pixel error; less sensitive to outliers than MSE.
-- PSNR: logarithmic signal-to-error ratio derived from MSE; higher is better.
-- SSIM: structural similarity; captures luminance, contrast, and structure.
-- Optional IoU: foreground-mask overlap after thresholding, useful when evaluating detection-like behavior rather than full image reconstruction.
+Two compact U-Net formulations are evaluated:
 
-Metrics should be reported both overall and by difficulty bin. Visual inspection remains necessary because small metric differences can hide structured artifacts.
+- Direct reconstruction: input `X = blended`; target `Y = clean target`.
+- Residual prediction: input `X = blended`; target `R = blended - target`;
+  reconstruction `Y_hat = blended - predicted_residual`.
 
-## Whole-Image vs Affected-Region Metrics
+The residual formulation gives unchanged target light a direct subtraction path,
+which can preserve target structure better in some overlapping cases. It is not
+universally better; direct reconstruction still wins on some individual samples.
 
-Whole-image metrics can be misleading in this project because most pixels in a synthetic blend are unchanged relative to the target. The identity baseline can therefore achieve strong whole-image MSE, PSNR, or SSIM even though it has not removed the contaminant. This is a property of the evaluation geometry, not evidence that identity is a useful deblender.
+## Metrics
 
-Affected-region metrics evaluate only pixels where the blended image differs from the target by more than a small threshold after averaging absolute RGB differences. These metrics focus on the region where contaminant light or controlled noise/blur changes the target. They complement whole-image metrics: whole-image scores measure global reconstruction fidelity, while affected-region scores better isolate the deblending problem.
+The project reports:
 
-PSNR depends on the assumed image data range. This project computes metrics after normalizing images to `[0, 1]`, so PSNR uses `data_range=1.0` rather than an 8-bit range of 255.
+- MSE
+- MAE
+- PSNR
+- SSIM
+- affected-region masked MSE
+- affected-region masked MAE
+
+Whole-image metrics measure global reconstruction fidelity, but they can be
+misleading because most pixels in each synthetic blend are unchanged. The
+identity baseline can therefore look strong over the whole image while still
+failing to remove the contaminant.
+
+Affected-region metrics restrict evaluation to pixels where the blended image
+differs from the target by more than a threshold after averaging absolute RGB
+differences. These metrics better isolate the deblending problem.
+
+## Terminology
+
+The old easy/medium/hard labels are retained only as legacy generation metadata.
+Current analysis separates five concepts:
+
+- `generation_difficulty`: legacy metadata assigned from sampled shift,
+  brightness, blur, noise, and size ratio.
+- `blend_severity_score` / `blend_severity_bin`: measured image damage from
+  affected mask fraction, identity affected error, and optionally core
+  obstruction.
+- `core_obstruction_fraction` / `core_overlap_bin`: how much of the target core
+  is touched by affected pixels.
+- `model_failure_score`: model affected-region MSE.
+- `model_improvement_ratio`: identity affected-region MSE divided by model
+  affected-region MSE.
+
+A high-severity blend is not always hardest for the model. Some large obvious
+contaminants are severe but easy to subtract. Some lower-severity blends are
+hard if they obscure the target core or mimic target structure.
+
+Earlier figures may display the generator's legacy easy/medium/hard metadata.
+These labels are retained for provenance but are not treated as model-failure
+categories.
+
+## Core Obstruction
+
+The stress-test script estimates a simple target-core mask from bright pixels
+inside a central aperture. It then computes `core_obstruction_fraction` as the
+fraction of that core mask overlapped by affected pixels. The derived
+`core_overlap_bin` is a diagnostic for target-core overlap, not an astrophysical
+morphology classifier.
+
+## Why Stress Testing Was Added
+
+The direct U-Net performs strongly on normal held-out blends, improving
+affected-region MSE over identity by about 14.13x. Stress testing was added to
+check whether that result holds under more concentrated overlap, brighter
+contaminants, and similar-size sources. The direct model still beats identity on
+the stress set, but its improvement drops to about 8.04x. This expected
+degradation motivated the residual-prediction comparison, which improves the
+stress result to about 10.69x.
 
 ## Limitations
 
-Synthetic blends do not fully model survey point-spread functions, sky background variation, source crowding, detector artifacts, calibration errors, or physically correlated galaxy environments. The results should be interpreted as a controlled reconstruction study and a stepping stone toward more realistic deblending experiments.
+These results apply to controlled synthetic blends. They may change under more
+realistic sky simulations, PSF variation, background mismatch, detector effects,
+crowding, correlated galaxy environments, or different blend-generation
+settings. The project should be read as a controlled reconstruction study and a
+step toward more realistic deblending experiments, not as deployment-ready
+astronomical deblending.

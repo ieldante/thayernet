@@ -17,7 +17,11 @@ __pycache__/
 # Data and outputs
 data/*
 !data/.gitkeep
+data/*.h5
+data/*.hdf5
 outputs/
+outputs/runs/
+outputs/checkpoints/
 reports/figures/generated/
 *.h5
 *.hdf5

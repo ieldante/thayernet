@@ -1,85 +1,170 @@
 # Experiment Log
 
-Use this file to record experiment runs as the project progresses. Entries should include enough detail to make results interpretable without storing generated outputs in git.
+This log records the main local experiment checkpoints. Raw outputs,
+checkpoints, and generated run directories remain under `outputs/` and are not
+committed.
 
-## Entry Template
+## Checkpoint 1: Direct U-Net on Normal Held-Out Blends
 
-- Date:
-- Code state:
-- Dataset path:
-- Split seed:
-- Blend settings:
-- Number of blends:
-- Model settings:
-- Training settings:
-- Baseline metrics:
-- Model metrics:
-- Difficulty-bin analysis:
-- Notes and failure cases:
+Date: 2026-07-08.
 
-## Current Status
+### Settings
 
-The first direct-reconstruction checkpoint has been run and summarized below. Raw output tables, checkpoints, and generated intermediate files remain local under `outputs/` and are not committed.
-
-## 2026-07-08 Direct U-Net Checkpoint
-
-### Setup
-
-- Task: reconstruct the clean target RGB image directly from the blended RGB image.
-- Dataset: Galaxy10 DECaLS, loaded locally from `data/Galaxy10_DECals.h5`.
+- Dataset: Galaxy10 DECaLS from `data/Galaxy10_DECals.h5`.
 - Split seed: 42.
-- Train blends: 5,000.
-- Validation blends: 800.
-- Held-out test blends: 800.
+- Task: direct reconstruction, `blended -> clean target`.
+- Train/validation/test blends: 5,000 / 800 / 800.
 - Epochs: 20.
+- Batch size: 8.
 - Model: compact U-Net.
-- Rotation: disabled for the main checkpoint.
+- Rotation: disabled.
+- Checkpoint: `outputs/checkpoints/unet_direct_5000train_800val_800test_20ep.pth`.
 
-### Headline Test Metrics
+### Metrics
 
-| Metric | Identity Baseline | Direct U-Net | Change |
-| --- | ---: | ---: | ---: |
-| Whole-image MSE | 0.005224 | 0.000566 | ~9.2x lower |
-| Whole-image SSIM | 0.964264 | 0.976648 | higher |
-| Affected-region MSE | 0.062555 | 0.004428 | ~14.1x lower |
-| Affected-region MAE | 0.180238 | 0.041573 | ~4.3x lower |
-| Mean affected-region fraction | 0.076684 | 0.076684 | mask definition |
+| Method | Whole MSE | Whole SSIM | Affected MSE | Affected MAE | Improvement vs identity |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| identity | 0.005224 | 0.964264 | 0.062555 | 0.180238 | 1.00x |
+| threshold | 0.029782 | 0.054440 | 0.067528 | 0.207066 | 0.93x |
+| direct U-Net | 0.000566 | 0.976648 | 0.004428 | 0.041573 | 14.13x |
 
-Affected-region metrics use pixels where the blend differs from the target. They are more diagnostic for deblending than whole-image metrics because most pixels in each synthetic image remain unchanged.
+### Interpretation
 
-### Original Difficulty Breakdown
+The direct U-Net clearly beats identity and threshold baselines on controlled
+normal held-out blends. Affected-region metrics are the headline result because
+they evaluate only pixels changed by the contaminant; whole-image metrics are
+less diagnostic when most pixels are unchanged.
 
-| Original label | n | Identity affected MSE | Model affected MSE | Identity affected MAE | Model affected MAE | Mean mask fraction |
+The legacy `generation_difficulty` labels from sampled parameters were useful
+for early inspection, but they did not represent final model difficulty.
+Measured blend severity and model failure metrics were added after this
+checkpoint.
+
+## Checkpoint 2: Direct U-Net Hard-Case Stress Test
+
+Date: 2026-07-08.
+
+### Settings
+
+- Run directory: `outputs/runs/stress_test_20260708_145221`.
+- Model: direct U-Net checkpoint from Checkpoint 1.
+- Stress blends: 1,000.
+- Source subset: first 800 images from the held-out test partition.
+- Seed: 20260708.
+- `max_shift`: 18.
+- `brightness_range`: 0.8 to 1.4.
+- `blur_range`: 0.0 to 0.15.
+- `noise_range`: 0.0 to 0.006.
+- Rotation: disabled.
+- `min_size_ratio`: 0.75.
+- `min_mask_fraction`: 0.01.
+- Affected-region threshold: 0.02.
+
+### Metrics
+
+| Method | Whole MSE | Whole SSIM | Affected MSE | Affected MAE | Improvement vs identity |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| identity | 0.007602 | 0.958915 | 0.075541 | 0.202969 | 1.00x |
+| threshold | 0.031344 | 0.045878 | 0.082746 | 0.229405 | 0.91x |
+| direct U-Net | 0.000937 | 0.972558 | 0.009390 | 0.060231 | 8.04x |
+
+### Interpretation
+
+The direct U-Net still beats identity on the stress distribution, but
+affected-region improvement drops from about 14.13x on normal held-out blends to
+about 8.04x. This is the expected direction for a harder distribution with more
+overlap and brighter contaminants.
+
+The stress-test analysis separates measured blend severity from model failure.
+Some high-severity blends are easy for the model when the contaminant is obvious,
+while some lower-severity blends can be difficult when the target core is
+obstructed or the contaminant resembles target structure.
+
+## Checkpoint 3: Residual U-Net
+
+Date: 2026-07-08.
+
+### Settings
+
+- Run directory: `outputs/runs/residual_unet_20260708_154947`.
+- Task: residual prediction, `blended -> blended - target`.
+- Reconstruction: `blended - predicted_residual`.
+- Train/validation/held-out blends: 5,000 / 800 / 800.
+- Epochs: 20.
+- Batch size: 8.
+- Model: compact U-Net with linear residual output head.
+- Checkpoint:
+  `outputs/checkpoints/unet_residual_5000train_800val_800test_20ep_20260708_154947.pth`.
+
+### Normal Held-Out Metrics
+
+| Method | Whole MSE | Whole SSIM | Affected MSE | Affected MAE | Improvement vs identity | Worse than identity |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| easy | 436 | 0.053210 | 0.003142 | 0.168328 | 0.035911 | 0.074178 |
-| medium | 349 | 0.074438 | 0.005735 | 0.195235 | 0.047437 | 0.079736 |
-| hard | 15 | 0.057729 | 0.011385 | 0.177522 | 0.069711 | 0.078518 |
+| identity | 0.005224 | 0.964264 | 0.062555 | 0.180238 | 1.00x | 0/800 |
+| threshold | 0.029782 | 0.054440 | 0.067528 | 0.207066 | 0.93x | 0/800 |
+| direct U-Net | 0.000566 | 0.976648 | 0.004428 | 0.041573 | 14.13x | 5/800 |
+| residual U-Net | 0.000390 | 0.981015 | 0.004039 | 0.045027 | 15.49x | 1/800 |
 
-The original easy/medium/hard labels are useful but crude. The hard bin is small in this run, and measured image-level severity appears more informative for later analysis.
+Residual beats direct on 310/800 normal held-out cases. Direct has slightly
+better affected-region MAE on the normal aggregate, so residual is not
+universally better.
 
-### Measured Severity Notes
+### Hard Stress-Test Metrics
 
-Measured severity labels split the 800 held-out examples almost evenly:
+| Method | Whole MSE | Whole SSIM | Affected MSE | Affected MAE | Improvement vs identity | Worse than identity |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| identity | 0.007602 | 0.958915 | 0.075541 | 0.202969 | 1.00x | 0/1000 |
+| threshold | 0.031344 | 0.045878 | 0.082746 | 0.229405 | 0.91x | 0/1000 |
+| direct U-Net | 0.000937 | 0.972558 | 0.009390 | 0.060231 | 8.04x | 13/1000 |
+| residual U-Net | 0.000700 | 0.977410 | 0.007069 | 0.058334 | 10.69x | 0/1000 |
 
-| Measured label | n |
-| --- | ---: |
-| easy | 267 |
-| medium | 266 |
-| hard | 267 |
+Residual beats direct on 667/1000 stress cases and reduces worse-than-identity
+stress failures from 13/1000 to 0/1000.
 
-The crosstab between original and measured labels shows substantial disagreement. For example, original `easy` examples split into 172 measured easy, 141 measured medium, and 123 measured hard cases. This supports using measured affected-region statistics in the final analysis rather than relying only on sampled blend parameters.
+### Interpretation
 
-### Qualitative Notes
+Residual prediction improves aggregate affected-region MSE on both normal
+held-out blends and the hard stress set. The improvement is clearest under
+stress, where residual prediction appears to preserve target structure better and
+avoid the direct model's worst regressions. Direct reconstruction still wins on
+some individual cases, so future work should analyze when each formulation is
+preferable rather than treating residual prediction as a universal replacement.
 
-- The model removes visually separable contaminants well in many examples.
-- Partial failures occur when contaminant light overlaps target structure and the model suppresses target detail along with the contaminant.
-- Hard failures remain possible for heavily overlapping or visually ambiguous blends.
-- Public-safe selected figures:
-  - `reports/figures/direct_unet_success.png`
-  - `reports/figures/direct_unet_partial_failure.png`
+## Terminology Correction: Difficulty vs Severity vs Model Failure
 
-### Follow-Up
+Earlier notebook cells and static figures used easy/medium/hard labels from the
+blend generator. These labels are now treated as legacy
+`generation_difficulty` metadata, not as model-failure categories.
 
-- Run a balanced hard-case stress test using measured severity bins.
-- Compare the direct-reconstruction model with a residual-prediction variant.
-- Add final tables and figure references to the formal report after the experimental set is complete.
+Current terminology:
+
+- `generation_difficulty`: legacy generator metadata assigned from sampled
+  shift, brightness, blur, noise, and source-size ratio.
+- `blend_severity_score` / `blend_severity_bin`: measured image damage based on
+  affected mask fraction, identity affected error, and optionally core
+  obstruction.
+- `core_obstruction_fraction` / `core_overlap_bin`: how much the contaminant
+  affects the target core.
+- `model_failure_score`: model affected-region MSE.
+- `model_improvement_ratio`: identity affected-region MSE divided by model
+  affected-region MSE.
+
+A high-severity blend is not always hardest for the model. Some large obvious
+contaminants are severe but easy to subtract. Some lower-severity blends are
+hard if they hit the target core or mimic target structure.
+
+Earlier figures may display the generator's legacy easy/medium/hard metadata.
+These labels are retained for provenance but are not treated as model-failure
+categories.
+
+## Next Steps
+
+- Build a core-obstruction-balanced evaluation set.
+- Train or fine-tune on a balanced hard-case residual dataset.
+- Test an affected-region-weighted loss.
+- Improve foreground extraction and residual-output diagnostics.
+- Add preprocessing checks for halo leakage, masked background artifacts, and
+  source-size imbalance.
+- Move toward more realistic sky, noise, PSF, and background simulations.
+- Write the final report using the direct, stress, and residual checkpoints as
+  the first complete experimental arc.

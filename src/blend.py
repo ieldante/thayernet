@@ -141,7 +141,7 @@ def _compute_difficulty(
     noise_std: float,
     size_ratio: float | None = None,
 ) -> str:
-    """Assign a heuristic analysis label from sampled blend parameters."""
+    """Assign original generation difficulty from sampled blend parameters."""
     dx, dy = shift
     shift_mag = abs(dx) + abs(dy)
     score = 0
@@ -231,19 +231,23 @@ def blend_pair(
         noise = rng.normal(scale=noise_std, size=blended.shape)
         blended = np.clip(blended + noise, 0.0, 1.0)
 
+    generation_difficulty = _compute_difficulty(
+        shift=(int(shift[0]), int(shift[1])),
+        brightness=float(brightness),
+        blur_sigma=float(blur_sigma),
+        noise_std=float(noise_std),
+        size_ratio=float(size_ratio),
+    )
+
     info = {
         "shift": (int(shift[0]), int(shift[1])),
         "rotation": float(rotation),
         "brightness": float(brightness),
         "blur_sigma": float(blur_sigma),
         "noise_std": float(noise_std),
-        "difficulty": _compute_difficulty(
-            shift=(int(shift[0]), int(shift[1])),
-            brightness=float(brightness),
-            blur_sigma=float(blur_sigma),
-            noise_std=float(noise_std),
-            size_ratio=float(size_ratio),
-        ),
+        "generation_difficulty": generation_difficulty,
+        # Backward-compatible alias for older notebook cells and saved outputs.
+        "difficulty": generation_difficulty,
         "target_area": float(target_size["area"]),
         "target_radius": float(target_radius),
         "contaminant_area": float(contaminant_size["area"]),
