@@ -198,6 +198,7 @@ def blend_pair(
     target_blurred = np.clip(target_blurred, 0.0, 1.0)
 
     _, target_size = extract_source_foreground(target)
+    # Extract before rotation so interpolation acts on galaxy light, not cutout edges.
     contaminant_foreground, contaminant_size = extract_source_foreground(contaminant)
 
     target_radius = target_size["radius"]

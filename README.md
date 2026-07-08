@@ -26,7 +26,7 @@ The data directory is kept in the repository with `data/.gitkeep`, while dataset
 - Foreground extraction and halo-aware masking: only the contaminant foreground is added to the target, using a soft central mask that preserves diffuse halo light while avoiding rectangular cutout artifacts.
 - Baselines: identity reconstruction and thresholded connected-component segmentation provide lightweight non-learning references.
 - U-Net model: a compact PyTorch U-Net maps blended RGB images to reconstructed target RGB images.
-- Metrics: MSE, MAE, PSNR, and SSIM are computed overall and can be grouped by blend difficulty.
+- Metrics: MSE, MAE, PSNR, and SSIM are computed over the full image, with additional affected-region MSE/MAE on pixels where the blend differs from the target.
 
 For both a brief technical summary and a longer implementation-level explanation of the blending procedure, see `docs/methodology.md`.
 
@@ -70,10 +70,11 @@ Open `notebooks/galaxy_deblending.ipynb` and run the cells in order.
 - Synthetic blend generation accepts a NumPy random generator so experiments can be repeated with fixed seeds.
 - Existing blend objects in a live notebook session do not update after editing `src/blend.py`; regenerate blends after restarting or explicitly reloading the module.
 - Generated outputs, checkpoints, cached files, and the Galaxy10 DECaLS HDF5 file are intentionally excluded from version control.
+- Whole-image metrics can make the identity baseline look stronger than it is because most pixels remain unchanged in a synthetic blend. Affected-region metrics are included to evaluate performance where the contaminant changes the image.
 
 ## Paper and Report
 
-This repository currently contains the experimental pipeline and working notebook for the project. A formal research paper/report will be added after the full set of experiments, figures, and evaluation tables are completed.
+Paper and report: This repository currently contains the experimental pipeline and working notebook. A formal research paper/report will be added after the full set of experiments, figures, and evaluation tables are completed.
 
 The future report and final public-safe figures will live under `reports/`. Draft PDFs, generated figures, checkpoints, and experimental outputs should not be committed unless they are final and explicitly reviewed.
 

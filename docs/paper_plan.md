@@ -10,7 +10,7 @@ To be completed after experiments.
 
 Motivate astronomical deblending, controlled synthetic blends, and the research question.
 
-## Background / Prior Work
+## Prior Work
 
 Summarize deblending context, simple segmentation baselines, and learned image-to-image reconstruction approaches. To be completed with proper references.
 
@@ -33,6 +33,10 @@ Describe the compact U-Net architecture, objective function, and training setup.
 ## Evaluation Metrics
 
 Describe MSE, MAE, PSNR, SSIM, and any optional IoU-style mask analysis.
+
+## Whole-image vs Affected-region Analysis
+
+Explain why whole-image metrics can favor identity-style outputs and how affected-region metrics isolate pixels changed by blending. To be completed after experiments.
 
 ## Results
 

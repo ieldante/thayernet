@@ -86,6 +86,14 @@ These are intentionally simple. They are useful because they are fast, interpret
 
 Metrics should be reported both overall and by difficulty bin. Visual inspection remains necessary because small metric differences can hide structured artifacts.
 
+## Whole-Image vs Affected-Region Metrics
+
+Whole-image metrics can be misleading in this project because most pixels in a synthetic blend are unchanged relative to the target. The identity baseline can therefore achieve strong whole-image MSE, PSNR, or SSIM even though it has not removed the contaminant. This is a property of the evaluation geometry, not evidence that identity is a useful deblender.
+
+Affected-region metrics evaluate only pixels where the blended image differs from the target by more than a small threshold after averaging absolute RGB differences. These metrics focus on the region where contaminant light or controlled noise/blur changes the target. They complement whole-image metrics: whole-image scores measure global reconstruction fidelity, while affected-region scores better isolate the deblending problem.
+
+PSNR depends on the assumed image data range. This project computes metrics after normalizing images to `[0, 1]`, so PSNR uses `data_range=1.0` rather than an 8-bit range of 255.
+
 ## Limitations
 
 Synthetic blends do not fully model survey point-spread functions, sky background variation, source crowding, detector artifacts, calibration errors, or physically correlated galaxy environments. The results should be interpreted as a controlled reconstruction study and a stepping stone toward more realistic deblending experiments.
