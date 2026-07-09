@@ -1,13 +1,18 @@
 We present Thayer-Net, a controlled synthetic benchmark for galaxy deblending
 with Galaxy10 DECaLS cutouts. The benchmark constructs foreground-only blends
 with known clean targets, avoiding rectangular artifacts from naive cutout
-addition. We compare identity and threshold baselines with Thayer-Direct,
-Thayer-Residual, and Thayer-BR v0.1. Thayer-Direct improves
-affected-region mean squared error over identity on normal held-out blends, but
-hard stress testing reveals weaker robustness under stronger overlap and
-contaminant conditions. Thayer-Residual improves stress performance by learning
-contaminant light to subtract, and Thayer-BR v0.1 further improves both normal
-and stress aggregate affected-region error by changing the training
-distribution. The results support controlled synthetic
+addition. We compare identity and threshold baselines with compact U-Net models
+trained for direct target reconstruction, residual contaminant prediction,
+balanced hard-case residual prediction, and affected/core-weighted residual
+prediction. Thayer-Direct improves affected-region mean squared error over
+identity on normal held-out blends, but hard stress testing reveals weaker
+robustness under stronger overlap and contaminant conditions. Thayer-Residual
+improves stress performance by learning contaminant light to subtract.
+Thayer-BR v0.1 shows that balanced hard-case training improves robustness, and
+Thayer-BR v0.2 Moderate further improves affected-region and core affected
+error with a weighted residual loss. In the current controlled benchmark,
+Thayer-BR v0.2 Moderate reaches about 32.3x normal and 19.6x stress
+affected-region improvement over identity, with multi-seed improvements of
+32.02 +/- 1.21x and 19.55 +/- 0.30x. The results support controlled synthetic
 deblending as a useful model-comparison setting, while remaining limited by
-simplified sky, PSF, noise, and source-environment assumptions.
+simplified sky, PSF, noise, source-environment, and apparent-size assumptions.

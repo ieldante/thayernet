@@ -1,12 +1,15 @@
 Thayer-Net provides a controlled setting for studying compact U-Net models on
 synthetic galaxy deblending. Direct reconstruction establishes a strong learned
 baseline over identity and threshold methods. Stress testing exposes robustness
-loss under harder overlap conditions. Thayer-Residual improves stress
-robustness, and Thayer-BR v0.1 gives the strongest aggregate affected-region
-metrics in the current evaluation.
+loss under harder overlap conditions. Residual prediction improves stress
+robustness, balanced hard-case training improves it further, and moderate
+affected/core-weighted residual loss gives the strongest current aggregate
+result.
 
-The main conclusion is that both model objective and training distribution
-matter for controlled synthetic deblending. The next step is to write up the
-current results carefully, preserve exact generated evaluation sets for future
-audits, and extend realism only where it directly supports the scientific
-question.
+Thayer-BR v0.2 Moderate is therefore the current best model for this controlled
+synthetic benchmark. The main conclusion is that objective design, training
+distribution, and region-aware loss weighting all matter. The next step is to
+write up the current result carefully, include counterexamples and audit
+figures, preserve exact generated evaluation sets for future audits, and test a
+size-normalized held-out benchmark before making stronger claims about
+size-invariant or real-sky deblending.
