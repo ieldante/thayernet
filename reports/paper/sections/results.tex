@@ -1,0 +1,66 @@
+Figure~\ref{fig:affected-mse} summarizes affected-region MSE for the current
+same-run normal evaluation and the hard stress test.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{balanced_affected_region_mse_bar.png}
+    \caption{Affected-region MSE for identity, threshold, Thayer-Direct,
+    Thayer-Residual, and Thayer-BR v0.1. Affected-region metrics focus
+    evaluation on pixels changed by the contaminant.}
+    \label{fig:affected-mse}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{balanced_normal_vs_stress_improvement_ratio.png}
+    \caption{Improvement ratio versus identity on the current normal held-out
+    evaluation and hard stress test. Thayer-BR v0.1 gives the
+    strongest aggregate improvement in both settings.}
+    \label{fig:normal-stress-improvement}
+\end{figure}
+
+On an earlier 800-blend normal held-out evaluation, Thayer-Direct improves
+affected-region MSE from 0.062555 for identity to 0.004428, a 14.13x
+improvement. On the current 1,000-blend comparable normal evaluation,
+Thayer-Direct affected-region MSE is 0.004236, Thayer-Residual affected-region
+MSE is 0.004431, and Thayer-BR v0.1 affected-region MSE is 0.002451.
+
+On the hard stress test, Thayer-Direct affected-region MSE is 0.009390,
+Thayer-Residual affected-region MSE is 0.007069, and Thayer-BR v0.1
+affected-region MSE is 0.004587. Thayer-BR v0.1 reduces worse-than-identity
+stress cases to 0/1000, compared with 13/1000 for Thayer-Direct.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{balanced_direct_vs_balanced_scatter.png}
+    \caption{Per-sample affected-region MSE for Thayer-Direct versus
+    Thayer-BR v0.1 (balanced residual). Points below the parity line favor
+    Thayer-BR v0.1.}
+    \label{fig:direct-balanced-scatter}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{balanced_old_residual_vs_balanced_scatter.png}
+    \caption{Per-sample affected-region MSE for Thayer-Residual versus
+    Thayer-BR v0.1 (balanced residual). Thayer-BR v0.1 improves most
+    samples while leaving some individual regressions.}
+    \label{fig:old-balanced-scatter}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{balanced_stress_core_overlap.png}
+    \caption{Stress-test performance grouped by target-core overlap bin. Core
+    obstruction is a diagnostic for overlap with central target structure, not a
+    complete definition of model difficulty.}
+    \label{fig:core-overlap}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{balanced_residual_improvement_example.png}
+    \caption{Qualitative example where Thayer-BR v0.1 (balanced residual)
+    improves over Thayer-Residual.}
+    \label{fig:qual-success}
+\end{figure}

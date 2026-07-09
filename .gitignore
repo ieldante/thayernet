@@ -31,6 +31,18 @@ reports/figures/generated/
 *.pt
 *.pth
 
+# LaTeX build artifacts
+reports/paper/build/
+reports/paper/*.aux
+reports/paper/*.bbl
+reports/paper/*.blg
+reports/paper/*.fdb_latexmk
+reports/paper/*.fls
+reports/paper/*.out
+reports/paper/*.pdf
+reports/paper/*.synctex.gz
+reports/paper/*.toc
+
 # Logs
 *.log
 

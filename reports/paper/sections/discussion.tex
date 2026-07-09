@@ -1,0 +1,21 @@
+The Thayer-Direct result shows that the controlled synthetic task is learnable:
+learned reconstruction substantially improves affected-region error over
+identity and threshold baselines. The hard stress test shows that normal
+held-out performance is not enough to characterize robustness.
+
+Thayer-Residual helps because the model learns contaminant light to subtract
+rather than redrawing the whole target. This can preserve target structure in
+regions that are already correct in the blended image. Thayer-BR v0.1 helps
+because core overlap and bright/similar-size contaminants are
+sampled deliberately during optimization instead of appearing only by chance.
+
+The result should not be overstated. Thayer-Direct and Thayer-Residual still
+win on some individual samples. Some failures involve ambiguous overlap,
+target-core obstruction, over-smoothing, or lost target detail. Also, high blend
+severity is not identical to model difficulty: an obvious contaminant can be
+severe but easy to subtract, while a small overlap can be hard if it destroys
+central target structure.
+
+The current benchmark remains synthetic. More realistic sky backgrounds, PSF
+variation, correlated source environments, and survey-like noise are needed
+before making broader astronomical claims.

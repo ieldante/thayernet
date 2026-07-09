@@ -1,86 +1,143 @@
 # Thayer-Net
 
-Thayer-Net is a compact [U-Net][U-Net]-based testbed for controlled synthetic
-galaxy deblending with [Galaxy10 DECaLS] cutouts. It studies whether a learned
-image-to-image model can recover a target galaxy from blends built with known
-targets and controlled contaminant foregrounds.
+Thayer-Net is a compact U-Net research testbed for controlled synthetic galaxy
+deblending with Galaxy10 DECaLS cutouts. It asks whether learned image-to-image
+models can reconstruct a known target galaxy from synthetic blends more
+accurately than simple non-learning baselines, and how that behavior changes
+under harder overlap conditions.
 
-This is a controlled synthetic deblending project, not a full survey-grade
-pipeline.
+This repository is a controlled synthetic benchmark. It is not a full
+survey-grade astronomical deblending pipeline.
 
 ## TL;DR
 
-Thayer-Net trains compact U-Nets to remove a synthetic contaminating galaxy from
-a blended RGB image. The current checkpoint compares two formulations:
+Current best model: **Thayer-BR v0.1** on this controlled synthetic benchmark.
 
-- Direct reconstruction: `blended -> target`
-- Residual prediction: `blended -> residual`, then `target = blended - residual`
+The Thayer-BR v0.1 checkpoint improves affected-region MSE over the
+identity baseline by **27.79x** on normal held-out blends and **16.47x** on hard
+stress-test blends. A separate multi-seed audit found similar aggregate
+behavior: **27.04 +/- 1.04x** normal improvement and **15.76 +/- 0.07x** stress
+improvement.
 
-Affected-region metrics are emphasized because most pixels in each synthetic
-image are unchanged. Whole-image scores are still reported, but affected-region
-MSE better isolates the pixels where the contaminant actually altered the target
-image.
+Affected-region metrics are emphasized because most pixels are unchanged in
+each synthetic blend. Whole-image scores are still useful, but affected-region
+MSE better isolates pixels where the contaminant actually altered the target.
 
-## Current Results
+![Normal vs stress improvement ratio](reports/figures/balanced_normal_vs_stress_improvement_ratio.png)
 
-The main experiments use 5,000 training blends, 800 validation blends, 800
-normal held-out blends, and 20 training epochs. The hard stress test uses 1,000
-synthetic blends with small shifts, bright contaminants, similar-or-larger
-contaminant sizes where possible, no rotation, and an affected-region threshold
-of 0.02.
+## Model Naming
 
-| Model | Normal affected MSE | Normal improvement | Stress affected MSE | Stress improvement |
-| --- | ---: | ---: | ---: | ---: |
-| Identity | 0.062555 | 1.00x | 0.075541 | 1.00x |
-| Direct U-Net | 0.004428 | 14.13x | 0.009390 | 8.04x |
-| Residual U-Net | 0.004039 | 15.49x | 0.007069 | 10.69x |
+**Thayer-Net** refers to the overall project and model family.
 
-![Normal vs stress improvement ratio](reports/figures/normal_vs_stress_improvement_ratio.png)
+The evaluated model variants are:
 
-Residual prediction improves affected-region MSE over direct reconstruction on
-both normal held-out and hard stress tests.
+- **Thayer-Direct:** direct reconstruction U-Net, trained to map
+  `blended -> target`.
+- **Thayer-Residual:** residual prediction U-Net, trained to map
+  `blended -> residual`, with reconstruction computed as
+  `blended - predicted_residual`.
+- **Thayer-BR v0.1:** the current best model, a balanced
+  hard-case residual U-Net trained on 8,000 synthetic blends with a 50/30/20 mix
+  of normal, high-overlap/core-obstruction, and brightness/size-stress cases.
 
-![Affected-region MSE bar chart](reports/figures/affected_region_mse_bar.png)
+The current headline results refer to **Thayer-BR v0.1**, not to a stable
+public model release.
 
-Affected-region MSE highlights reconstruction quality only where the contaminant
-altered the target image.
+## Current Best Result
 
-## Direct vs Residual
+These are controlled synthetic evaluations with known clean targets, not
+real-survey deployment metrics.
 
-The direct U-Net already beats identity and threshold baselines by a large
-margin on controlled blends. Its affected-region MSE improves over identity by
-about 14.13x on the normal held-out set and about 8.04x on the hard stress set.
+| Evaluation set | Identity affected MSE | Thayer-BR v0.1 affected MSE | Improvement |
+| --- | ---: | ---: | ---: |
+| Normal held-out blends | 0.068122 | 0.002451 | 27.79x |
+| Hard stress-test blends | 0.075541 | 0.004587 | 16.47x |
 
-Residual prediction improves the aggregate affected-region MSE further:
+The full comparison table with identity, threshold, Thayer-Direct,
+Thayer-Residual, and Thayer-BR v0.1 is in
+[docs/checkpoint_summary.md](docs/checkpoint_summary.md).
 
-- Normal held-out: 0.004428 direct vs 0.004039 residual.
-- Hard stress: 0.009390 direct vs 0.007069 residual.
-- Stress worse-than-identity cases: 13/1000 for direct vs 0/1000 for residual.
-- Per-sample wins: residual beats direct on 310/800 normal cases and 667/1000
-  stress cases.
+## Why This Result Is Not Just a Lucky Run
 
-Residual is not universally better. On the normal aggregate, direct has slightly
-better affected-region MAE, and direct reconstruction still wins on some
-individual examples. The current result is more specific: residual prediction is
-better in aggregate and especially improves stress-test robustness.
+The audit reran evaluation only; it did not train, retrain, or modify
+checkpoints.
 
-![Residual over direct example](reports/figures/residual_success_over_direct.png)
+- Multi-seed normal evaluation: `27.04 +/- 1.04x` improvement over identity.
+- Multi-seed stress evaluation: `15.76 +/- 0.07x` improvement over identity.
+- Thayer-BR v0.1 was the best learned model across all audited normal and
+  stress seeds.
+- The model ranking stayed stable across affected-mask thresholds `0.005`,
+  `0.01`, `0.02`, and `0.04`.
+- The model ranking stayed stable when affected masks were dilated by `0`, `1`,
+  `3`, `5`, and `9` pixels, which checks sensitivity to halo inclusion.
+- Checkpoint integrity logs confirmed that the Thayer-Direct, Thayer-Residual,
+  and Thayer-BR v0.1 checkpoints were unchanged before and after the audit.
 
-Residual prediction can preserve target structure better in stress cases, but
-direct reconstruction remains better on some individual examples.
+<details>
+<summary>Evaluation audit details</summary>
 
-## Limitations and Failure Modes
+Audit run: `outputs/runs/evaluation_audit_20260708_220833/`.
 
-The models perform well on many visually separable blends, but ambiguous overlap
-still matters. Remaining failures involve target-core obstruction, contaminant
-and target structures that are hard to distinguish, over-smoothing, and loss of
-target detail. Some large obvious contaminants are severe but easy to subtract;
-some lower-severity blends are hard because they hit the target core.
+The affected-region mask was verified to use
+`abs(blended - target).mean(axis=-1) > threshold`, so it is based on where the
+synthetic blend changed the clean target, not on model prediction error.
 
-Earlier figures may display the generator's legacy easy/medium/hard metadata.
-These labels are retained for provenance but are not treated as model-failure
-categories. Current analysis separates generation difficulty, measured blend
-severity, core obstruction, and model failure.
+The audit tested whether the headline result depended on one mask definition.
+Thayer-BR v0.1 remained the best learned model across all tested thresholds
+and all tested dilation radii. The dilation check is especially important
+because it asks whether faint halo contamination just outside the original mask
+would change the conclusion.
+
+The residual reconstruction path was checked visually and numerically:
+`residual = blended - target`, prediction is the residual layer, and
+`target_hat = blended - predicted_residual`. Clipping is applied after
+subtraction for metrics and visualization.
+
+Visual diagnostics were generated for blend construction, affected masks,
+target-core obstruction, residual predictions, model outputs, and failure or
+counterexample cases. These diagnostics are intended to make suspicious results
+visible rather than hiding them in aggregate tables.
+
+</details>
+
+## What Was Audited
+
+- Affected-mask thresholds: `0.005`, `0.01`, `0.02`, `0.04`.
+- Mask dilation radii: `0`, `1`, `3`, `5`, `9`.
+- Multi-seed normal and hard stress evaluations.
+- Residual reconstruction logic and sign convention.
+- Visual blend, mask, residual, and model-output diagnostics.
+- Checkpoint paths, file sizes, and modified times before and after evaluation.
+- Split-before-blending logic and same-runtime sample comparability.
+
+## Limitations
+
+The current results are for controlled synthetic blends with known targets. They
+should not be interpreted as full survey-grade deblending performance.
+
+Remaining limitations include ambiguous source overlap, target-core
+obstruction, target-detail loss, over-smoothing, simplified sky/noise modeling,
+missing PSF variation, and synthetic foreground-extraction assumptions.
+
+Thayer-BR v0.1 is not universally best on every individual example.
+Thayer-Direct and Thayer-Residual still win on some samples, especially where
+their inductive biases preserve a particular target structure better.
+
+The audit confirms the current controlled benchmark result; it does not prove
+performance on real crowded survey scenes. Future evaluations should save exact
+generated evaluation sets and global source indices so historical generated
+samples can be reloaded directly.
+
+## Links to Deeper Docs
+
+- [Methodology](docs/methodology.md): blend generation, masking, metrics, and
+  residual reconstruction.
+- [Checkpoint summary](docs/checkpoint_summary.md): experiment history,
+  checkpoint-level results, and audit summary.
+- [Results interpretation](docs/results_interpretation.md): how to read the
+  affected-region metrics, threshold baseline, core obstruction, and caveats.
+- [Paper plan](docs/paper_plan.md): recommended paper framing and claims to
+  avoid.
 
 ## Research Question
 
@@ -89,48 +146,36 @@ synthetic blends more accurately than simple image-processing baselines, and how
 does performance change with overlap, contaminant brightness, blur, noise, and
 apparent source size?
 
-## Why Deblending Matters
-
-Astronomical surveys often observe overlapping sources in crowded or deep
-fields. If blended light is assigned to the wrong object, downstream
-measurements of flux, morphology, color, and redshift can be biased. This
-project uses a controlled benchmark to study which synthetic blend conditions
-are learnable and where simple models fail.
-
 ## Dataset
 
-This repository does not include the dataset. Download
-[Galaxy10 DECaLS][Galaxy10 DECaLS download] separately and place the HDF5 file
-at:
+This repository does not include the dataset. Download Galaxy10 DECaLS
+separately and place the HDF5 file at:
 
 ```text
 data/Galaxy10_DECals.h5
 ```
 
-The [data](data/) directory is kept in the repository with
-[data/.gitkeep](data/.gitkeep), while dataset files are ignored by git.
+The `data/` directory is kept in the repository with `data/.gitkeep`, while
+dataset files are ignored by git.
 
 ## Method Overview
 
 - Original images are split into train, validation, and test subsets before
   synthetic blends are generated.
 - Synthetic blends add only extracted contaminant foreground light to the
-  target, avoiding full rectangular cutout artifacts.
+  target, avoiding rectangular cutout/background artifacts.
 - Halo-aware masks preserve diffuse contaminant outskirts while tapering before
-  the cutout edges.
-- Baselines include identity reconstruction and thresholded connected-component
-  segmentation.
-- Direct and residual U-Nets are evaluated with MSE, MAE, PSNR, and SSIM over
-  the whole image and over affected regions.
-- `generation_difficulty` is legacy generator metadata from sampled parameters.
-- `blend_severity_score` and `blend_severity_bin` measure image damage after
-  blend construction.
-- `core_obstruction_fraction` and `core_overlap_bin` describe target-core
-  overlap.
-- `model_failure_score` and `model_improvement_ratio` measure model behavior.
+  cutout edges.
+- Baselines include identity reconstruction and a simple threshold/connected
+  component method.
+- Thayer-Direct, Thayer-Residual, and Thayer-BR v0.1 are evaluated with
+  whole-image and affected-region metrics.
+- Hard stress testing uses smaller shifts, bright contaminants, similar-size
+  sources where possible, blur/noise perturbations, and a minimum affected mask
+  fraction.
 
 For implementation details, see [docs/methodology.md](docs/methodology.md).
-For a concise checkpoint summary, see
+For a concise project summary, see
 [docs/checkpoint_summary.md](docs/checkpoint_summary.md).
 
 ## Repository Structure
@@ -139,9 +184,9 @@ For a concise checkpoint summary, see
 thayernet/
 ├── configs/                  # Portable experiment defaults
 ├── data/                     # Local dataset location; dataset files ignored
-├── docs/                     # Project plan, methodology, dataset notes, logs
+├── docs/                     # Methodology, experiment logs, paper planning
 ├── notebooks/                # Main experiment notebook
-├── reports/                  # Public-safe figures and future report assets
+├── reports/                  # Public-safe figures and paper skeleton
 ├── scripts/                  # Reproducible training/evaluation scripts
 ├── src/                      # Reusable data, blending, model, training code
 ├── LICENSE
@@ -152,8 +197,8 @@ thayernet/
 
 ## Quickstart
 
-Python 3.11 or 3.12 is recommended because scientific Python and [PyTorch]
-wheels can lag newer Python releases.
+Python 3.11 or 3.12 is recommended because scientific Python and PyTorch wheels
+can lag newer Python releases.
 
 ```bash
 python3 -m venv .venv
@@ -161,43 +206,36 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Place the dataset at `data/Galaxy10_DECals.h5`, then start [JupyterLab]:
+Place the dataset at `data/Galaxy10_DECals.h5`, then start JupyterLab:
 
 ```bash
 jupyter lab
 ```
 
-Open [`notebooks/galaxy_deblending.ipynb`][experiment notebook] to inspect the
-notebook workflow. Larger experiments are captured by scripts under `scripts/`.
+Open `notebooks/galaxy_deblending.ipynb` to inspect the notebook workflow.
+Larger formal experiments are captured by scripts under `scripts/`.
 
 ## Reproducibility Notes
 
 - Original images are split before blending to avoid source-image leakage.
-- Synthetic blend generation accepts a [NumPy] random generator for fixed-seed
+- Synthetic blend generation accepts a NumPy random generator for fixed-seed
   experiments.
-- Generated outputs, checkpoints, cached files, and the Galaxy10 DECaLS HDF5
-  file are intentionally excluded from version control.
+- Generated outputs, saved model checkpoints, cached files, and the Galaxy10
+  DECaLS HDF5 file are intentionally excluded from version control.
 - Existing blend objects in a live notebook session do not update after editing
-  [src/blend.py](src/blend.py); regenerate blends after restarting or reloading.
+  `src/blend.py`; regenerate blends after restarting or reloading.
 
 ## Current Next Steps
 
-- Build a core-obstruction-balanced evaluation split.
-- Try residual training with affected-region weighting.
-- Improve foreground extraction diagnostics and preprocessing checks.
+- Preserve exact generated evaluation sets and global source indices for future
+  reproducibility.
+- Finalize paper figures from `reports/figures/` and the latest reviewed output
+  figures.
+- Write the LaTeX report.
+- Improve preprocessing diagnostics and foreground extraction checks.
 - Add more realistic sky, PSF, noise, and background simulation.
-- Write the final report with the direct, stress, and residual results.
 
 ## License
 
-This project is licensed under the [Apache License 2.0]. See [LICENSE](LICENSE)
-for details.
-
-[Apache License 2.0]: https://www.apache.org/licenses/LICENSE-2.0
-[Galaxy10 DECaLS]: https://astronn.readthedocs.io/en/latest/galaxy10.html
-[Galaxy10 DECaLS download]: https://zenodo.org/records/10845026
-[JupyterLab]: https://jupyterlab.readthedocs.io/
-[NumPy]: https://numpy.org/
-[PyTorch]: https://pytorch.org/
-[U-Net]: https://arxiv.org/abs/1505.04597
-[experiment notebook]: notebooks/galaxy_deblending.ipynb
+This project is licensed under the Apache License 2.0. See `LICENSE` for
+details.

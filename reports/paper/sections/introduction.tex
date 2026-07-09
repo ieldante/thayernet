@@ -1,0 +1,18 @@
+Galaxy deblending is necessary when overlapping astronomical sources bias
+measurements of flux, color, morphology, or downstream redshift inference. Real
+survey deblending is difficult because overlapping light can be physically
+ambiguous and because imaging conditions introduce sky, PSF, detector, and
+crowding effects.
+
+This work focuses on a narrower controlled question: given synthetic blends
+with known clean targets, can compact U-Net models recover target galaxies more
+accurately than simple baselines, and how does performance change under harder
+blend conditions? This controlled setting does not solve survey-grade
+deblending, but it makes reconstruction targets known and enables direct
+evaluation of model behavior.
+
+The experiments compare three learned formulations. Thayer-Direct predicts the
+clean target from the blended image. Thayer-Residual predicts the contaminant
+layer and reconstructs by subtraction. Thayer-BR v0.1 keeps the residual
+objective but changes the training distribution toward normal blends,
+core-overlap blends, and brightness/size stress blends.

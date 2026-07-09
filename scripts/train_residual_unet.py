@@ -1274,7 +1274,7 @@ Status: {status}. Run directory: `{project_relative(run_dir)}`.
 - Epochs: {settings.num_epochs}.
 - Batch size used: {batch_size}.
 - Model: compact U-Net with a linear residual output head.
-- Checkpoint: `{project_relative(checkpoint_path)}`.
+- Saved model checkpoint: `{project_relative(checkpoint_path)}`.
 
 ### Normal Held-Out Metrics
 

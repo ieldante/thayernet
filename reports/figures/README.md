@@ -1,33 +1,75 @@
 # Figure Captions
 
 This directory contains reviewed, public-safe figures copied out of local
-experiment outputs for README/report use. Raw `outputs/` directories and
-checkpoints remain ignored.
+experiment outputs for README and report use. Raw `outputs/` directories and
+saved model checkpoint files remain ignored.
 
-## `normal_vs_stress_improvement_ratio.png`
+## Current Thayer-BR v0.1 Figures
 
-Residual prediction improves affected-region MSE over direct reconstruction on
-both normal held-out and hard stress tests.
+### `balanced_normal_vs_stress_improvement_ratio.png`
 
-## `affected_region_mse_bar.png`
+Thayer-BR v0.1 improves affected-region MSE over identity on both
+the current normal held-out evaluation and the hard stress test.
 
-Affected-region MSE highlights reconstruction quality only where the contaminant
-altered the target image.
+### `balanced_affected_region_mse_bar.png`
 
-## `residual_success_over_direct.png`
+Affected-region MSE highlights reconstruction quality only where contaminant
+light changed the target image.
 
-Qualitative stress-test example where residual prediction preserves more target
-structure than direct reconstruction. This is an illustrative case, not a claim
-that residual wins on every sample.
+### `balanced_direct_vs_balanced_scatter.png`
 
-## `direct_unet_success.png`
+Per-sample affected-region MSE comparison between Thayer-Direct and
+Thayer-BR v0.1 (balanced residual).
 
-Legacy direct U-Net success example. The direct model removes a visually
-significant contaminant while preserving the target galaxy structure.
+### `balanced_old_residual_vs_balanced_scatter.png`
 
-## `direct_unet_partial_failure.png`
+Per-sample affected-region MSE comparison between Thayer-Residual and
+Thayer-BR v0.1 (balanced residual).
 
-Legacy direct U-Net partial-failure example. The model suppresses some
+### `balanced_stress_core_overlap.png`
+
+Stress-test affected-region performance grouped by target-core overlap bin.
+
+### `balanced_residual_improvement_example.png`
+
+Qualitative example where Thayer-BR v0.1 improves over Thayer-Residual.
+
+### `balanced_residual_failure_example.png`
+
+Qualitative example where Thayer-BR v0.1 still fails in an
+ambiguous overlap case. Use in limitations or appendix, not as a leading README
+figure.
+
+### `balanced_residual_counterexample.png`
+
+Qualitative example where Thayer-Residual or Thayer-Direct beats Thayer-BR v0.1
+on an individual sample.
+
+## Legacy Direct/Residual Figures
+
+### `normal_vs_stress_improvement_ratio.png`
+
+Earlier direct-vs-residual improvement chart. Keep for provenance unless a
+caption clearly states that it predates Thayer-BR v0.1.
+
+### `affected_region_mse_bar.png`
+
+Earlier direct-vs-residual affected-region MSE chart.
+
+### `residual_success_over_direct.png`
+
+Qualitative stress-test example where Thayer-Residual preserves more target
+structure than Thayer-Direct. This is illustrative, not a claim that
+Thayer-Residual wins on every sample.
+
+### `direct_unet_success.png`
+
+Legacy Thayer-Direct success example. The direct model removes a visually
+significant contaminant while preserving target structure.
+
+### `direct_unet_partial_failure.png`
+
+Legacy Thayer-Direct partial-failure example. The model suppresses some
 contaminating structure but loses target detail in an ambiguous overlapping
 region.
 

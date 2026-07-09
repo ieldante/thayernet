@@ -1,0 +1,15 @@
+Evaluation reports whole-image MSE, MAE, PSNR, and SSIM, along with
+affected-region MSE and MAE. Affected-region metrics are primary because most
+pixels in each synthetic cutout are unchanged. The affected region is defined by
+pixels where the blended image differs from the clean target by more than the
+affected threshold after averaging absolute RGB differences.
+
+The hard stress test uses 1,000 blends with maximum shift 18, brightness range
+0.8 to 1.4, blur range 0.0 to 0.15, noise range 0.0 to 0.006, rotation off,
+minimum size ratio 0.75, minimum affected mask fraction 0.01, and affected
+threshold 0.02.
+
+The analysis distinguishes generation difficulty, blend severity, target-core
+obstruction, and model failure. Blend severity measures image-level damage, not
+model difficulty. Model failure is measured by affected-region model error and
+improvement relative to identity.

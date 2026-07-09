@@ -1,0 +1,16 @@
+The project uses Galaxy10 DECaLS cutouts~\cite{galaxy10decals} stored locally as an HDF5 file. The
+dataset is not included in the repository. Original cutouts are split into
+train, validation, and test partitions before synthetic blends are generated,
+preventing source-image leakage across training and evaluation.
+
+Each synthetic blend starts with a target image and a contaminant image from the
+same split. Rather than adding a full rectangular contaminant cutout, the
+pipeline estimates and subtracts the contaminant background, extracts central
+foreground light, applies halo-aware masking, and adds only the foreground
+component to the target. This avoids artificial rectangular boundaries and
+double-background artifacts that could make the task easier for the wrong
+reason.
+
+The generator records sampled shift, brightness, blur, noise, and size-ratio
+metadata. These values are useful provenance metadata, but they are not treated
+as final model difficulty labels.

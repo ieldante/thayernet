@@ -1,0 +1,28 @@
+The identity baseline returns the blended image unchanged. The threshold
+baseline uses simple thresholding and connected-component logic to remove bright
+regions. These baselines are intentionally simple references; thresholding can
+perform worse than identity because removing bright pixels is not equivalent to
+reconstructing hidden target structure.
+
+Thayer-Direct follows the encoder-decoder U-Net design
+\cite{ronneberger2015unet} and maps a blended image $X$ to a clean target image $Y$:
+\[
+    \hat{Y} = f_{\theta}(X).
+\]
+The model is a compact encoder-decoder U-Net with skip connections.
+
+Thayer-Residual predicts
+\[
+    R = X - Y,
+\]
+and reconstructs the target by subtraction:
+\[
+    \hat{Y} = X - g_{\theta}(X).
+\]
+This objective can preserve unchanged target light through the subtraction path.
+
+Thayer-BR v0.1 is not a new architecture; it is a residual U-Net trained on a
+more targeted blend distribution: 50\% normal/random blends, 30\%
+high-overlap/core-obstruction blends, and 20\% brightness/size stress blends.
+This tests whether targeted hard-case sampling improves robustness without
+changing the basic model family.
