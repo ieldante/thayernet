@@ -41,10 +41,12 @@ in real blended survey images.
 - Reusable source modules under `src/`.
 - A clean experiment notebook under `notebooks/`.
 - Research documentation under `docs/`.
-- Scripted stress-test, Thayer-Residual, and Thayer-BR v0.1 workflows under
-  `scripts/`.
+- Scripted stress-test, Thayer-Residual, Thayer-BR v0.1, Thayer-BR v0.2
+  Moderate, and size/visual audit workflows under `scripts/`.
 - Reviewed public-safe figures under `reports/figures/`.
 - A concise project summary at `docs/checkpoint_summary.md`.
+- Current best model documentation at `docs/current_best_model.md`.
+- Thayer-BR v0.2 Moderate model card and release summary under `docs/`.
 - A LaTeX paper skeleton under `reports/paper/`.
 
 ## Current Next Steps
@@ -54,5 +56,6 @@ in real blended survey images.
 - Finalize paper figures and captions.
 - Write the LaTeX report.
 - Improve foreground extraction diagnostics and preprocessing checks.
+- Evaluate current checkpoints on a size-normalized held-out benchmark.
 - Add more realistic sky, PSF, noise, and background simulation before making
   broader claims.

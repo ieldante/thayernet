@@ -11,8 +11,11 @@ blend conditions? This controlled setting does not solve survey-grade
 deblending, but it makes reconstruction targets known and enables direct
 evaluation of model behavior.
 
-The experiments compare three learned formulations. Thayer-Direct predicts the
-clean target from the blended image. Thayer-Residual predicts the contaminant
-layer and reconstructs by subtraction. Thayer-BR v0.1 keeps the residual
-objective but changes the training distribution toward normal blends,
-core-overlap blends, and brightness/size stress blends.
+The experiments compare a progression of learned formulations. Thayer-Direct
+predicts the clean target from the blended image. Thayer-Residual predicts the
+contaminant residual layer and reconstructs by subtraction. Thayer-BR v0.1
+keeps the residual objective but changes the training distribution toward
+normal blends, core-overlap blends, and brightness/size stress blends.
+Thayer-BR v0.2 Moderate keeps the same residual family and adds a moderate
+affected/core-weighted residual loss. Thayer-BR v0.2 Strong is evaluated as a
+loss-weighting ablation.

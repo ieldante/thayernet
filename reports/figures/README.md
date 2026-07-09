@@ -4,7 +4,45 @@ This directory contains reviewed, public-safe figures copied out of local
 experiment outputs for README and report use. Raw `outputs/` directories and
 saved model checkpoint files remain ignored.
 
-## Current Thayer-BR v0.1 Figures
+## Current Thayer-BR v0.2 Moderate Figures
+
+### `v02_improvement_ratio.png`
+
+Thayer-BR v0.2 Moderate improves affected-region MSE over identity on both
+normal held-out and hard stress-test blends. Recommended README figure.
+
+### `v02_affected_mse_bar.png`
+
+Affected-region MSE comparison for identity, threshold, Thayer-Direct,
+Thayer-Residual, Thayer-BR v0.1, and Thayer-BR v0.2 Moderate.
+
+### `v02_core_mse.png`
+
+Core affected MSE comparison. Use to show that v0.2 Moderate improves the
+harder target-core overlap region relative to Thayer-BR v0.1.
+
+### `v02_weighted_vs_v01_scatter.png`
+
+Per-sample affected-region MSE comparison between Thayer-BR v0.2 Moderate and
+Thayer-BR v0.1.
+
+### `v02_multiseed_summary.png`
+
+Multi-seed improvement ratio summary for Thayer-BR v0.2 Moderate on normal and
+stress evaluations.
+
+### `v02_weighted_improvement_example.png`
+
+Qualitative example where Thayer-BR v0.2 Moderate improves over Thayer-BR
+v0.1.
+
+### `v02_counterexample.png`
+
+Qualitative example where Thayer-BR v0.1 beats Thayer-BR v0.2 Moderate on an
+individual sample. Use as a limitation or appendix figure, not as the leading
+README figure.
+
+## Historical Thayer-BR v0.1 Figures
 
 ### `balanced_normal_vs_stress_improvement_ratio.png`
 

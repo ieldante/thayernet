@@ -6,16 +6,32 @@ held-out performance is not enough to characterize robustness.
 Thayer-Residual helps because the model learns contaminant light to subtract
 rather than redrawing the whole target. This can preserve target structure in
 regions that are already correct in the blended image. Thayer-BR v0.1 helps
-because core overlap and bright/similar-size contaminants are
-sampled deliberately during optimization instead of appearing only by chance.
+because core overlap and bright/similar-size contaminants are sampled
+deliberately during optimization instead of appearing only by chance.
+Thayer-BR v0.2 Moderate adds another improvement by placing more loss weight on
+contaminated and affected target-core pixels, which better matches the primary
+evaluation objective.
 
-The result should not be overstated. Thayer-Direct and Thayer-Residual still
-win on some individual samples. Some failures involve ambiguous overlap,
-target-core obstruction, over-smoothing, or lost target detail. Also, high blend
-severity is not identical to model difficulty: an obvious contaminant can be
-severe but easy to subtract, while a small overlap can be hard if it destroys
-central target structure.
+The Strong weighting ablation is important because it shows that more weighting
+is not automatically better. Stronger affected/core weights slightly improve
+stress core affected MSE but worsen aggregate normal and stress affected MSE.
+The Moderate setting is the best current balance.
+
+The result should not be overstated. Thayer-Direct, Thayer-Residual, and
+Thayer-BR v0.1 still win on some individual samples. Some failures involve
+ambiguous overlap, target-core obstruction, over-smoothing, broad low-level
+artifacts, or lost target detail. Also, high blend severity is not identical to
+model difficulty: an obvious contaminant can be severe but easy to subtract,
+while a small overlap can be hard if it destroys central target structure.
+
+The size/visual audit found wide apparent contaminant/target size variation but
+weak learned-model affected-error dependence on size ratio. This does not
+invalidate the current result, but it motivates a future size-normalized
+held-out benchmark. The halo-band audit improved in aggregate for v0.2 Moderate
+relative to v0.1, while selected individual examples still show broad low-level
+artifacts. Both aggregate metrics and visual counterexamples should be reported.
 
 The current benchmark remains synthetic. More realistic sky backgrounds, PSF
-variation, correlated source environments, and survey-like noise are needed
-before making broader astronomical claims.
+variation, correlated source environments, apparent-size-controlled
+evaluations, and survey-like noise are needed before making broader
+astronomical claims.

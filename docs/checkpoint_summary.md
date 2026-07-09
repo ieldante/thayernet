@@ -9,19 +9,39 @@ target galaxy more accurately than simple non-learning baselines.
 
 The current project state supports a careful but limited claim: compact U-Nets
 substantially improve target reconstruction on controlled synthetic blends, and
-residual prediction with balanced hard-case training improves robustness on the
-current stress-test distribution. These results should not be interpreted as
-full survey-grade deblending performance.
+residual prediction with balanced hard-case training plus moderate
+affected/core-weighted loss gives the strongest current result. These results
+should not be interpreted as validated real-survey performance.
 
 ## Model Naming
 
 - **Thayer-Net:** project name and model family.
 - **Thayer-Direct:** direct reconstruction U-Net experiment.
 - **Thayer-Residual:** residual prediction U-Net experiment.
-- **Thayer-BR v0.1 (Balanced Residual U-Net):** current best balanced
-  hard-case residual U-Net, trained on 8,000 synthetic blends with a 50/30/20
-  mix of normal, high-overlap/core-obstruction, and brightness/size-stress
-  cases.
+- **Thayer-BR v0.1 (Balanced Residual U-Net):** previous balanced hard-case
+  residual U-Net, trained on 8,000 synthetic blends with a 50/30/20 mix of
+  normal, high-overlap/core-obstruction, and brightness/size-stress cases.
+- **Thayer-BR v0.2 Moderate:** current best model, a balanced residual U-Net
+  trained with moderate affected/core-weighted residual loss.
+- **Thayer-BR v0.2 Strong:** stronger weighted-loss ablation, not the current
+  best model.
+
+## Current Best Model
+
+Current best model: **Thayer-BR v0.2 Moderate**.
+
+| Evaluation | Identity affected MSE | Thayer-BR v0.2 Moderate affected MSE | Improvement |
+| --- | ---: | ---: | ---: |
+| Normal held-out | 0.068122 | 0.002108 | ~32.3x |
+| Hard stress test | 0.075541 | 0.003847 | ~19.6x |
+
+Multi-seed audit:
+
+- Normal: `32.02 +/- 1.21x`.
+- Stress: `19.55 +/- 0.30x`.
+
+This is a controlled synthetic benchmark result. It is the current best
+research checkpoint result for this repository, not a full real-sky validation.
 
 ## Development Phase
 
@@ -101,50 +121,75 @@ of stress cases. Thayer-Direct and Thayer-Residual still win on some individual
 samples, so the result should be presented as an aggregate robustness
 improvement, not as a universal per-sample dominance claim.
 
+### Experiment 4: Thayer-BR v0.2 Moderate
+
+Thayer-BR v0.2 Moderate keeps the residual U-Net architecture and balanced
+hard-case training idea, but changes the objective to a normalized weighted
+residual loss. Affected pixels receive extra weight `3`, and affected target
+core pixels receive extra weight `2`.
+
+The moderate run used 12,000 training blends and 1,000 validation blends with
+the same 50/30/20 training composition target: normal/random, high-overlap/core
+obstruction, and brightness/size stress.
+
+| Model | Normal affected MSE | Normal improvement | Stress affected MSE | Stress improvement | Stress core MSE | Worse-than-identity stress cases |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Identity | 0.068122 | 1.00x | 0.075541 | 1.00x | 0.085131 | 0/1000 |
+| Thayer-BR v0.1 | 0.002451 | 27.79x | 0.004587 | 16.47x | 0.013848 | 0/1000 |
+| Thayer-BR v0.2 Moderate | 0.002108 | ~32.3x | 0.003847 | ~19.6x | 0.009533 | 0/1000 |
+
+Relative to Thayer-BR v0.1, v0.2 Moderate lowers normal affected MSE by about
+14%, stress affected MSE by about 16%, and stress core MSE by about 31%. It also
+removes the remaining normal worse-than-identity case in the tested setup.
+
+Thayer-BR v0.2 Strong used larger affected/core extra weights `5/4`. It
+slightly improved stress core MSE relative to Moderate, but worsened aggregate
+normal affected MSE, aggregate stress affected MSE, and stress non-core affected
+MSE. It is therefore an ablation rather than the current best model.
+
 ## Evaluation Robustness Audit
 
 Audit run: `outputs/runs/evaluation_audit_20260708_220833`.
 
-The audit loaded the Thayer-Direct, Thayer-Residual, and Thayer-BR v0.1
-checkpoints for evaluation only. Checkpoint size and modified-time records were
-unchanged before and after the audit.
+The audits loaded existing checkpoints for evaluation only. Checkpoint size and
+modified-time records were unchanged before and after the audit passes.
 
 The affected-region mask is computed from
 `abs(blended - target).mean(axis=-1) > threshold`, so the mask is independent of
-model predictions. Thayer-BR v0.1 remained the best learned model across
+model predictions. The balanced/weighted model ranking was robust across
 thresholds `0.005`, `0.01`, `0.02`, and `0.04`.
 
 Halo sensitivity was tested by dilating the affected mask by `0`, `1`, `3`,
-`5`, and `9` pixels. Thayer-BR v0.1 remained best across all tested dilation
-radii on both normal and stress sets, which supports the result against the
-concern that faint halo contamination was excluded by the default mask.
+`5`, and `9` pixels. The ranking remained stable across tested dilation radii,
+which supports the result against the concern that faint halo contamination was
+excluded by the default mask.
 
-The multi-seed evaluation used three normal seeds and three stress seeds, each
-with 1,000 generated blends. Thayer-BR v0.1 won all tested seeds. Mean
-improvement was `27.04 +/- 1.04x` on normal blends and `15.76 +/- 0.07x` on
-stress blends.
+The v0.2 Moderate multi-seed evaluation found mean improvement of
+`32.02 +/- 1.21x` on normal blends and `19.55 +/- 0.30x` on stress blends.
 
 Core-region metrics support the aggregate result, but core-obstructed pixels
-remain the hardest region. Thayer-BR v0.1 core improvement was `4.19x` on
-normal blends and `6.15x` on stress blends, while non-core improvements were
-larger.
+remain the hardest region. Thayer-BR v0.2 Moderate improves stress core MSE
+from `0.013848` for v0.1 to `0.009533`, while non-core errors are already much
+smaller.
 
 The residual logic audit confirmed the intended sign convention:
 `residual = blended - target` and `reconstruction = blended - predicted_residual`.
-The headline `27.79x` normal and `16.47x` stress claims remain trustworthy as
-current same-run controlled synthetic metrics, with the caveat that they should
-not be presented as real-survey performance or universal per-sample dominance.
+The headline `~32.3x` normal and `~19.6x` stress same-run claims, together with
+the `32.02 +/- 1.21x` and `19.55 +/- 0.30x` multi-seed results, should be
+presented as controlled synthetic metrics. They should not be presented as
+real-survey performance or universal per-sample dominance.
 
 ## Limitations
 
 These results are for controlled synthetic blends and should not be interpreted
-as full survey-grade deblending performance. The current setup does not fully
+as validated real-survey performance. The current setup does not fully
 model PSF variation, sky background mismatch, detector artifacts, source
 crowding, physically correlated galaxy environments, or the full ambiguity of
 real overlapping astronomical sources.
 
 ## Recommended Next Experiment
 
-The next scientific step is to preserve exact generated evaluation sets and
-global source indices for future reproducibility, then focus on the written
-report unless a targeted modeling question requires another checkpoint.
+The next scientific step is to document the v0.2 Moderate result, preserve exact
+generated evaluation sets and global source indices for future reproducibility,
+and run a size-normalized held-out benchmark before making stronger claims about
+size-invariant deblending.

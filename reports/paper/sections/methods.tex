@@ -5,7 +5,8 @@ perform worse than identity because removing bright pixels is not equivalent to
 reconstructing hidden target structure.
 
 Thayer-Direct follows the encoder-decoder U-Net design
-\cite{ronneberger2015unet} and maps a blended image $X$ to a clean target image $Y$:
+\cite{ronneberger2015unet} and maps a blended image $X$ to a clean target image
+$Y$:
 \[
     \hat{Y} = f_{\theta}(X).
 \]
@@ -26,3 +27,19 @@ more targeted blend distribution: 50\% normal/random blends, 30\%
 high-overlap/core-obstruction blends, and 20\% brightness/size stress blends.
 This tests whether targeted hard-case sampling improves robustness without
 changing the basic model family.
+
+Thayer-BR v0.2 Moderate keeps the residual U-Net formulation and balanced
+training distribution target, but changes the loss. It uses a normalized
+weighted residual mean squared error:
+\[
+    \mathcal{L} =
+    \frac{\sum_i w_i \left(g_{\theta}(X)_i - (X_i - Y_i)\right)^2}
+         {\sum_i w_i}.
+\]
+The affected mask is computed from the known synthetic pair,
+\[
+    \mathrm{mean}_c(|X - Y|) > 0.02,
+\]
+not from model predictions. The moderate setting adds weight to affected pixels
+and additional weight to affected target-core pixels. Thayer-BR v0.2 Strong
+uses larger affected/core weights and is treated as an ablation.
