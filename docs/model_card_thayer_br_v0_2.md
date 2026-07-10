@@ -1,21 +1,29 @@
 # Model Card: Thayer-BR v0.2 Moderate
 
+> **Development-benchmark status (2026-07-10):** this original checkpoint is
+> the historical development leader. A separate grouped v0.2 retrain is now the
+> source-group-disjoint development reference. Neither checkpoint is a locked
+> final or survey-grade model.
+
 ## Model Identity
 
 - Model name: Thayer-BR v0.2 Moderate.
 - Model family: Thayer-Net.
-- Task: controlled synthetic galaxy deblending.
+- Task: controlled synthetic RGB cutout restoration/deblending benchmark.
 - Architecture: compact U-Net encoder-decoder with skip connections.
 - Formulation: residual prediction.
 - Training objective: affected/core-weighted residual MSE.
-- Current status: current best model for the controlled synthetic benchmark.
+- Current status: historical best on the original development benchmark;
+  grouped development retraining/evaluation is complete, while fresh untouched
+  final validation remains absent.
 
 ## Intended Use
 
 Thayer-BR v0.2 Moderate is intended for research and educational analysis of a
-controlled synthetic galaxy deblending benchmark. The task is to reconstruct a
-known clean target galaxy from a synthetic blend of a target and contaminant
-cutout.
+controlled synthetic RGB cutout restoration/deblending benchmark. The task is
+to reconstruct the original target cutout from a synthetic blend of a target
+and contaminant cutout. The reference is not independently certified to be
+artifact-free or isolated.
 
 The model is useful for comparing objective design, residual prediction,
 training distribution, and diagnostic metrics under controlled Galaxy10
@@ -34,8 +42,9 @@ Thayer-BR v0.2 Moderate is not intended for:
 ## Architecture
 
 The model uses the same compact residual U-Net architecture as the balanced
-residual experiments. It predicts contaminant residual light rather than drawing
-the clean target directly.
+residual experiments. It predicts a blend-to-target correction field rather
+than drawing the target directly. Because the generator can blur the target,
+add noise, and clip the composite, this field is not pure contaminant light.
 
 Plain-text formulation:
 
@@ -87,10 +96,11 @@ The weighted v0.2 Moderate run is stored under
 
 ## Evaluation Data
 
-Evaluation used controlled synthetic blends generated from held-out source
-images:
+Evaluation used controlled synthetic blends generated from source rows assigned
+to the original development-test partition. Duplicate/object groups were not
+enforced across the historical row partitions:
 
-- normal held-out blends;
+- normal development blends;
 - hard stress-test blends;
 - multi-seed synthetic evaluation;
 - apparent-size and visual audit sets.
@@ -118,12 +128,12 @@ unchanged in each synthetic blend.
 
 ## Results
 
-Current best model versus identity:
+Original development checkpoint versus identity:
 
-| Evaluation | Identity affected MSE | Thayer-BR v0.2 Moderate affected MSE | Improvement |
+| Original development evaluation | Identity affected MSE | Thayer-BR v0.2 Moderate affected MSE | Lower affected MSE vs identity |
 | --- | ---: | ---: | ---: |
-| Normal held-out | 0.068122 | 0.002108 | ~32.3x |
-| Hard stress test | 0.075541 | 0.003847 | ~19.6x |
+| Normal | 0.068122 | 0.002108 | ~32.3x |
+| Hard stress | 0.075541 | 0.003847 | ~19.6x |
 
 Multi-seed audit:
 

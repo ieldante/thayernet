@@ -1,7 +1,7 @@
 The Thayer-Direct result shows that the controlled synthetic task is learnable:
 learned reconstruction substantially improves affected-region error over
 identity and threshold baselines. The hard stress test shows that normal
-held-out performance is not enough to characterize robustness.
+row-index development performance is not enough to characterize robustness.
 
 Thayer-Residual helps because the model learns contaminant light to subtract
 rather than redrawing the whole target. This can preserve target structure in
@@ -11,6 +11,12 @@ deliberately during optimization instead of appearing only by chance.
 Thayer-BR v0.2 Moderate adds another improvement by placing more loss weight on
 contaminated and affected target-core pixels, which better matches the primary
 evaluation objective.
+
+The exact-pixel/exact-coordinate grouped v0.2 retrain is now the current
+source-group-disjoint development reference. The original checkpoint on grouped
+manifests remains an exposure-confounded diagnostic, and the historical 32.3x
+result remains original development evidence only. None of these is a final
+paper estimate; a fresh untouched final source partition is still required.
 
 The Strong weighting ablation is important because it shows that more weighting
 is not automatically better. Stronger affected/core weights slightly improve
@@ -27,7 +33,8 @@ while a small overlap can be hard if it destroys central target structure.
 The size/visual audit found wide apparent contaminant/target size variation but
 weak learned-model affected-error dependence on size ratio. This does not
 invalidate the current result, but it motivates a future size-normalized
-held-out benchmark. The halo-band audit improved in aggregate for v0.2 Moderate
+grouped development benchmark. The future untouched final pool must not be used
+to design that benchmark. The halo-band audit improved in aggregate for v0.2 Moderate
 relative to v0.1, while selected individual examples still show broad low-level
 artifacts. Both aggregate metrics and visual counterexamples should be reported.
 

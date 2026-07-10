@@ -295,7 +295,7 @@ def generate_blends(
     images = np.asarray(images, dtype=np.float32)
     blends: list[dict[str, Any]] = []
 
-    for _ in range(n_blends):
+    for sample_index in range(n_blends):
         target_idx, contaminant_idx = rng.choice(images.shape[0], size=2, replace=False)
         target = images[target_idx]
         contaminant = images[contaminant_idx]
@@ -321,6 +321,13 @@ def generate_blends(
             noise_std=noise_std,
             rng=rng,
         )
+        info = {
+            **info,
+            "sample_index": int(sample_index),
+            "target_index": int(target_idx),
+            "contaminant_index": int(contaminant_idx),
+            "index_semantics": "local_to_supplied_source_pool",
+        }
         blends.append(
             {
                 "target": target,

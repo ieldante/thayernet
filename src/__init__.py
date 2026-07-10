@@ -3,7 +3,7 @@
 from .baselines import identity_baseline, threshold_baseline
 from .blend import blend_pair, generate_blends
 from .data import load_galaxy10, normalise_images, split_dataset
-from .models import UNet
+from .models import ResUNet, ResidualBlock, UNet
 from .train import BlendDataset, evaluate_model, resolve_device, train_model
 from .utils import (
     affected_region_mask,
@@ -16,6 +16,8 @@ from .utils import (
 
 __all__ = [
     "BlendDataset",
+    "ResidualBlock",
+    "ResUNet",
     "UNet",
     "affected_region_mask",
     "blend_pair",

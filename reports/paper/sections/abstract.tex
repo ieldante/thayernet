@@ -1,18 +1,21 @@
 We present Thayer-Net, a controlled synthetic benchmark for galaxy deblending
 with Galaxy10 DECaLS cutouts. The benchmark constructs foreground-only blends
-with known clean targets, avoiding rectangular artifacts from naive cutout
+with known target references, reducing rectangular artifacts from naive cutout
 addition. We compare identity and threshold baselines with compact U-Net models
-trained for direct target reconstruction, residual contaminant prediction,
+trained for direct target reconstruction, residual correction-field prediction,
 balanced hard-case residual prediction, and affected/core-weighted residual
 prediction. Thayer-Direct improves affected-region mean squared error over
-identity on normal held-out blends, but hard stress testing reveals weaker
+identity on original development blends, but hard stress testing reveals weaker
 robustness under stronger overlap and contaminant conditions. Thayer-Residual
-improves stress performance by learning contaminant light to subtract.
+improves stress performance by learning a blend-to-target field to subtract.
 Thayer-BR v0.1 shows that balanced hard-case training improves robustness, and
 Thayer-BR v0.2 Moderate further improves affected-region and core affected
-error with a weighted residual loss. In the current controlled benchmark,
-Thayer-BR v0.2 Moderate reaches about 32.3x normal and 19.6x stress
-affected-region improvement over identity, with multi-seed improvements of
-32.02 +/- 1.21x and 19.55 +/- 0.30x. The results support controlled synthetic
-deblending as a useful model-comparison setting, while remaining limited by
-simplified sky, PSF, noise, source-environment, and apparent-size assumptions.
+error with a weighted residual loss. A duplicate-safe grouped retrain reaches
+28.81x lower affected-region MSE than identity on grouped normal development
+blends, 15.80x on hard stress, 9.18x on compact-bright stress, and 15.84x on
+high-core-obstruction stress. The earlier row-index benchmark gave 32.3x and
+19.6x normal/stress ratios; its duplicate implication had a minor measured
+aggregate effect but violated source-independent protocol. These results are
+development evidence, not a locked final or survey-grade claim, and remain
+limited by display-RGB compositing, simplified sky/PSF/noise, target centrality,
+source reuse, and apparent-size assumptions.

@@ -1,9 +1,15 @@
 # Release Notes: Thayer-BR v0.2 Moderate
 
+> **Historical release status (2026-07-10):** preserve these metrics as original
+> row-split development results. A later grouped retrain achieved `28.81x`
+> normal affected-MSE reduction and is the defensible development reference.
+> Neither result is final, and the multi-seed audit did not retrain the model.
+
 ## Status
 
-Thayer-BR v0.2 Moderate is the current best Thayer-Net model for the controlled
-synthetic Galaxy10 DECaLS-style deblending benchmark.
+This historical release introduced the current-best Thayer-Net model family for
+the controlled synthetic Galaxy10 DECaLS-style development benchmark. The later
+grouped checkpoint is the defensible development reference.
 
 ## Main Change
 
@@ -16,10 +22,10 @@ adds a moderate affected/core-weighted residual loss:
 
 ## Main Result
 
-| Evaluation | Identity affected MSE | Thayer-BR v0.2 Moderate affected MSE | Improvement |
+| Original development evaluation | Identity affected MSE | Thayer-BR v0.2 Moderate affected MSE | Lower affected MSE vs identity |
 | --- | ---: | ---: | ---: |
-| Normal held-out | 0.068122 | 0.002108 | ~32.3x |
-| Hard stress test | 0.075541 | 0.003847 | ~19.6x |
+| Normal | 0.068122 | 0.002108 | ~32.3x |
+| Hard stress | 0.075541 | 0.003847 | ~19.6x |
 
 Multi-seed audit:
 

@@ -1274,7 +1274,7 @@ def main() -> int:
         },
     )
 
-    device = gd_train.resolve_device(args.device)
+    device = gd_train.resolve_accelerator(args.device)
     print(f"Using device: {device}", flush=True)
     print(f"Run directory: {project_relative(run_dir)}", flush=True)
 

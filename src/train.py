@@ -40,11 +40,38 @@ def resolve_device(device: str | torch.device = "auto") -> torch.device:
         return device
     if device != "auto":
         return torch.device(device)
-    if torch.cuda.is_available():
-        return torch.device("cuda")
     if hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
         return torch.device("mps")
+    if torch.cuda.is_available():
+        return torch.device("cuda")
     return torch.device("cpu")
+
+
+def resolve_accelerator(device: str | torch.device = "auto") -> torch.device:
+    """Resolve a full-run device and refuse silent CPU model execution.
+
+    MPS is preferred when available, followed by CUDA. Explicit CPU requests
+    are rejected; callers may continue using :func:`resolve_device` for small
+    sanity checks where CPU execution is intentional.
+    """
+
+    resolved = resolve_device(device)
+    if resolved.type == "cpu":
+        raise RuntimeError(
+            "Full model training/evaluation requires MPS or CUDA; "
+            "refusing CPU fallback."
+        )
+    if resolved.type == "mps" and not (
+        hasattr(torch.backends, "mps") and torch.backends.mps.is_available()
+    ):
+        raise RuntimeError("MPS was requested but torch.backends.mps is unavailable.")
+    if resolved.type == "cuda" and not torch.cuda.is_available():
+        raise RuntimeError("CUDA was requested but torch.cuda.is_available() is false.")
+    if resolved.type not in {"mps", "cuda"}:
+        raise RuntimeError(
+            f"Unsupported full-run device {resolved}; expected MPS or CUDA."
+        )
+    return resolved
 
 
 def train_model(
@@ -55,7 +82,7 @@ def train_model(
     batch_size: int = 8,
     learning_rate: float = 1e-3,
     weight_decay: float = 0.0,
-    device: str | torch.device = "cpu",
+    device: str | torch.device = "auto",
     checkpoint_path: str | Path | None = None,
 ) -> tuple[list[float], list[float]]:
     """Train a model with MSE loss and return epoch losses."""
@@ -64,7 +91,7 @@ def train_model(
     if num_epochs <= 0:
         raise ValueError("num_epochs must be positive.")
 
-    resolved_device = resolve_device(device)
+    resolved_device = resolve_accelerator(device)
     model = model.to(resolved_device)
     criterion = nn.MSELoss()
     optimiser = torch.optim.Adam(
@@ -112,6 +139,8 @@ def train_model(
 
     if checkpoint_path is not None:
         path = Path(checkpoint_path)
+        if path.exists():
+            raise FileExistsError(f"Refusing to overwrite checkpoint: {path}")
         path.parent.mkdir(parents=True, exist_ok=True)
         torch.save(model.state_dict(), path)
 
@@ -121,14 +150,14 @@ def train_model(
 def evaluate_model(
     model: nn.Module,
     test_ds: Dataset,
-    device: str | torch.device = "cpu",
+    device: str | torch.device = "auto",
     metrics: Sequence[str] = ("mse", "mae", "psnr", "ssim"),
 ) -> tuple[dict[str, float], list[np.ndarray]]:
     """Evaluate a trained model and return metric averages plus outputs."""
     if len(test_ds) == 0:
         raise ValueError("Test dataset must be non-empty.")
 
-    resolved_device = resolve_device(device)
+    resolved_device = resolve_accelerator(device)
     model = model.to(resolved_device)
     loader = DataLoader(test_ds, batch_size=1, shuffle=False)
     metric_sums = {name: 0.0 for name in metrics}

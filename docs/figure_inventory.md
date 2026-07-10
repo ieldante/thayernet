@@ -6,23 +6,23 @@ figures. Raw `outputs/` directories remain ignored. Public figures copied into
 
 ## README Figures
 
-| Figure | Path | Intended use | Recommended caption |
-| --- | --- | --- | --- |
-| v0.2 normal vs stress improvement | `reports/figures/v02_improvement_ratio.png` | README main figure | Thayer-BR v0.2 Moderate improves affected-region MSE over identity on both normal held-out and hard stress-test blends. |
-| v0.2 qualitative improvement | `reports/figures/v02_weighted_improvement_example.png` | README optional | Example where affected/core-weighted residual loss improves reconstruction relative to Thayer-BR v0.1. |
+The README currently uses no headline figure. Do not restore the original
+`v02_improvement_ratio.png` as the lead: it visualizes the historical row-split
+result. A future reviewed README figure should lead with the grouped-retrain
+normal/hard/compact/high-core values and label them development-only.
 
-Use one figure near the top of the README. Keep counterexamples for limitations
-or appendix sections.
+The historical qualitative improvement figure may still be used in a clearly
+labeled model-history section, with counterexamples kept beside it.
 
 ## Main Paper Figures
 
 | Figure | Source path | Public destination | Intended use | Recommended caption |
 | --- | --- | --- | --- | --- |
-| v0.2 affected-region MSE bar chart | `outputs/runs/weighted_residual_20260709_030245/paper_figures/affected_region_mse_bar.png` | `reports/figures/v02_affected_mse_bar.png` | Main results | Affected-region MSE for identity, threshold, direct, residual, Thayer-BR v0.1, and Thayer-BR v0.2 Moderate. |
-| v0.2 normal vs stress improvement ratio | `outputs/runs/weighted_residual_20260709_030245/paper_figures/normal_vs_stress_improvement_ratio.png` | `reports/figures/v02_improvement_ratio.png` | Main results, README | Improvement ratio versus identity on normal held-out and hard stress-test blends. |
+| v0.2 affected-region MSE bar chart | `outputs/runs/weighted_residual_20260709_030245/paper_figures/affected_region_mse_bar.png` | `reports/figures/v02_affected_mse_bar.png` | Historical development context | Original row-split affected-region MSE for identity, threshold, direct, residual, Thayer-BR v0.1, and Thayer-BR v0.2 Moderate. |
+| v0.2 normal vs stress affected-MSE ratio | `outputs/runs/weighted_residual_20260709_030245/paper_figures/normal_vs_stress_improvement_ratio.png` | `reports/figures/v02_improvement_ratio.png` | Historical development context | Original row-split identity/model affected-region MSE ratio; not the grouped or final estimate. |
 | v0.2 core affected MSE | `outputs/runs/weighted_residual_20260709_030245/paper_figures/core_affected_mse_comparison.png` | `reports/figures/v02_core_mse.png` | Core-overlap results | Core affected MSE comparison showing v0.2 Moderate's improvement over v0.1. |
 | v0.2 versus v0.1 scatter | `outputs/runs/weighted_residual_20260709_030245/paper_figures/weighted_vs_br_v01_per_sample_scatter.png` | `reports/figures/v02_weighted_vs_v01_scatter.png` | Per-sample model comparison | Per-sample affected-region MSE for Thayer-BR v0.2 Moderate versus Thayer-BR v0.1. |
-| v0.2 multi-seed summary | `outputs/runs/weighted_residual_20260709_030245/tables/multiseed_summary.csv` | `reports/figures/v02_multiseed_summary.png` | Robustness results | Multi-seed improvement ratio for Thayer-BR v0.2 Moderate on normal and stress evaluations. |
+| v0.2 evaluation-seed summary | `outputs/runs/weighted_residual_20260709_030245/tables/multiseed_summary.csv` | `reports/figures/v02_multiseed_summary.png` | Evaluation-set sensitivity | Identity/model affected-region MSE ratio across normal and stress blend-generation/evaluation seeds; no independent retraining. |
 | v0.2 qualitative success | `outputs/runs/weighted_residual_20260709_030245/paper_figures/qualitative_weighted_improves_over_br_v01.png` | `reports/figures/v02_weighted_improvement_example.png` | Qualitative results | Example where Thayer-BR v0.2 Moderate improves over Thayer-BR v0.1. |
 | v0.2 counterexample | `outputs/runs/weighted_residual_20260709_030245/paper_figures/qualitative_br_v01_beats_weighted.png` | `reports/figures/v02_counterexample.png` | Limitations or appendix | Example where Thayer-BR v0.1 beats Thayer-BR v0.2 Moderate on an individual sample. |
 
@@ -44,17 +44,21 @@ or appendix sections.
 | Figure | Path | Intended use | Note |
 | --- | --- | --- | --- |
 | v0.1 affected-region MSE bar chart | `reports/figures/balanced_affected_region_mse_bar.png` | Historical comparison | Use only when discussing Thayer-BR v0.1 as the previous best model. |
-| v0.1 normal vs stress improvement chart | `reports/figures/balanced_normal_vs_stress_improvement_ratio.png` | Historical comparison | Superseded by v0.2 improvement chart for current headline. |
+| v0.1 normal vs stress improvement chart | `reports/figures/balanced_normal_vs_stress_improvement_ratio.png` | Historical comparison | Superseded by later historical v0.2 and grouped-retrain results; not a headline figure. |
 | Thayer-Direct vs Thayer-BR v0.1 scatter | `reports/figures/balanced_direct_vs_balanced_scatter.png` | Historical comparison | Useful for explaining the v0.1 balanced-training step. |
 | Thayer-Residual vs Thayer-BR v0.1 scatter | `reports/figures/balanced_old_residual_vs_balanced_scatter.png` | Historical comparison | Useful for explaining the v0.1 balanced-training step. |
 | Earlier direct/residual figures | `reports/figures/affected_region_mse_bar.png`, `reports/figures/normal_vs_stress_improvement_ratio.png`, `reports/figures/residual_success_over_direct.png` | Legacy/provenance | Do not use as current headline figures. |
 
 ## Recommendation
 
-Main paper figure set:
+Main paper figure set should begin with a reviewed grouped-retrain comparison
+derived from
+`outputs/runs/research_correctness_audit_20260710_092241/figures/grouped_existing_vs_retrain.png`,
+with all bars labeled by evidence status. The original v0.2 figures below are
+historical development context or appendix material:
 
 - `v02_affected_mse_bar.png`
-- `v02_improvement_ratio.png`
+- `v02_improvement_ratio.png` (historical row-split context only)
 - `v02_weighted_vs_v01_scatter.png`
 - `v02_core_mse.png`
 - `v02_multiseed_summary.png`

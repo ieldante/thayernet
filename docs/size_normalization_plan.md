@@ -2,6 +2,11 @@
 
 ## Motivation
 
+This is a future **grouped development** benchmark plan, not a final-paper test
+plan. Any prototype must use only the current grouped development-test source
+groups and retain source/group IDs. The future untouched final pool must not be
+used to design size bins, inspect examples, or select models.
+
 The current synthetic benchmark normalizes pixel values, but it does not
 normalize apparent galaxy size. Target and contaminant cutouts can have different
 foreground areas and equivalent radii. That variation is realistic, but it also
@@ -31,7 +36,7 @@ does the model still work when size ratio is not an easy cue?
 2. Build source pools by apparent equivalent radius.
 3. Crop and scale target and contaminant foregrounds into controlled apparent
    size ranges.
-4. Generate matched-size blends from held-out test images first.
+4. Generate matched-size blends from grouped development-test images first.
 5. Evaluate existing checkpoints on the size-normalized test set without
    training.
 6. Compare current benchmark metrics with size-normalized metrics.
@@ -40,7 +45,7 @@ does the model still work when size ratio is not an easy cue?
 
 ## Prototype Evaluation
 
-A safe first prototype would generate `200` to `500` held-out blends with
+A safe first prototype would generate `200` to `500` grouped development blends with
 matched apparent target and contaminant equivalent radii. It should not train or
 modify checkpoints.
 
@@ -67,7 +72,8 @@ current audit.
 
 ## Recommended Experiment
 
-Run a size-normalized held-out evaluation before any size-normalized training.
+Run a size-normalized grouped development evaluation without additional
+training. Do not use the future untouched final pool for this prototype.
 Compare:
 
 - current normal and stress benchmark

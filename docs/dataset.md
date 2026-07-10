@@ -39,4 +39,10 @@ The full image array is large. For exploratory notebook work, use small subsets 
 
 ## Preprocessing
 
-Images are normalized from integer pixel values to `float32` values in `[0, 1]`. Original images are split before synthetic blends are generated, so evaluation examples do not share source images with training examples.
+Images are normalized from integer pixel values to `float32` values in `[0, 1]`.
+The historical pipeline split HDF5 row indices before blending, but duplicate
+source rows still crossed train/validation/test. The grouped development
+protocol instead keeps exact-pixel and exact-coordinate groups wholly within
+one partition and records source/group IDs for both blend roles. This fixes the
+demonstrated exact leakage for grouped development work; it does not provide an
+untouched final-paper partition or prove exhaustive near-duplicate identity.

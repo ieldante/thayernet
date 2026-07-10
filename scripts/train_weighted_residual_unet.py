@@ -832,7 +832,17 @@ def aggregate_metrics(per_sample: pd.DataFrame) -> pd.DataFrame:
         row = {
             "split": str(per_sample["split"].iloc[0]),
             "method": method,
-            "n": int(len(per_sample)),
+            "n": int(len(per_sample)),  # backward-compatible total count
+            "n_total": int(len(per_sample)),
+            "n_valid_affected": int(
+                per_sample[f"{method}_affected_mse"].notna().sum()
+            ),
+            "n_valid_core": int(
+                per_sample[f"{method}_core_affected_mse"].notna().sum()
+            ),
+            "n_valid_noncore": int(
+                per_sample[f"{method}_noncore_affected_mse"].notna().sum()
+            ),
             "whole_mse": float(per_sample[f"{method}_mse"].mean()),
             "whole_mae": float(per_sample[f"{method}_mae"].mean()),
             "psnr": float(per_sample[f"{method}_psnr"].mean()),
@@ -1722,7 +1732,7 @@ large normal-performance drop.
 def update_paper_plan(outcome: dict[str, Any], run_dir: Path) -> None:
     text = PAPER_PLAN_PATH.read_text(encoding="utf-8")
     role = (
-        "final model improvement"
+        "development-model improvement pending duplicate-safe validation"
         if outcome["verdict"] in {"strong_new_best", "useful_tradeoff"}
         else "negative/ablation result"
     )
@@ -1820,7 +1830,7 @@ def main() -> int:
 
     seed = int(config["seed"])
     seed_everything(seed)
-    device = gd_train.resolve_device(args.device)
+    device = gd_train.resolve_accelerator(args.device)
     print(f"Using device: {device}", flush=True)
 
     try:

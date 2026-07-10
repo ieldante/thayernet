@@ -4,6 +4,18 @@ pixels in each synthetic cutout are unchanged. The affected region is defined by
 pixels where the blended image differs from the clean target by more than the
 affected threshold after averaging absolute RGB differences.
 
+The primary aggregation is the macro mean of per-sample metrics; auxiliary
+micro values weight mask pixels. Empty regional masks are excluded with valid
+counts reported. Clipped and unclipped reconstructions are evaluated
+separately, and paired win rates require identical sample IDs.
+
+The current development protocol groups exact pixel hashes and exact
+coordinates before source assignment. Both target and contaminant remain inside
+train, validation, or grouped development-test partitions, and all saved blend
+and mask hashes replay exactly. This controls the known exact leakage but does
+not prove exhaustive near-duplicate identity or provide an untouched final
+partition.
+
 The hard stress test uses 1,000 blends with maximum shift 18, brightness range
 0.8 to 1.4, blur range 0.0 to 0.15, noise range 0.0 to 0.006, rotation off,
 minimum size ratio 0.75, minimum affected mask fraction 0.01, and affected
@@ -14,7 +26,7 @@ obstruction, and model failure. Blend severity measures image-level damage, not
 model difficulty. Model failure is measured by affected-region model error and
 improvement relative to identity.
 
-Several evaluation-only audits check whether the headline result depends on a
+Several audits check whether the development result depends on a
 fragile metric implementation. The affected mask was verified to use
 $\mathrm{mean}_c(|X-Y|) > \tau$, independent of model prediction error. Mask
 thresholds 0.005, 0.01, 0.02, and 0.04 were checked, along with dilation radii
@@ -22,8 +34,9 @@ thresholds 0.005, 0.01, 0.02, and 0.04 were checked, along with dilation radii
 by verifying that the residual target is $X-Y$ and reconstruction is
 $X-\hat{R}$.
 
-The v0.2 Moderate result is also evaluated with a multi-seed audit, an
+The original v0.2 Moderate result is also evaluated with a multi-seed audit, an
 apparent-size audit, a centrality/core-obstruction audit, a halo-band error
 audit, and visual-vs-metric disagreement examples. These audits are diagnostic:
 they support careful interpretation but do not convert the controlled synthetic
-benchmark into real-sky validation.
+benchmark into real-sky validation. The multi-seed audit varies blend-generation
+and evaluation seeds, not independent training seeds.

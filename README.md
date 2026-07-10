@@ -11,29 +11,44 @@ survey-grade astronomical deblending pipeline.
 
 ## TL;DR
 
-Current best model: **Thayer-BR v0.2 Moderate** on this controlled synthetic
-benchmark.
+Current development reference: **Thayer-BR v0.2 Moderate Grouped Retrain**.
+It uses exact-pixel and exact-coordinate group-disjoint train, validation, and
+development-test sources.
 
-| Evaluation | Identity affected MSE | Thayer-BR v0.2 Moderate affected MSE | Improvement |
+| Grouped development suite | Identity affected MSE | Grouped retrain affected MSE | Lower affected MSE vs identity |
 | --- | ---: | ---: | ---: |
-| Normal held-out | 0.068122 | 0.002108 | ~32.3x |
-| Hard stress test | 0.075541 | 0.003847 | ~19.6x |
+| Normal | 0.066814 | 0.002319 | 28.81x |
+| Hard stress | 0.072531 | 0.004590 | 15.80x |
+| Compact bright | 0.080147 | 0.008728 | 9.18x |
+| High core obstruction | 0.077871 | 0.004917 | 15.84x |
 
-Multi-seed audit:
+The normal `28.81x` figure is an MSE ratio, corresponding to about `5.37x`
+lower RMSE. It comes from one grouped training seed and is not a final-paper
+estimate.
 
-- Normal: `32.02 +/- 1.21x`.
-- Stress: `19.55 +/- 0.30x`.
+| Evidence category | Status |
+| --- | --- |
+| Original development split | Historical only: `32.3x` normal and `19.6x` hard lower affected MSE than identity. The row split was not duplicate-safe. |
+| Historical checkpoint on grouped manifests | Diagnostic only: it scores better than the grouped retrain, but `54.575%` of rows expose an old train/validation source group. |
+| Grouped retrain | Current source-group-disjoint development reference: `28.81x`, `15.80x`, `9.18x`, and `15.84x` across the four suites above. |
+| Future final-paper test | Not yet run. It requires a fresh untouched group-disjoint source pool after protocol freeze. |
+
+The historical evaluation-seed audit (`32.02 +/- 1.21x` normal and
+`19.55 +/- 0.30x` hard) varied blend-generation/evaluation seeds, not
+independent training seeds.
 
 Affected-region metrics are emphasized because most pixels are unchanged in
 each synthetic blend. Whole-image scores are still useful, but affected-region
-MSE better isolates pixels where the contaminant actually altered the target.
+MSE better isolates the thresholded blend-change region. Because target-only
+blur, post-composite noise, and clipping can also contribute to that region, it
+must not be interpreted as a pure contaminant-flux mask.
 
-Because these improvements are large, the evaluation was audited across mask
-thresholds, mask dilation, multi-seed tests, residual logic checks, checkpoint
-integrity checks, and visual diagnostics. See
-[docs/evaluation_audit_summary.md](docs/evaluation_audit_summary.md).
-
-![Normal vs stress improvement ratio](reports/figures/v02_improvement_ratio.png)
+The correctness audit found 57 implicated sources (`0.321%` of the dataset).
+Removing implicated historical evaluation rows changed reported ratios by at
+most about `0.31%`: a minor measured aggregate effect but a major protocol
+defect. The grouped correction is complete for development work. A fresh
+untouched final source pool is still required because the earlier provisional
+pool was later reused by grouped training/validation.
 
 ## Model Naming
 
@@ -49,87 +64,56 @@ The evaluated model variants are:
 - **Thayer-BR v0.1:** previous balanced
   hard-case residual U-Net trained on 8,000 synthetic blends with a 50/30/20 mix
   of normal, high-overlap/core-obstruction, and brightness/size-stress cases.
-- **Thayer-BR v0.2 Moderate:** current best model, a balanced residual U-Net
-  with moderate affected/core-weighted residual loss.
+- **Thayer-BR v0.2 Moderate:** balanced residual U-Net with moderate
+  affected/core-weighted loss; the grouped retrain is the current development
+  reference and the original checkpoint is historical.
 - **Thayer-BR v0.2 Strong:** stronger weighted-loss ablation, not the current
   best model.
+- **Thayer-BR v0.3 Delta:** color/perceptual tradeoff ablation; it improves some
+  compact/color diagnostics but does not replace v0.2 Moderate.
+- **Thayer-ResUNet v0.4:** small residual-architecture ablation with targeted
+  compact/halo gains and aggregate tradeoffs; it is not the current reference.
 
-The current headline results refer to **Thayer-BR v0.2 Moderate** on a
-controlled synthetic benchmark, not to a stable public deployment model.
+## Evaluation-set sensitivity and robustness
 
-## Current Best Result
+The 2026-07-08 evaluation audit reran evaluation only; it did not train,
+retrain, or modify checkpoints. The later correctness campaign separately
+built grouped manifests and trained one authorized grouped v0.2 checkpoint.
 
-These are controlled synthetic evaluations with known clean targets, not
-real-survey deployment metrics.
-
-| Evaluation set | Identity affected MSE | Thayer-BR v0.2 Moderate affected MSE | Improvement |
-| --- | ---: | ---: | ---: |
-| Normal held-out blends | 0.068122 | 0.002108 | ~32.3x |
-| Hard stress-test blends | 0.075541 | 0.003847 | ~19.6x |
-
-The full comparison table with identity, threshold, Thayer-Direct,
-Thayer-Residual, Thayer-BR v0.1, and Thayer-BR v0.2 Moderate is in
-[docs/checkpoint_summary.md](docs/checkpoint_summary.md).
-
-## Why This Result Is Not Just a Lucky Run
-
-The audit reran evaluation only; it did not train, retrain, or modify
-checkpoints.
-
-- Multi-seed normal evaluation: `32.02 +/- 1.21x` improvement over identity.
-- Multi-seed stress evaluation: `19.55 +/- 0.30x` improvement over identity.
-- Thayer-BR v0.2 Moderate is the best aggregate model in the current controlled
-  synthetic evaluation.
-- The model ranking stayed stable across affected-mask thresholds `0.005`,
-  `0.01`, `0.02`, and `0.04`.
-- The model ranking stayed stable when affected masks were dilated by `0`, `1`,
-  `3`, `5`, and `9` pixels, which checks sensitivity to halo inclusion.
+- Historical multi-seed normal evaluation: `32.02 +/- 1.21x` lower affected MSE vs identity.
+- Historical multi-seed stress evaluation: `19.55 +/- 0.30x` lower affected MSE vs identity.
+- The grouped v0.2 Moderate retrain is the current source-group-disjoint
+  development reference, not a final-paper result.
+- Thayer-BR v0.1 remained best among the audited methods across affected-mask
+  thresholds `0.005`--`0.04` and dilation radii `0`--`9`; v0.2 was not part of
+  that earlier mask-robustness audit.
 - Checkpoint integrity logs confirmed that the Thayer-Direct, Thayer-Residual,
   Thayer-BR v0.1, and Thayer-BR v0.2 Moderate checkpoints were unchanged before
   and after evaluation/audit runs.
 
-<details>
-<summary>Evaluation audit details</summary>
-
-Audit run: `outputs/runs/evaluation_audit_20260708_220833/`.
-
-The affected-region mask was verified to use
-`abs(blended - target).mean(axis=-1) > threshold`, so it is based on where the
-synthetic blend changed the clean target, not on model prediction error.
-
-The audit tested whether the headline result depended on one mask definition.
-The balanced/weighted model ranking stayed stable across tested thresholds and
-dilation radii. The dilation check is especially important because it asks
-whether faint halo contamination just outside the original mask would change the
-conclusion.
-
-The residual reconstruction path was checked visually and numerically:
-`residual = blended - target`, prediction is the residual layer, and
-`target_hat = blended - predicted_residual`. Clipping is applied after
-subtraction for metrics and visualization.
-
-Visual diagnostics were generated for blend construction, affected masks,
-target-core obstruction, residual predictions, model outputs, and failure or
-counterexample cases. These diagnostics are intended to make suspicious results
-visible rather than hiding them in aggregate tables.
-
-</details>
-
 ## What Was Audited
 
-- Affected-mask thresholds: `0.005`, `0.01`, `0.02`, `0.04`.
-- Mask dilation radii: `0`, `1`, `3`, `5`, `9`.
-- Multi-seed normal and hard stress evaluations.
+- Affected-mask thresholds and dilation radii for the v0.1-era comparison; v0.2
+  was not included.
+- Multi-seed normal and hard stress blend generation/evaluation; these are not
+  independent training-seed replications.
 - Residual reconstruction logic and sign convention.
 - Visual blend, mask, residual, and model-output diagnostics.
 - Apparent-size, centrality, halo-band, and visual-vs-metric diagnostics.
 - Checkpoint paths, file sizes, and modified times before and after evaluation.
-- Split-before-blending logic and same-runtime sample comparability.
+- Split-before-blending logic, duplicate/source leakage, and same-runtime sample
+  comparability. Splitting indices before blending does not eliminate duplicate
+  objects already present in the source file.
 
 ## Limitations
 
 The current results are for controlled synthetic blends with known targets. They
 should not be interpreted as validated real-survey performance.
+
+Galaxy10 DECaLS images are RGB display cutouts, not calibrated FITS flux
+images. Results should be interpreted as synthetic deblending of Galaxy10 RGB
+cutouts, not survey-grade source separation. Identity and threshold baselines
+are sanity checks, not strong astronomical deblenders.
 
 Remaining limitations include ambiguous source overlap, target-core
 obstruction, target-detail loss, over-smoothing, simplified sky/noise modeling,
@@ -145,10 +129,10 @@ halo-like artifacts in individual v0.2 outputs. Aggregate halo-band error still
 improved relative to Thayer-BR v0.1, but future work should include a
 size-normalized benchmark.
 
-The audit confirms the current controlled benchmark result; it does not prove
-performance on real crowded survey scenes. Future evaluations should save exact
-generated evaluation sets and global source indices so historical generated
-samples can be reloaded directly.
+The audit supports a development-benchmark ranking; it does not prove
+performance on real crowded survey scenes. Exact-pixel and exact-coordinate
+grouping is complete, but exhaustive near-duplicate identity is not proven and
+a fresh untouched final partition must be frozen before final-paper evaluation.
 
 ## Links to Deeper Docs
 
@@ -161,6 +145,17 @@ samples can be reloaded directly.
   intended use, limitations, and metrics.
 - [Evaluation audit summary](docs/evaluation_audit_summary.md): concise audit
   trail for the headline result.
+- [Source-leakage audit](docs/source_leakage_audit.md) and
+  [final-test protocol](docs/final_test_protocol.md): duplicate findings and why
+  the earlier provisional pool is superseded.
+- [Research correctness audit](docs/research_correctness_audit.md) and
+  [grouped retrain results](docs/grouped_retrain_results.md): grouped
+  infrastructure, metrics, and claim status.
+- [Advisor update](docs/advisor_update_grouped_audit.md): concise audit and
+  grouped-retrain summary.
+- [Preservation/clipping audits](docs/preservation_and_clipping_audits.md) and
+  [limitations](docs/limitations_and_next_steps.md): null tests, output-range
+  diagnostics, and next scientific corrections.
 - [Checkpoint summary](docs/checkpoint_summary.md): experiment history,
   checkpoint-level results, and audit summary.
 - [Results interpretation](docs/results_interpretation.md): how to read the
@@ -189,14 +184,15 @@ dataset files are ignored by git.
 
 ## Method Overview
 
-- Original images are split into train, validation, and test subsets before
-  synthetic blends are generated.
+- Exact-pixel and exact-coordinate source groups are assigned wholly to train,
+  validation, or grouped development-test before blends are generated.
 - Synthetic blends add only extracted contaminant foreground light to the
-  target, avoiding rectangular cutout/background artifacts.
+  target, reducing rectangular cutout/background artifacts.
 - Halo-aware masks preserve diffuse contaminant outskirts while tapering before
   cutout edges.
-- Baselines include identity reconstruction and a simple threshold/connected
-  component method.
+- Sanity baselines include identity reconstruction and a simple
+  threshold/connected-component method; neither is a competitive astronomical
+  deblender.
 - Thayer-Direct, Thayer-Residual, Thayer-BR v0.1, and Thayer-BR v0.2 Moderate
   are evaluated with whole-image and affected-region metrics.
 - Hard stress testing uses smaller shifts, bright contaminants, similar-size
@@ -248,7 +244,9 @@ Larger formal experiments are captured by scripts under `scripts/`.
 
 ## Reproducibility Notes
 
-- Original images are split before blending to avoid source-image leakage.
+- Historical source indices were split by row. The grouped development
+  manifests instead keep exact-pixel and exact-coordinate groups within one
+  partition and record both source and group IDs.
 - Synthetic blend generation accepts a NumPy random generator for fixed-seed
   experiments.
 - Generated outputs, saved model checkpoints, cached files, and the Galaxy10
@@ -258,8 +256,10 @@ Larger formal experiments are captured by scripts under `scripts/`.
 
 ## Current Next Steps
 
-- Preserve exact generated evaluation sets and global source indices for future
-  reproducibility.
+- Freeze a fresh untouched group-disjoint final source pool after the model,
+  generator, metrics, and analysis protocol are fixed.
+- Add clustered uncertainty and an independent grouped training seed; one seed
+  does not establish training-seed robustness.
 - Finalize paper figures from `reports/figures/` and the latest reviewed output
   figures.
 - Write the LaTeX report.
