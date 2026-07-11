@@ -18,8 +18,8 @@ and which blend conditions drive failure.
 
 ## Work Plan
 
-- Prepare portable data loading and split original images into train,
-  validation, and test subsets before blending.
+- Prepare portable data loading and group exact-pixel/exact-coordinate source
+  identities before assigning train, validation, and development-test subsets.
 - Generate synthetic blends with foreground-only contaminants, halo-aware masks,
   conservative default perturbations, and recorded legacy generation metadata.
 - Evaluate simple baselines to establish non-learning reference performance.
@@ -51,11 +51,16 @@ in real blended survey images.
 
 ## Current Next Steps
 
-- Preserve exact generated evaluation sets and global source indices for future
+- Freeze the current model, generator, metric, and reporting protocol; do not
+  train additional variants during final cleanup.
+- Establish a fresh untouched group-disjoint final source partition before any
+  final-paper evaluation. Do not use it for benchmark design or model choices.
+- Preserve exact generated development sets plus global source/group IDs for
   reproducibility.
 - Finalize paper figures and captions.
 - Write the LaTeX report.
 - Improve foreground extraction diagnostics and preprocessing checks.
-- Evaluate current checkpoints on a size-normalized held-out benchmark.
+- Design any size-normalized or clean-source prototype only on grouped
+  development sources.
 - Add more realistic sky, PSF, noise, and background simulation before making
   broader claims.

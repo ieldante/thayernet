@@ -1401,7 +1401,7 @@ def main() -> int:
 
     seed = int(config["seed"])
     seed_everything(seed)
-    device = gd_train.resolve_device(args.device)
+    device = gd_train.resolve_accelerator(args.device)
     print(f"Using device: {device}", flush=True)
 
     direct_stat_before = direct_checkpoint_path.stat()

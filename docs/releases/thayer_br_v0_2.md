@@ -1,16 +1,23 @@
 # Thayer-BR v0.2 Moderate: Weighted Balanced Residual U-Net
 
+> **Historical release status (2026-07-10):** v0.2 remains the current model
+> family. The values below are original row-split development results. A later
+> grouped retrain gives `28.81x` normal; a fresh locked final partition is still
+> required before a final-paper effect-size claim.
+
 ## Summary
 
-Thayer-BR v0.2 Moderate is the current best Thayer-Net model on the controlled
-synthetic Galaxy10 DECaLS-style deblending benchmark. It reconstructs a clean
-target galaxy from a synthetic two-galaxy blend and is evaluated against known
-clean targets.
+This historical release introduced the current-best Thayer-Net model family on
+the controlled synthetic Galaxy10 DECaLS-style development benchmark. It
+reconstructs an unblended target reference from a synthetic two-galaxy blend.
+The later grouped checkpoint is the defensible development reference.
 
 The model builds on Thayer-BR v0.1, the balanced hard-case residual U-Net, by
 adding an affected/core-weighted residual loss. The architecture and residual
-prediction formulation stay the same: the model predicts contaminant residual
-light, and the reconstruction subtracts that residual from the blended image.
+prediction formulation stay the same: the model predicts a blend-to-target
+correction field, and the reconstruction subtracts that field from the blended
+image. This field can include target-blur, noise, and clipping correction and is
+not pure contaminant light.
 
 The moderate weighted loss improves affected-region and core reconstruction
 relative to Thayer-BR v0.1 while eliminating the remaining worse-than-identity
@@ -19,12 +26,12 @@ results, not full real-sky survey deployment claims.
 
 ## Headline Results
 
-Current best model versus identity:
+Original development checkpoint versus identity:
 
-| Evaluation | Identity affected MSE | Thayer-BR v0.2 Moderate affected MSE | Improvement |
+| Original development evaluation | Identity affected MSE | Thayer-BR v0.2 Moderate affected MSE | Lower affected MSE vs identity |
 | --- | ---: | ---: | ---: |
-| Normal held-out | 0.068122 | 0.002108 | ~32.3x |
-| Hard stress test | 0.075541 | 0.003847 | ~19.6x |
+| Normal | 0.068122 | 0.002108 | ~32.3x |
+| Hard stress | 0.075541 | 0.003847 | ~19.6x |
 
 Multi-seed audit:
 
@@ -81,11 +88,14 @@ The v0.2 Moderate result is supported by several evaluation-only checks:
 
 - Affected masks are based on `abs(blended - target).mean(axis=-1) > threshold`,
   not on model prediction error.
-- The earlier balanced/weighted model ranking is robust across affected-mask
-  thresholds `0.005`, `0.01`, `0.02`, and `0.04`.
-- The ranking is robust across mask dilation radii `0`, `1`, `3`, `5`, and `9`,
-  which checks sensitivity to halo inclusion.
-- Multi-seed evaluation supports the large improvement ratios.
+- In the earlier v0.1-era audit, Thayer-BR v0.1 remained best across
+  affected-mask thresholds `0.005`, `0.01`, `0.02`, and `0.04`; v0.2 Moderate
+  was not included.
+- Thayer-BR v0.1 also remained best across mask dilation radii `0`, `1`, `3`,
+  `5`, and `9`, although lower-ranked methods changed order. This does not
+  establish direct v0.2 mask robustness or complete rank stability.
+- Evaluation/blend-seed variation supports the reported affected-MSE ratios;
+  the models were not independently retrained.
 - Residual logic was verified: `true_residual = blended - target` and
   `reconstruction = blended - predicted_residual`.
 - Checkpoint integrity checks confirmed that old checkpoints were not modified
@@ -114,15 +124,19 @@ The v0.2 Moderate result is supported by several evaluation-only checks:
 
 ## Recommended Use in Paper
 
-Use Thayer-BR v0.2 Moderate as the current best model.
+Use the Thayer-BR v0.2 Moderate grouped retrain as the current development
+reference: `28.81x` normal, `15.80x` hard, `9.18x` compact-bright, and `15.84x`
+high-core lower affected MSE than identity. It is not a final-paper result.
 
 Report Thayer-BR v0.1 as the previous balanced residual checkpoint and
 Thayer-BR v0.2 Strong as a
 weighting ablation, not as the main model.
 
-The strongest headline should use the multi-seed robustness numbers:
-`32.02 +/- 1.21x` normal improvement and `19.55 +/- 0.30x` stress improvement.
-The same-run single-seed tables are still useful for detailed model comparison.
+A final paper headline should be withheld until a fresh untouched group-disjoint
+test is run. Retain `32.02 +/- 1.21x` normal and `19.55 +/- 0.30x` stress only as
+the historical row-split evaluation-seed audit, and state that it varied
+evaluation seeds rather than independently retraining checkpoints. The old
+checkpoint on grouped manifests is exposure-confounded and diagnostic only.
 
 The paper should include both positive examples and counterexamples. In
 particular, it should not hide cases where v0.2 Moderate has broad low-level

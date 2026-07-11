@@ -1,5 +1,11 @@
 # Thayer-Net Experiment Summary
 
+> **Development-benchmark status (2026-07-10):** recorded historical metrics
+> remain unchanged. An exact-pixel/exact-coordinate grouped retrain now gives
+> `28.81x` lower normal affected MSE than identity. It is a grouped development
+> result, not a final claim; multi-seed historical results vary evaluation, not
+> training, seeds.
+
 ## Overview
 
 Thayer-Net is a compact U-Net research testbed for controlled synthetic galaxy
@@ -21,27 +27,39 @@ should not be interpreted as validated real-survey performance.
 - **Thayer-BR v0.1 (Balanced Residual U-Net):** previous balanced hard-case
   residual U-Net, trained on 8,000 synthetic blends with a 50/30/20 mix of
   normal, high-overlap/core-obstruction, and brightness/size-stress cases.
-- **Thayer-BR v0.2 Moderate:** current best model, a balanced residual U-Net
-  trained with moderate affected/core-weighted residual loss.
+- **Thayer-BR v0.2 Moderate:** current best model family, a balanced residual
+  U-Net trained with moderate affected/core-weighted residual loss. The original
+  checkpoint is historical; a grouped-retrained checkpoint is the defensible
+  development reference.
 - **Thayer-BR v0.2 Strong:** stronger weighted-loss ablation, not the current
   best model.
+- **Thayer-BR v0.3 Delta:** preservation/color/perceptual tradeoff ablation;
+  not the current reference.
+- **Thayer-ResUNet v0.4:** controlled architecture ablation with targeted
+  compact/halo gains; not the current reference.
 
-## Current Best Model
+## Current Development Reference
 
-Current best model: **Thayer-BR v0.2 Moderate**.
+Current best model family: **Thayer-BR v0.2 Moderate**.
 
-| Evaluation | Identity affected MSE | Thayer-BR v0.2 Moderate affected MSE | Improvement |
+| Grouped development suite | Identity affected MSE | Grouped retrain affected MSE | Lower affected MSE vs identity |
 | --- | ---: | ---: | ---: |
-| Normal held-out | 0.068122 | 0.002108 | ~32.3x |
-| Hard stress test | 0.075541 | 0.003847 | ~19.6x |
+| Normal | 0.066814 | 0.002319 | 28.81x |
+| Hard stress | 0.072531 | 0.004590 | 15.80x |
+| Compact bright | 0.080147 | 0.008728 | 9.18x |
+| High core obstruction | 0.077871 | 0.004917 | 15.84x |
 
-Multi-seed audit:
+These are source-group-disjoint development estimates, not final-paper values.
+The old checkpoint's better score on these grouped manifests is diagnostic only
+because `54.575%` of rows expose a historical train/validation source group.
 
-- Normal: `32.02 +/- 1.21x`.
-- Stress: `19.55 +/- 0.30x`.
+The original row-split development result (`32.3x` normal and `19.6x` hard) and
+its evaluation-seed audit (`32.02 +/- 1.21x`, `19.55 +/- 0.30x`) are preserved
+as historical evidence only. The latter varied evaluation seeds, not training
+seeds.
 
-This is a controlled synthetic benchmark result. It is the current best
-research checkpoint result for this repository, not a full real-sky validation.
+A fresh untouched group-disjoint source pool is still required for the future
+final-paper test.
 
 ## Development Phase
 
@@ -156,16 +174,19 @@ modified-time records were unchanged before and after the audit passes.
 
 The affected-region mask is computed from
 `abs(blended - target).mean(axis=-1) > threshold`, so the mask is independent of
-model predictions. The balanced/weighted model ranking was robust across
-thresholds `0.005`, `0.01`, `0.02`, and `0.04`.
+model predictions. In the v0.1-era audit, Thayer-BR v0.1 remained the best
+audited method across thresholds `0.005`, `0.01`, `0.02`, and `0.04`. Thayer-BR
+v0.2 Moderate was not included in that audit.
 
 Halo sensitivity was tested by dilating the affected mask by `0`, `1`, `3`,
-`5`, and `9` pixels. The ranking remained stable across tested dilation radii,
-which supports the result against the concern that faint halo contamination was
-excluded by the default mask.
+`5`, and `9` pixels. Thayer-BR v0.1 remained best at every tested radius, but
+some lower-ranked methods changed order. This supports only the narrower v0.1
+mask-robustness claim, not a direct v0.2 claim or complete rank stability.
 
-The v0.2 Moderate multi-seed evaluation found mean improvement of
-`32.02 +/- 1.21x` on normal blends and `19.55 +/- 0.30x` on stress blends.
+The v0.2 Moderate evaluation-seed audit found mean identity/model
+affected-MSE ratios of `32.02 +/- 1.21x` on normal blends and
+`19.55 +/- 0.30x` on stress blends. The checkpoint was not independently
+retrained.
 
 Core-region metrics support the aggregate result, but core-obstructed pixels
 remain the hardest region. Thayer-BR v0.2 Moderate improves stress core MSE
@@ -174,10 +195,11 @@ smaller.
 
 The residual logic audit confirmed the intended sign convention:
 `residual = blended - target` and `reconstruction = blended - predicted_residual`.
-The headline `~32.3x` normal and `~19.6x` stress same-run claims, together with
-the `32.02 +/- 1.21x` and `19.55 +/- 0.30x` multi-seed results, should be
-presented as controlled synthetic metrics. They should not be presented as
-real-survey performance or universal per-sample dominance.
+The `~32.3x` normal and `~19.6x` stress same-run identity/model affected-MSE
+ratios, together with the `32.02 +/- 1.21x` and `19.55 +/- 0.30x`
+evaluation-seed results, should be presented as controlled synthetic metrics.
+They should not be presented as RMSE ratios, real-survey performance,
+training-seed robustness, or universal per-sample dominance.
 
 ## Limitations
 

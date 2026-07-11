@@ -1,5 +1,12 @@
 # Experiment Log
 
+> **Interpretive status (2026-07-10):** historical promotion language below
+> records decisions made on the development suites; it is not a locked-final
+> claim. The correctness audit found 29 exact-image pairs crossing the old
+> row-index partitions. Exact-pixel and exact-coordinate grouped development
+> infrastructure and one authorized v0.2 retrain are now complete. A fresh
+> untouched final source pool remains blocked; historical metrics are preserved.
+
 This log records the main formal experiments and the development work that made
 them interpretable. Raw outputs, generated run directories, and saved model
 checkpoint files remain under `outputs/` and are not committed.
@@ -7,11 +14,11 @@ checkpoint files remain under `outputs/` and are not committed.
 ## Development Phase: Pipeline and Evaluation Setup
 
 - Data loading uses the local Galaxy10 DECaLS HDF5 file.
-- Original images are split into train, validation, and test subsets before
-  blending, so the same source image cannot appear in both training and
-  evaluation examples.
+- HDF5 row indices are split into train, validation, and test arrays before
+  blending, so the same row index cannot cross partitions. Pixel-identical and
+  same-object duplicate rows can and do cross the historical split.
 - Naive whole-cutout addition was replaced with foreground-only contaminant
-  extraction to avoid rectangular cutout/background artifacts.
+  extraction to reduce rectangular cutout/background artifacts.
 - Halo-aware masking was added to retain diffuse contaminant light while
   suppressing cutout-boundary leakage.
 - Identity and threshold baselines were added as transparent non-learning
@@ -215,7 +222,7 @@ The result remains a controlled synthetic result. Thayer-Direct and
 Thayer-Residual can still win on individual samples, so the paper should report
 both aggregate improvements and remaining per-sample tradeoffs.
 
-## Current Interpretation
+## Historical Interpretation at That Stage
 
 - Thayer-Direct proves that learned models beat simple baselines
   in this controlled benchmark.
@@ -229,7 +236,7 @@ both aggregate improvements and remaining per-sample tradeoffs.
 - Remaining failures involve ambiguity, target-core overlap, lost target detail,
   foreground-extraction limitations, and model-specific tradeoffs.
 
-## Next Steps
+## Historical Next Steps at That Stage
 
 - Preserve exact generated evaluation sets and global source indices for future
   reproducibility.
@@ -296,7 +303,9 @@ Status: completed. Run directory: `outputs/runs/weighted_residual_20260709_03024
 - Stress Thayer-BR v0.2 Moderate core affected MSE: 0.009533.
 - Stress worse-than-identity cases: v0.1 `0`, v0.2 `0`.
 - Model win rates: `[{'split': 'normal', 'n': 1000, 'weighted_vs_balanced_win_rate': 0.726, 'weighted_vs_direct_win_rate': 0.836, 'weighted_vs_old_residual_win_rate': 0.948, 'weighted_to_balanced_aggregate_mse_ratio': 0.8600717023402843, 'weighted_to_direct_aggregate_mse_ratio': 0.49766017631485787, 'weighted_to_old_residual_aggregate_mse_ratio': 0.47579030565864255, 'weighted_worse_than_identity_count': 0, 'balanced_worse_than_identity_count': 1}, {'split': 'stress', 'n': 1000, 'weighted_vs_balanced_win_rate': 0.708, 'weighted_vs_direct_win_rate': 0.921, 'weighted_vs_old_residual_win_rate': 0.935, 'weighted_to_balanced_aggregate_mse_ratio': 0.8385196758185709, 'weighted_to_direct_aggregate_mse_ratio': 0.40964755164923333, 'weighted_to_old_residual_aggregate_mse_ratio': 0.5441293977659549, 'weighted_worse_than_identity_count': 0, 'balanced_worse_than_identity_count': 0}]`.
-- Weighted multi-seed improvement: normal 32.02 +/- 1.21x; stress 19.55 +/- 0.30x.
+- Evaluation-seed identity/model affected-MSE ratio: normal
+  `32.02 +/- 1.21x`; stress `19.55 +/- 0.30x`. Models were not independently
+  retrained.
 
 ### Strong-Weight Variant Check
 
@@ -400,7 +409,7 @@ halo-like artifacts. The audit saved visual-vs-metric disagreement candidates,
 including v0.2 broad-error cases, v0.1 wins, direct-looking-cleaner cases,
 strong v0.2 successes, and ambiguous targets.
 
-### Current Stopping Point
+### Historical Stopping Point at That Stage
 
 Thayer-BR v0.2 Moderate is the current best model for the controlled synthetic
 benchmark. Thayer-BR v0.1 remains a historical ablation showing the value of
@@ -410,3 +419,379 @@ ablation showing that stronger affected/core weights are not better overall.
 The next modeling-related benchmark should be evaluation-only at first:
 size-normalized held-out blends with current checkpoints, before any
 size-normalized retraining.
+
+## Experiment 5: Thayer-BR v0.3 Color/Structure Candidate
+
+Status: completed as an ablation/tradeoff. Run directory:
+`outputs/runs/br_v03_delta_color_20260709_185630`.
+
+### Setup
+
+- Task: residual prediction, `blended -> blended - target`.
+- Reconstruction: `blended - predicted_residual`.
+- Architecture: unchanged compact residual U-Net from Thayer-BR v0.2.
+- Train/validation blends: 8,000 / 1,000.
+- Epochs: 20.
+- Batch size: 8.
+- Realized training distribution: 40% normal clean, 25% high-overlap/core
+  obstruction, 20% compact bright contaminants, 10% brightness/size stress,
+  5% low-overlap/easy stabilizer, and no artifact bucket because no safe
+  source-quality artifact flags were available. The intended 5% artifact
+  bucket was redistributed to normal clean blends.
+- Loss formula: `residual_mse + 0.5*recon_l1 + affected_core_loss +
+  0.10*gradient_loss + 0.05*color_proxy_loss + 0.05*halo_band_loss`.
+- Color loss: differentiable RGB chroma plus color-direction proxy.
+- Color metrics: Lab metrics and Delta E 2000 through scikit-image for
+  evaluation only.
+- Saved best checkpoint:
+  `outputs/checkpoints/unet_br_v03_delta_color_20260709_185630_best.pth`.
+- Saved final checkpoint:
+  `outputs/checkpoints/unet_br_v03_delta_color_20260709_185630_final.pth`.
+- Best validation loss: `0.006891` at epoch 20.
+- Final train/validation loss: `0.006542 / 0.006891`.
+
+### Main Comparison to Thayer-BR v0.2 Moderate
+
+| Suite | v0.2 affected MSE | v0.3 affected MSE | v0.3/v0.2 | v0.2 Delta E 2000 | v0.3 Delta E 2000 | Interpretation |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| Normal | 0.002025 | 0.002590 | 1.28 | 6.415 | 6.623 | worse primary MSE and color |
+| Hard stress | 0.003648 | 0.004772 | 1.31 | 7.670 | 8.768 | worse primary MSE and color |
+| Compact bright | 0.006514 | 0.006325 | 0.97 | 9.447 | 10.005 | slight compact-MSE gain, worse color |
+| High core obstruction | 0.004312 | 0.005443 | 1.26 | 8.135 | 9.443 | worse core-stress result |
+| Halo band | 0.003730 | 0.004745 | 1.27 | 7.861 | 8.660 | worse affected MSE |
+| Color saturation | 0.005227 | 0.006341 | 1.21 | 9.769 | 10.550 | worse affected MSE and color |
+
+v0.3 improved a few secondary slices: compact-bright affected MSE was slightly
+lower than v0.2 Moderate, compact-bright gradient error improved, normal
+halo-band MSE was marginally lower, and color-saturation chroma/gradient
+metrics improved slightly. These gains did not hold on the primary normal and
+hard-stress affected/core metrics.
+
+### Interpretation
+
+Verdict: `visual_tradeoff`. Thayer-BR v0.3 Color/Structure Candidate should
+not replace Thayer-BR v0.2 Moderate as the current best model. It is useful as
+an ablation showing that low-weight color/edge auxiliaries can help targeted
+compact or chroma/edge slices, but they weakened aggregate affected-region MSE
+and Delta E 2000 on the main normal and stress suites.
+
+Delta E 2000 is a perceptual visual metric under a standard RGB/sRGB-like
+assumption. Galaxy10 DECaLS RGB cutouts are survey composite images, not
+guaranteed true human-color photographs, so Delta E is visual-quality evidence,
+not the primary scientific metric. Affected-region MSE remains the primary
+metric.
+
+Generated artifacts:
+
+- `outputs/runs/br_v03_delta_color_20260709_185630/tables/v03_color_suite_metrics.csv`
+- `outputs/runs/br_v03_delta_color_20260709_185630/tables/v03_color_per_sample_metrics.csv`
+- `outputs/runs/br_v03_delta_color_20260709_185630/tables/v03_color_comparison_summary.csv`
+- `outputs/runs/br_v03_delta_color_20260709_185630/tables/v03_color_metric_summary.csv`
+- `outputs/runs/br_v03_delta_color_20260709_185630/diagnostics/color_metric_implementation.md`
+- `outputs/runs/br_v03_delta_color_20260709_185630/diagnostics/v03_color_structure_report.md`
+
+Checkpoint integrity checks before and after the run confirmed that the 10
+pre-existing comparison checkpoints were unchanged.
+
+### Delta Follow-up (Ablation/Tradeoff)
+
+The stronger-color follow-up, Thayer-BR v0.3 Delta Candidate, completed in
+`outputs/runs/br_v03_delta_candidate_20260710_031425`. It used the same
+architecture and realized 40/25/20/10/5 training distribution as the first
+v0.3 candidate, increased
+the differentiable color-proxy weight from `0.05` to `0.10`, and retained the
+`0.5` reconstruction-L1, `1.0` affected/core, `0.10` gradient, and `0.05`
+halo-band terms. Training ran for 20 epochs on 8,000/1,000 train/validation
+blends at batch size 8. The best epoch was 20 with validation loss `0.007056`;
+final train/validation loss was `0.006866 / 0.007056`.
+
+- Best checkpoint:
+  `outputs/checkpoints/unet_br_v03_delta_candidate_20260710_031425_best.pth`.
+- Final checkpoint:
+  `outputs/checkpoints/unet_br_v03_delta_candidate_20260710_031425_final.pth`.
+
+Same-run comparison with Thayer-BR v0.2 Moderate:
+
+| Suite | v0.2 affected MSE | Delta affected MSE | Delta/v0.2 | Delta E 2000, v0.2 -> Delta | Delta win rate | Worse than identity, Delta/v0.2 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Normal | 0.002025 | 0.002275 | 1.123 | 6.415 -> 6.148 | 35.3% | 0/0 |
+| Hard stress | 0.003648 | 0.004035 | 1.106 | 7.670 -> 7.951 | 36.0% | 1/0 |
+| Compact bright | 0.006514 | 0.005428 | 0.833 | 9.447 -> 8.921 | 67.2% | 0/0 |
+| High core obstruction | 0.004312 | 0.004665 | 1.082 | 8.135 -> 8.523 | 36.5% | 0/1 |
+| Halo band | 0.003730 | 0.004048 | 1.085 | 7.861 -> 7.928 | 41.6% | 0/0 |
+| Color saturation | 0.005227 | 0.005528 | 1.057 | 9.769 -> 9.842 | 45.7% | 0/0 |
+
+Delta improved on the first v0.3 Color/Structure candidate in aggregate
+affected MSE and Delta E 2000 on all six shared suites. Relative to v0.2
+Moderate, however, the primary normal and stress affected MSE worsened by
+about 12.3% and 10.6%, and stress added one worse-than-identity case. The
+targeted gains were real: compact-bright affected MSE improved by about 16.7%,
+Lab chroma error improved on all six suites, and halo-band MSE improved on all
+six suites. Delta E improved on normal and compact-bright blends but worsened
+slightly on the other four aggregate suites. The qualitative bank contains
+both a muted-color improvement and an explicit Delta color-artifact example,
+so the visual evidence also supports a tradeoff rather than universal progress.
+
+Verdict: `visual_tradeoff`. Delta is a useful compact/color/halo ablation, not
+the current best model. Thayer-BR v0.2 Moderate remains current best. The run
+did not fabricate clean-source or artifact-heavy results: validated source
+quality flags are unavailable. The separate non-training plan in
+`docs/clean_benchmark_plan.md` specifies how those suites should be constructed
+later. Integrity checks confirmed that all 12 checkpoints present before the
+Delta run were unchanged.
+
+## Experiment 6: Thayer-ResUNet v0.4 Candidate
+
+Status: completed as an architecture ablation. Run directory:
+`outputs/runs/resunet_v04_candidate_20260710_043109`.
+
+### Setup and Training
+
+- Task: predict `residual = blended - target`; reconstruct with
+  `blended - predicted_residual`.
+- Architecture: U-Net encoder/decoder and skip connections with residual
+  two-convolution blocks at each scale.
+- Trainable parameters: `2,014,595`, versus `1,927,075` for the standard v0.2
+  U-Net, an increase of `4.54%`.
+- Loss: the proven v0.2 Moderate normalized weighted residual MSE, with
+  background/affected-extra/core-extra weights `1/3/2` and no color or halo
+  auxiliary loss.
+- Training distribution: 50% normal, 30% high-overlap/core obstruction, and
+  20% brightness/size stress.
+- Train/validation blends: 8,000 / 1,000; epochs: 20; batch size: 8.
+- Best validation loss: `0.001076` at epoch 19.
+- Final train/validation loss: `0.000792 / 0.001082`; final validation affected
+  MSE: `0.003086`.
+- Best checkpoint:
+  `outputs/checkpoints/unet_resunet_v04_candidate_20260710_043109_best.pth`.
+- Final checkpoint:
+  `outputs/checkpoints/unet_resunet_v04_candidate_20260710_043109_final.pth`.
+
+### Same-Run Comparison to Thayer-BR v0.2 Moderate
+
+| Suite | v0.2 affected MSE | ResUNet affected MSE | ResUNet/v0.2 | ResUNet win rate | Worse than identity, ResUNet/v0.2 | Core-MSE ratio | Halo-MSE ratio |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Normal | 0.002132 | 0.002118 | 0.993 | 55.2% | 0/0 | 0.965 | 0.703 |
+| Hard stress | 0.003929 | 0.003950 | 1.005 | 51.7% | 1/0 | 1.027 | 0.873 |
+| Compact bright | 0.006840 | 0.005427 | 0.793 | 68.1% | 0/0 | 0.965 | 0.850 |
+| High core obstruction | 0.004243 | 0.004193 | 0.988 | 50.3% | 0/0 | 1.055 | 0.931 |
+| Halo band | 0.003869 | 0.003757 | 0.971 | 53.3% | 1/1 | 1.000 | 0.773 |
+| Color saturation | 0.005098 | 0.004999 | 0.981 | 55.5% | 0/0 | 1.113 | 0.848 |
+
+The architecture has useful targeted behavior. Compact-bright affected MSE
+improved by about 20.7%, and halo-band MSE improved on every evaluated suite,
+including about 22.7% on the halo-band stress suite. Although no color loss was
+used, affected Delta E 2000 also improved on all six suites. The aggregate
+normal affected MSE was effectively tied with v0.2 and slightly lower.
+
+The strict gate nevertheless failed. Hard-stress affected MSE was about 0.5%
+worse, hard-stress core MSE was about 2.7% worse, and one stress sample became
+worse than identity where v0.2 had none. On the high-core suite, aggregate
+affected MSE improved slightly but core affected MSE worsened by about 5.5%; on
+the color-saturation suite core affected MSE worsened by about 11.3%. Saved
+qualitative grids include a ResUNet improvement, a failure/tradeoff, and a case
+where Thayer-Direct still wins, so the aggregate gains are not universal.
+
+### Interpretation and Stopping Decision
+
+Verdict: `architecture_ablation`. The compact-contaminant, halo, and color
+results make ResUNet scientifically useful as a targeted tradeoff, but it does
+not clearly beat Thayer-BR v0.2 Moderate under the required stress/core and
+worse-than-identity criteria. Thayer-BR v0.2 Moderate therefore remains current
+best.
+
+The conditional Part B2 loss tuning was not run. Core+ and Halo-safe were
+authorized only if the baseline ResUNet clearly beat v0.2 Moderate; because it
+failed that gate, additional training would not have been a controlled
+follow-up under the preregistered decision rule. No Core+ or Halo-safe result is
+claimed. Clean-source filtering was also unavailable for this run and remains
+part of the separate clean benchmark plan.
+
+Generated result tables and diagnostics:
+
+- `outputs/runs/resunet_v04_candidate_20260710_043109/tables/resunet_v04_suite_metrics.csv`
+- `outputs/runs/resunet_v04_candidate_20260710_043109/tables/resunet_v04_per_sample_metrics.csv`
+- `outputs/runs/resunet_v04_candidate_20260710_043109/tables/resunet_v04_comparison_summary.csv`
+- `outputs/runs/resunet_v04_candidate_20260710_043109/diagnostics/resunet_v04_candidate_report.md`
+
+Checkpoint integrity verification confirmed that all 14 checkpoints present
+before the ResUNet experiment were unchanged.
+
+## Benchmark-Defensibility Audit Pass
+
+Status: completed after the Delta and baseline ResUNet runs. No Core+, Halo-safe,
+or additional architecture training was launched. All full model inference used
+MPS; CPU work was limited to hashing, manifest generation, CSV aggregation,
+plots, and documentation.
+
+### Locked-Manifest Preparation
+
+Run: `outputs/runs/final_test_manifest_prep_20260710_061737`.
+
+- Reserved 1,000 unique coordinate groups from the historical test tail after
+  excluding groups present in train, validation, or the first 1,000 development
+  test sources.
+- Created normal, hard-stress, compact-bright, high-core-obstruction, and
+  halo/artifact-proxy manifests with 1,000 metadata-only rows each.
+- Stored global source indices, blend parameters, seeds, masks, severity,
+  generator hashes, sample fingerprints, schemas, and checksums; no raw arrays.
+- All replay/schema/checksum tests pass, and manifest files are read-only.
+- No model was run and no qualitative sample was inspected for model selection.
+- Status remains `provisional_locked_manifest_prep` and `paper_ready = false`.
+
+**Superseding status:** this pool is no longer final-eligible. The later grouped
+resplit maps its 1,000 sources to 683 train, 173 validation, and 144 test, and
+the grouped manifests actually use 499 in training plus 91 in validation. The
+files remain preserved as historical infrastructure; a fresh untouched final
+pool is required after the model and protocol are frozen.
+
+The earlier random-index draft at
+`outputs/runs/final_test_manifest_prep_20260710_060845` is preserved and marked
+blocked. A later conservative-exclusion setup was stopped before generation
+after independent leakage review cleared the proposed perceptual candidates.
+
+### Source-Leakage Audit
+
+Run: `outputs/runs/source_leakage_audit_20260710_062950`.
+
+- Row-index partitions are disjoint: 12,415 train / 2,660 validation / 2,661
+  test, with zero pairwise intersections.
+- Twenty-three auditable artifacts contain 21,060 indexed blend rows with zero
+  target/contaminant role-containment failures.
+- Raw-pixel hashing finds 60 duplicate groups / 62 exact pairs overall and 28
+  groups / 29 pairs crossing train/validation/test.
+- RA/Dec finds 59 duplicate-coordinate groups and 27 cross-split pairs.
+- No local no-duplicate Galaxy10 file was found; RA/Dec, redshift, and pixel
+  scale exist, but no object-ID field is available.
+- The provisional final-tail pool has no sustained exact, coordinate, or
+  reviewed perceptual links to train, validation, or the development prefix.
+
+Verdict at that point: major blocker for the original random-index protocol.
+Historical model metrics remained development evidence, not a leakage-cleared
+final claim. The grouped protocol described below subsequently resolved this
+training gate, but not the need for an untouched final partition.
+
+### Unblended Preservation and Unaffected Regions
+
+Corrected run: `outputs/runs/preservation_null_tests_20260710_063312`.
+
+| Model | Mean unblended-input MSE | SSIM | p99 MSE | MSE > 0.001 |
+| --- | ---: | ---: | ---: | ---: |
+| Thayer-BR v0.2 Moderate | 0.00002646 | 0.998626 | 0.00026892 | 3/1,000 |
+| Thayer-BR v0.3 Delta | 0.00000120 | 0.999933 | 0.00000735 | 0/1,000 |
+| Thayer-ResUNet v0.4 | 0.00002144 | 0.998909 | 0.00006481 | 0/1,000 |
+
+The Delta preservation ablation preserves unblended inputs best but remains
+worse on the primary blended affected-region metric. ResUNet remains the
+architecture ablation documented above. The v0.2 tail shows false subtraction
+of bright off-center sources and target structure. Heuristic artifact
+candidates account for 23/1,000 null inputs and show elevated null error for all
+three models.
+
+The corrected unaffected-region table reports target error, model output change
+versus the blend, and paired excess target error over identity. This avoids
+calling the affected-mask complement pure model damage when it still contains
+sub-threshold blend changes, blur, or noise.
+
+### Clipping Audit
+
+Corrected run: `outputs/runs/clipping_audit_20260710_063312`.
+
+- Aggregate whole-image MSE changes by at most 0.96% after clipping.
+- Aggregate affected-region MSE changes by at most 0.16%; rankings do not
+  change.
+- Ten of 6,000 paired model/sample rows have absolute affected-MSE clipping
+  gains above `0.0001`; none exceeds a 10% relative gain.
+- Per-sample pixel statistics retain low/high clipping fractions, conditional
+  excursion magnitudes, and magnitude-qualified residual signs.
+
+### Source-Artifact Audit
+
+Run: `outputs/runs/source_artifact_audit_20260710_061059`.
+
+The streaming heuristic audit flags 356/17,736 sources (2.01%) for manual
+review: 178 saturation, 104 color-streak, 89 large-edge-mask, 52 edge-touching,
+10 axis-line, and 3 blank flags, with overlapping categories. Contact sheets
+show both clear artifacts and legitimate-morphology false positives. No source
+was removed and no flag is treated as validated ground truth.
+
+All 16 checkpoints remained unchanged throughout the completed audit runs.
+Thayer-BR v0.2 Moderate remains the current best development-benchmark model;
+no new model is promoted.
+
+## Research Correctness Audit and Grouped v0.2 Retrain
+
+Master run: `outputs/runs/research_correctness_audit_20260710_092241/`.
+
+### Infrastructure, blending, and metrics
+
+- Confirmed 29 pixel-identical and 27 exact-coordinate pairs crossing the
+  historical row split, implicating 57/17,736 sources (`0.321%`).
+- Historical evaluation implication was 13/1,000 normal and 12/1,000 stress;
+  excluding implicated rows changed improvement ratios by at most about
+  `0.31%`. Measured aggregate severity is minor, while protocol severity is
+  major.
+- Passed 29/29 deterministic metric checks, including independent arithmetic,
+  prediction-independent masks, empty-mask coverage, clipping separation,
+  color-range checks, and sample-ID alignment.
+- Replayed 150/150 stratified generator checks and later all 13,000 grouped
+  manifest rows exactly. A first precision-mismatch attempt is preserved rather
+  than hidden; round-trip CSV float parsing fixed replay.
+- Confirmed the model receives only blended RGB. The residual represents a
+  blend-to-target correction field, not necessarily pure contaminant flux.
+- Documented display-RGB rather than calibrated-flux compositing, target
+  centrality, input clipping, padded-mask size compression, ignored pixel-scale
+  mismatch, and repeated-source statistical dependence.
+
+### Grouped source and blend infrastructure
+
+Source split:
+`data/manifests/grouped_source_split_20260710_100907/`.
+
+- 12,417 train, 2,660 validation, and 2,659 development-test sources.
+- Exact-pixel and exact-coordinate groups remain wholly inside one partition.
+- Zero cross-split source, group, exact-pixel, or exact-coordinate overlap.
+- Near-duplicate identity is not exhaustively proven.
+
+Blend manifests: `data/manifests/grouped_blends_20260710_103233/`.
+
+- 8,000 train, 1,000 validation, and four 1,000-row development-test suites.
+- Both source roles stay inside their assigned partition; 71/71 integrity
+  checks and 13,000/13,000 exact replays pass.
+- These are grouped development manifests, not a locked final benchmark.
+
+### Existing-checkpoint diagnostic
+
+The historical v0.2 checkpoint remained strong on grouped tests, but 54.575%
+of rows exposed an old training/validation source group after repartitioning.
+On the 45.425% clean-neither subset it still achieved `31.53x` normal,
+`18.18x` hard, `11.68x` compact-bright, and `18.27x` high-core affected-MSE
+ratios. This is plausibility evidence, not a source-independent result.
+
+### Thayer-BR v0.2 Moderate Grouped Retrain
+
+Run: `outputs/runs/br_v02_moderate_grouped_retrain_20260710_110917/`.
+
+- MPS, seed 3042, batch size 8, 20 epochs, 8,000/1,000 grouped train/validation
+  blends, historical v0.2 U-Net, affected/core extra weights 3/2.
+- Best epoch 20: train loss `0.0010825181`, validation loss `0.0011635236`,
+  validation affected MSE `0.0033365143`.
+- Best checkpoint SHA-256:
+  `eea442ff21bdfbdd74815d7b292e786f187dc9a63fea73d4adde98a4b082802b`.
+
+| Grouped development suite | Affected MSE | Identity/model ratio | Core affected MSE | Halo MSE | Worse than identity |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Normal | 0.00231890 | 28.8127x | 0.00497364 | 0.000435626 | 0/1000 |
+| Hard stress | 0.00458983 | 15.8025x | 0.0115079 | 0.000640123 | 3/1000 |
+| Compact bright | 0.00872771 | 9.18304x | 0.0118618 | 0.000778985 | 2/1000 |
+| High core obstruction | 0.00491680 | 15.8378x | 0.0123239 | 0.000548833 | 1/1000 |
+
+The grouped retrain remains strong but is worse than the historical checkpoint
+on the identical suites. The comparison confounds split repair with training
+budget: the historical model used 12,000 blends and the requested grouped run
+used 8,000. One seed does not establish training-seed robustness.
+
+No optional second seed was launched because the earlier provisional final pool
+was demonstrably reused by grouped train/validation. Final-test independence is
+the next infrastructure blocker. All 16 pre-existing checkpoints remained
+unchanged; the grouped best/final checkpoints are separate timestamped files.

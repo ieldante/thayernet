@@ -314,16 +314,11 @@ def target_core_mask(
     aperture_fraction: float = 0.18,
     core_percentile: float = 85.0,
 ) -> np.ndarray:
-    gray = target.mean(axis=-1)
-    height, width = gray.shape
-    center_y, center_x = height / 2.0, width / 2.0
-    y_grid, x_grid = np.ogrid[:height, :width]
-    radius = aperture_fraction * min(height, width)
-    aperture = np.hypot(y_grid - center_y, x_grid - center_x) <= radius
-    values = gray[aperture]
-    threshold = float(np.percentile(values, core_percentile))
-    mask = aperture & (gray >= threshold)
-    return mask if np.any(mask) else aperture
+    return gd_utils.evaluation_core_mask_p85_v1(
+        target,
+        aperture_fraction=aperture_fraction,
+        core_percentile=core_percentile,
+    )
 
 
 def blend_metadata(
@@ -393,6 +388,7 @@ def generate_targeted_blends(
     rng = np.random.default_rng(seed)
     accepted: list[dict[str, Any]] = []
     relaxed: list[dict[str, Any]] = []
+    relaxed_candidates_used = 0
     attempts = 0
     max_attempts = max_attempt_multiplier * n_blends
 
@@ -456,7 +452,9 @@ def generate_targeted_blends(
             ),
             reverse=True,
         )
-        accepted.extend(relaxed[:needed])
+        relaxed_selected = relaxed[:needed]
+        relaxed_candidates_used = len(relaxed_selected)
+        accepted.extend(relaxed_selected)
 
     if len(accepted) < n_blends:
         raise RuntimeError(
@@ -484,7 +482,7 @@ def generate_targeted_blends(
         "mean_brightness": float(
             np.mean([sample["info"]["brightness"] for sample in selected])
         ),
-        "relaxed_candidates_used": max(0, n_blends - min(n_blends, len(accepted) - len(relaxed))),
+        "relaxed_candidates_used": relaxed_candidates_used,
     }
     return selected, diagnostics
 
@@ -1812,7 +1810,27 @@ def main() -> int:
 
     seed = int(config["seed"])
     seed_everything(seed)
-    device = gd_train.resolve_device(args.device)
+    device_status = {
+        "requested_device": str(args.device),
+        "mps_available": bool(torch.backends.mps.is_available()),
+        "cuda_available": bool(torch.cuda.is_available()),
+        "cpu_fallback_allowed": False,
+    }
+    try:
+        device = gd_train.resolve_accelerator(args.device)
+    except RuntimeError as exc:
+        save_json(
+            run_dir / "logs" / "device_selection.json",
+            {**device_status, "status": "stopped", "error": str(exc)},
+        )
+        stops.append(str(exc))
+        write_diagnostics(run_dir, warnings, stops)
+        print(f"Stopping before full training/evaluation: {exc}", flush=True)
+        return 2
+    save_json(
+        run_dir / "logs" / "device_selection.json",
+        {**device_status, "status": "selected", "selected_device": str(device)},
+    )
     print(f"Using device: {device}", flush=True)
 
     try:

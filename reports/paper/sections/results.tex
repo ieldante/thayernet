@@ -1,53 +1,65 @@
-Figure~\ref{fig:affected-mse} summarizes affected-region MSE for the current
-same-run normal evaluation and the hard stress test.
+Figure~\ref{fig:affected-mse} summarizes the original row-index development
+evaluation. These preserved figures are historical context, not the primary
+grouped estimate.
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\linewidth]{v02_affected_mse_bar.png}
     \caption{Affected-region MSE for identity, threshold, Thayer-Direct,
     Thayer-Residual, Thayer-BR v0.1, and Thayer-BR v0.2 Moderate.
-    Affected-region metrics focus evaluation on pixels changed by the
-    contaminant.}
+    Affected-region metrics focus evaluation on the thresholded blend-to-target
+    change region. Values are original development results.}
     \label{fig:affected-mse}
 \end{figure}
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\linewidth]{v02_improvement_ratio.png}
-    \caption{Improvement ratio versus identity on the current normal held-out
-    evaluation and hard stress test. Thayer-BR v0.2 Moderate gives the
-    strongest aggregate improvement in both settings.}
+    \caption{Original development improvement ratio versus identity. These
+    historical values are retained separately from grouped development results.}
     \label{fig:normal-stress-improvement}
 \end{figure}
 
-On the current 1,000-blend comparable normal evaluation, identity
+On the original 1,000-blend comparable normal development evaluation, identity
 affected-region MSE is 0.068122. Thayer-Direct reaches 0.004236,
 Thayer-Residual reaches 0.004431, Thayer-BR v0.1 reaches 0.002451, and
 Thayer-BR v0.2 Moderate reaches 0.002108. This corresponds to about 32.3x
-improvement over identity for v0.2 Moderate.
+lower affected-region MSE than identity for v0.2 Moderate.
 
 On the hard stress test, identity affected-region MSE is 0.075541.
 Thayer-Direct reaches 0.009390, Thayer-Residual reaches 0.007069,
 Thayer-BR v0.1 reaches 0.004587, and Thayer-BR v0.2 Moderate reaches 0.003847.
-This corresponds to about 19.6x improvement over identity for v0.2 Moderate.
+This corresponds to about 19.6x lower affected-region MSE than identity for
+v0.2 Moderate.
+
+The source-group-disjoint v0.2 retrain gives 0.00231890 affected MSE on grouped
+normal development data (28.8127x lower than identity), 0.00458983 on hard
+stress (15.8025x), 0.00872771 on compact-bright stress (9.18304x), and
+0.00491680 on high-core-obstruction stress (15.8378x). Worse-than-identity
+counts are 0, 3, 2, and 1 out of 1,000, respectively. These grouped values are
+the more defensible development estimates, but remain non-final and come from
+one training seed.
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\linewidth]{v02_core_mse.png}
-    \caption{Core affected MSE comparison. Thayer-BR v0.2 Moderate improves
-    stress core affected MSE from 0.013848 for Thayer-BR v0.1 to 0.009533.}
+    \caption{Original row-index development core affected MSE comparison.
+    Thayer-BR v0.2 Moderate improves stress core affected MSE from 0.013848 for
+    Thayer-BR v0.1 to 0.009533.}
     \label{fig:core-mse}
 \end{figure}
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\linewidth]{v02_weighted_vs_v01_scatter.png}
-    \caption{Per-sample affected-region MSE for Thayer-BR v0.2 Moderate versus
-    Thayer-BR v0.1. Points below the parity line favor v0.2 Moderate.}
+    \caption{Original row-index development per-sample affected-region MSE for
+    Thayer-BR v0.2 Moderate versus Thayer-BR v0.1. Points below the parity line
+    favor v0.2 Moderate.}
     \label{fig:v02-v01-scatter}
 \end{figure}
 
-Compared with Thayer-BR v0.1, Thayer-BR v0.2 Moderate lowers normal
+On the original row-index development suites, compared with Thayer-BR v0.1,
+Thayer-BR v0.2 Moderate lowers normal
 affected-region MSE by about 14\%, stress affected-region MSE by about 16\%,
 and stress core affected MSE by about 31\%. Normal worse-than-identity cases
 fall from 1/1000 for v0.1 to 0/1000 for v0.2 Moderate; both models have 0/1000
@@ -56,13 +68,16 @@ stress worse-than-identity cases.
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.75\linewidth]{v02_multiseed_summary.png}
-    \caption{Multi-seed improvement ratio for Thayer-BR v0.2 Moderate. Across
+    \caption{Evaluation-seed affected-MSE ratio for the original Thayer-BR v0.2
+    Moderate checkpoint. Across
     three normal and three stress evaluation seeds, the model reaches
-    32.02 +/- 1.21x normal improvement and 19.55 +/- 0.30x stress improvement.}
+    32.02 +/- 1.21x normal and 19.55 +/- 0.30x stress. These are not independent
+    training seeds.}
     \label{fig:multiseed}
 \end{figure}
 
-The stronger v0.2 weighting ablation slightly improves stress core MSE
+In the original development ablation, the stronger v0.2 weighting slightly
+improves stress core MSE
 relative to Moderate, but worsens aggregate normal affected MSE, stress
 affected MSE, and stress non-core affected MSE. Moderate weighting is therefore
 the best current v0.2 setting.

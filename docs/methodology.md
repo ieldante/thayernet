@@ -11,10 +11,29 @@ The dataset is Galaxy10 DECaLS, stored locally as an HDF5 file. The dataset is
 not included in the repository; local copies belong under `data/`, which is
 ignored except for `data/.gitkeep`.
 
-Original images are split into train, validation, and test subsets before any
-synthetic blending occurs. This prevents source-image leakage: the same original
-galaxy cannot appear in both training and evaluation examples, even if paired
-with different contaminants.
+Dataset rows are shuffled with seed 42 and split 70/15/15 into train,
+validation, and test arrays before synthetic blending. This prevents reuse of
+the same row index across arrays, but it does **not** guarantee object-level
+independence when the HDF5 file contains duplicate or near-duplicate cutouts.
+A later RA/Dec and image-fingerprint audit confirmed that duplicated source
+objects cross the historical random-index partitions. Those partitions must be
+treated as development splits, not a leakage-cleared final test.
+
+The corrected grouped protocol computes exact raw-pixel hashes and uses exact
+RA/Dec coordinates when available, unions every exact-pixel or exact-coordinate
+match into one source group, and assigns each group wholly to train,
+validation, or test. The resulting source and blend manifests verify zero
+source-index, source-group, exact-pixel, exact-coordinate, and cross-role
+overlap between partitions. High-confidence near-duplicate grouping remains a
+separate conservative review step; morphology-only lookalikes are not merged
+automatically.
+
+Galaxy10 DECaLS images are RGB display cutouts, not calibrated FITS flux
+images. The experiments therefore measure synthetic restoration of RGB
+cutouts; they do not establish survey-grade flux/source separation. Although
+the HDF5 file includes a pixel-scale field, the current generator does not use
+it to normalize angular size or PSF. Apparent-size operations and evaluation
+therefore occur in cutout-pixel coordinates.
 
 ## Synthetic Blend Generation
 
@@ -27,6 +46,22 @@ The generator records shift, brightness, blur, noise, and size-ratio metadata.
 Rotation is disabled in the main formal experiments unless artifact-free
 foreground extraction is specifically being tested.
 
+In the grouped protocol, both target and contaminant source indices and group
+IDs are saved with every row, along with the sampled parameters, random seed,
+generator/code hashes, source hashes, and expected replay hashes. Train blends
+draw only from grouped-train sources, validation blends only from
+grouped-validation sources, and all evaluation suites only from grouped-test
+sources. Exact replay passed for all 13,000 train, validation, and grouped-test
+manifest rows.
+
+The synthetic target is normally centered in its source cutout, while the
+contaminant is shifted, and foreground extraction preferentially selects a
+central component. This may provide a centrality shortcut. Size handling also
+compresses some larger apparent sources rather than defining a symmetric,
+pixel-scale-aware angular-size experiment. These behaviors are controlled and
+replayable, but require centrality-matched and angular/size-normalized follow-up
+benchmarks.
+
 ## Why Foreground-Only Blending
 
 Adding full contaminant cutouts can create artificial rectangular boundaries and
@@ -38,6 +73,13 @@ pipeline estimates a background from border pixels, subtracts it, isolates the
 central source, and adds only the foreground component to the target. This is
 still synthetic, but it avoids trivial pasted-patch cues and keeps the
 reconstruction target well defined.
+
+The compositing operation is computer-vision-style addition in normalized RGB
+display space, followed by clipping to the valid image range. It is not
+addition of calibrated band flux. Input clipping can be material because
+saturated pixels no longer retain linearly separable component information;
+that blend-construction effect is distinct from optional clipping of a model's
+reconstruction before metric calculation.
 
 ## Foreground Extraction and Halo-Aware Masking
 
@@ -65,8 +107,8 @@ Baselines define what the learned models must beat:
 
 The threshold baseline is intentionally simple and often performs worse than
 identity because it can remove or segment bright target structure without
-reconstructing hidden light. Its role is to provide a transparent non-learning
-reference, not a competitive survey algorithm.
+reconstructing hidden light. Identity and threshold are sanity checks, not
+competitive astronomical deblenders.
 
 ## Thayer-Direct
 
@@ -119,7 +161,7 @@ experimental research checkpoint, not a stable public model release.
 
 Thayer-BR v0.2 Moderate keeps the residual U-Net architecture and balanced
 hard-case training distribution, but changes the loss. It is the current best
-model on the controlled synthetic benchmark.
+model on the controlled synthetic development benchmark.
 
 The residual formulation is unchanged:
 
@@ -172,7 +214,23 @@ Whole-image metrics measure global reconstruction fidelity, but they can be
 misleading because most pixels in each synthetic blend are unchanged. Affected
 regions are pixels where the blend differs from the target by more than a fixed
 threshold after averaging absolute RGB differences. Affected-region metrics
-therefore focus evaluation on the actual contaminant-altered area.
+therefore focus evaluation on a prediction-independent **blend-change mask**,
+sometimes described more compactly as the correction-field support. It
+measures where the generated input differs from the clean target; it does not
+assert that every changed pixel is contaminant flux. The mask may include
+target-blur, input-clipping, and noise effects and is not a component-specific
+contaminant-flux mask.
+
+The historical original-development ratio of `32.3x` means 32.3x lower
+affected-region MSE versus identity. Because RMSE is the square root of MSE, it
+corresponds to about 5.7x lower affected-region RMSE, not 32.3x lower RMSE. It
+is not the grouped-retrain or future final-paper estimate.
+
+Primary masked summaries are macro averages: compute a regional metric for
+each sample with a nonempty mask, then average over valid samples. Pooled-pixel
+or micro averages are reported separately because they upweight samples with
+larger masks. Every core, non-core, and halo summary must include valid-sample
+coverage, and empty regions are excluded rather than assigned zero error.
 
 ## Apparent-Size Normalization vs Pixel Normalization
 
@@ -195,11 +253,14 @@ The evaluation audit in `outputs/runs/evaluation_audit_20260708_220833`
 checked the current data and metric pipeline without training or modifying
 checkpoints.
 
-The split audit confirmed that original Galaxy10 DECaLS images are split before
-blending and that normal/stress evaluation blends are generated only from the
-held-out test source array. No split-level source leakage was found. A caveat is
-that standard normal blend dictionaries do not save global source indices, so
-historical normal samples cannot be re-proven source-by-source after generation.
+The original split audit confirmed that row indices are split before blending
+and that normal/stress blends draw targets and contaminants only from their
+assigned array. It did not test whether different rows represent the same sky
+object. The later source-leakage audit found duplicate RA/Dec groups across the
+historical random-index partitions, including train-to-test crossings. Thus,
+the array-role logic is correct at the row-index level but object-level leakage
+is present. Standard historical blend dictionaries also omit global source
+indices, so old generated samples cannot be reconstructed source-by-source.
 
 The affected-region mask audit confirmed the formula
 `abs(blended - target).mean(axis=-1) > threshold`. This means the mask is based
@@ -211,14 +272,16 @@ Thayer-BR v0.1 stayed best across all tested thresholds on both normal and
 stress sets. Mask dilation was tested at `0`, `1`, `3`, `5`, and `9` pixels,
 and Thayer-BR v0.1 also stayed best under these larger halo-inclusive masks.
 
-The multi-seed audit used three independent normal seeds and three independent
-stress seeds, each with 1,000 generated blends. Thayer-BR v0.1 was the best
+The multi-seed audit used three normal blend-generation/evaluation seeds and
+three stress blend-generation/evaluation seeds, each with 1,000 generated
+blends. It did not independently retrain the model. Thayer-BR v0.1 was the best
 learned model for every audited seed. Mean improvement over identity was
 `27.04 +/- 1.04x` on normal blends and `15.76 +/- 0.07x` on stress blends.
 
-The later v0.2 Moderate multi-seed audit found `32.02 +/- 1.21x` normal
-improvement and `19.55 +/- 0.30x` stress improvement, supporting v0.2 Moderate
-as the current best controlled synthetic model.
+The later v0.2 Moderate evaluation-seed audit found `32.02 +/- 1.21x` lower
+normal affected MSE and `19.55 +/- 0.30x` lower stress affected MSE versus
+identity. It supports v0.2 Moderate as the current best development-benchmark
+model, not training-seed robustness or a final leakage-cleared estimate.
 
 Residual evaluation logic was also checked: residual targets are
 `blended - target`, residual reconstructions are `blended - predicted_residual`,
@@ -228,8 +291,9 @@ supports the sign convention used for the residual checkpoints.
 ## Size and Visual Audit
 
 The non-training size/visual audit in
-`outputs/runs/size_visual_audit_20260709_102251` regenerated held-out normal and
-stress blends and evaluated existing checkpoints only. It estimated apparent
+`outputs/runs/size_visual_audit_20260709_102251` regenerated original
+row-index development normal and stress blends and evaluated existing
+checkpoints only. It estimated apparent
 source size with a transparent foreground mask based on border background
 subtraction, central-source masking, foreground area, equivalent radius,
 bounding boxes, flux proxy, and centroid estimates.
@@ -279,7 +343,7 @@ Those labels are retained for provenance only.
 
 ## Why Stress Testing Was Added
 
-Thayer-Direct performed strongly on normal held-out blends, but normal
+Thayer-Direct performed strongly on original row-index normal development blends, but normal
 sampling did not fully characterize hard overlap behavior. Stress testing
 concentrates smaller shifts, brighter contaminants, similar-size sources where
 possible, blur/noise perturbations, and a minimum affected mask fraction.
@@ -287,8 +351,97 @@ possible, blur/noise perturbations, and a minimum affected mask fraction.
 Thayer-Direct still beats identity on the hard stress set, but its
 affected-region improvement drops to `8.04x`. Thayer-Residual improves that
 stress result to `10.69x`, Thayer-BR v0.1 improves it to `16.47x`, and
-Thayer-BR v0.2 Moderate improves it further to about `19.6x` in the current
-evaluation.
+Thayer-BR v0.2 Moderate improves it further to about `19.6x` in the historical
+original-development evaluation. The grouped-retrain estimate is reported
+separately below.
+
+## Source-Leakage and Final-Manifest Audits
+
+The full source audit in
+`outputs/runs/source_leakage_audit_20260710_062950` reconstructed the seed-42
+row split, streamed raw-pixel SHA-256 hashes, compared exact RA/Dec groups, and
+screened perceptual fingerprints. Row partitions and auditable target/
+contaminant role assignments pass, but the source file contains 29
+pixel-identical pairs crossing train/validation/test and 27 cross-split exact
+coordinate pairs. Random row splitting is therefore not object-disjoint.
+
+The union implicates 57/17,736 sources (`0.321%`). Only 13 historical normal
+and 12 historical stress rows contain an implicated target or contaminant, and
+excluding them changes affected-MSE ratios by at most `0.31%`. The observed
+aggregate effect is therefore minor, but the scientific-protocol failure is
+major because source-level independence was not enforced.
+
+The provisional manifest run
+`outputs/runs/final_test_manifest_prep_20260710_061737` reserves 1,000 sources
+from the post-development test tail after exact coordinate-group exclusion. Its
+five 1,000-row suites have frozen seeds, global indices, generator hashes,
+sample fingerprints, schemas, and checksums. A completed exact/perceptual
+cross-check found no sustained link from that pool into the historical train,
+validation, or development prefix. That pool is now superseded rather than
+locked-final: the grouped campaign assigned 590 of its sources to grouped
+train/validation (`499/91`). A final paper evaluation requires a newly selected
+untouched source-group pool after model and protocol freeze.
+
+The grouped source split in
+`data/manifests/grouped_source_split_20260710_100907` and grouped blends in
+`data/manifests/grouped_blends_20260710_103233` are exact-pixel/coordinate
+group-disjoint and fully replayed. They are development infrastructure, not a
+final test. An old-checkpoint diagnostic on these grouped suites is also not
+source-independent: `54.575%` of rows contain a group seen in the old
+historical train or validation pool. On the clean-neither subset, the old
+checkpoint still gives `31.53x`, `18.18x`, `11.68x`, and `18.27x` lower
+affected MSE than identity across normal, hard, compact-bright, and high-core
+suites, respectively.
+
+## Duplicate-Safe Grouped Retraining
+
+The v0.2 Moderate grouped retrain uses the same residual U-Net, `3/2`
+affected/core extra weights, 50/30/20 balanced training composition, 8,000
+train blends, 1,000 validation blends, batch size 8, and 20 epochs. Training
+and inference use MPS; the manifest, code, device, command, and checkpoint
+hashes are recorded. Best-checkpoint evaluation uses the same replayed sample
+rows and masks for identity, threshold, and model comparisons.
+
+Clipped macro affected-region MSE and identity/model ratios are:
+
+- normal: `0.00231890`, `28.8127x`, with `0/1000`
+  worse-than-identity cases;
+- hard stress: `0.00458983`, `15.8025x`, with `3/1000` cases;
+- compact bright: `0.00872771`, `9.18304x`, with `2/1000` cases;
+- high core obstruction: `0.00491680`, `15.8378x`, with `1/1000` case.
+
+The grouped retrain therefore verifies a substantial duplicate-safe
+development effect, but it is weaker than the historical development result
+and weaker than the old checkpoint on these same suites. The latter comparator
+is exposure-confounded, so it cannot supersede the grouped retrain as the
+correctness result. A fresh final pool and independent grouped training seeds
+are still required for final-effect and training-robustness claims.
+
+## Preservation and Clipping Audits
+
+The corrected MPS audit in
+`outputs/runs/preservation_null_tests_20260710_063312` feeds 1,000 unblended
+inputs to each residual model. These are not artifact-filtered clean sources.
+It reports reconstruction MSE/MAE/SSIM, residual magnitude, evaluation-core
+and non-core error, and heuristic source-artifact strata. The blended audit
+reports both target error outside the affected mask and model output change
+relative to the blended input, because the unaffected-mask complement still
+contains sub-threshold blend changes.
+
+The paired clipping audit in `outputs/runs/clipping_audit_20260710_063312`
+saves both macro summaries and per-sample clipped/unclipped metrics. Aggregate
+affected MSE changes by at most 0.16%, rankings are unchanged, and no sample has
+more than a 10% relative affected-MSE reduction from clipping. Out-of-range
+fractions, conditional excursion magnitudes, and residual sign magnitudes are
+retained so small aggregate effects do not hide output-physics diagnostics.
+
+This is an output-clipping result. Blend-input clipping after RGB addition is
+material to the generator and remains a benchmark limitation; the two effects
+must not be conflated.
+
+Masked summaries are macro means of per-sample masked metrics, not pooled-pixel
+means. The evaluation core mask uses an aperture percentile; the training loss
+uses a separate 55%-of-aperture-maximum core rule.
 
 ## Limitations
 
@@ -296,3 +449,9 @@ These experiments use controlled synthetic blends. They do not yet capture full
 survey realism, including PSF variation, sky-background mismatch, detector
 artifacts, crowded fields, correlated source environments, or cases where the
 true target and contaminant are not available as separate clean cutouts.
+
+The historical and grouped suites were used for model development or
+infrastructure/model validation. A final paper claim requires a newly frozen,
+duplicate-aware source pool and final-test manifests that are not inspected or
+used for further model selection. The prior provisional pool cannot serve this
+role because 590 of its sources entered grouped training or validation.

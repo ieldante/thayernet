@@ -481,6 +481,13 @@ def evaluate_samples(
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     per_sample_rows: list[dict[str, Any]] = []
 
+    if len(samples) != len(model_predictions):
+        raise ValueError(
+            "Sample/prediction count mismatch: "
+            f"{len(samples)} samples versus {len(model_predictions)} predictions. "
+            "Refusing silent zip truncation."
+        )
+
     for index, (sample, model_pred) in enumerate(zip(samples, model_predictions)):
         target = sample["target"]
         blended = sample["blended"]
@@ -1000,7 +1007,7 @@ def main() -> int:
         return 2
 
     checkpoint_stat_before = checkpoint_path.stat()
-    resolved_device = gd_train.resolve_device(args.device)
+    resolved_device = gd_train.resolve_accelerator(args.device)
     data_path = PROJECT_ROOT / config["dataset_path"]
     images_raw, labels, _metadata = gd_data.load_galaxy10(data_path)
     images = gd_data.normalise_images(images_raw)

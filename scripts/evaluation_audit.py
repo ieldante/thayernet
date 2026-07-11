@@ -1605,7 +1605,7 @@ def main() -> int:
     del _train_images, _val_images
     gc.collect()
 
-    device = gd_train.resolve_device(args.device)
+    device = gd_train.resolve_accelerator(args.device)
     print(f"Using device: {device}", flush=True)
     direct_model, residual_model, balanced_model = load_models(config, device)
 
