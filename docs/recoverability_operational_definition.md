@@ -5,6 +5,22 @@ must be frozen on the calibration partition and reported unchanged on the
 development-test partition. The future lockbox is excluded from all work in
 this document until a separately authorized final evaluation.
 
+## BTK foundation clarification — 2026-07-11
+
+This document's older DR10-coadd target conventions are historical design
+iterations. For the controlled BTK foundation, the binding supervised target is
+the requested noiseless isolated source defined in
+`docs/thayer_select_data_contract.md`. Explanatory generator variables (PSF-unit
+separation, obstruction, visibility, source count, flux/size ratio,
+morphology/color similarity, and SNR) are never themselves “recoverability.”
+Recoverability is the empirical event that a frozen model meets frozen
+reconstruction, flux, color, shape, centroid, catastrophic-failure,
+false-subtraction, omission, source-swap, no-source-hallucination, and
+isolated-source-damage rules. A model may separately predict pixel uncertainty
+and the probability of that acceptable outcome; a downstream threshold turns
+the probability into accept/abstain. Calibration uses calibration only and is
+reported with risk–coverage curves and accepted-case error guarantees.
+
 ## Observable input and hidden truth
 
 For sample (i), the model observes only a normalized three-channel DR10

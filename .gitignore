@@ -49,3 +49,7 @@ reports/paper/*.toc
 # Tool caches
 .pytest_cache/
 .ruff_cache/
+
+# Local BTK simulation environment
+.venv-btk/
+.venv-btk-*/
