@@ -41,3 +41,30 @@ The encoder remained fully frozen, no reconstruction backbone was retrained,
 development was not evaluated, and the lockbox remained sealed. The only next
 recommended experiment is a preregistered redesign of the moderate
 reliability-contract target and its failure-specific labels.
+
+## Superseding status — hierarchical safety policy (2026-07-11)
+
+The hierarchical campaign is complete in
+`outputs/runs/thayer_select_hierarchical_safety_20260711_225657/` and is
+classified **FAILURE under the frozen gates**. This classification does not
+erase successful subcomponents: the five-seed UNIQUE_VALID/NULL/AMBIGUOUS gate
+reached balanced validation macro F1/AUPRC `0.881`/`0.923`, recalled NULL at
+`99.85%` and AMBIGUOUS at `88.89%`, and removed ambiguity-over-valid inversion
+in every seed. Valid-only image, flux, and centroid heads also ranked the tail,
+and split conformal upper bounds reached approximately 90% natural-calibration
+coverage.
+
+The complete policy was not operational. It accepted only 1/4,200 natural-
+calibration valid scenes, 0/1,000 stratified-diagnostic valid scenes, and
+1/2,000 fresh development valid scenes. On development, query-gate-only false
+acceptance was `0%` for NULL and `9.2%` for AMBIGUOUS, but the full policy's
+near-zero coverage made its zero invalid acceptance unusable. At 95%, 90%,
+80%, and 70% diagnostic valid coverage, hierarchical catastrophic rates were
+`0.825`, `0.816`, `0.793`, and `0.764`; these were not materially better than
+the historical R1 ranking.
+
+Condition C remained byte-identical and fully frozen. The fresh 3,000-scene
+development manifest was generated after policy freeze and evaluated exactly
+once. The lockbox remained sealed. Recoverability is now documented as a
+derived policy, not a monolithic training label, but that policy is not ready
+for deployment or lockbox evaluation.

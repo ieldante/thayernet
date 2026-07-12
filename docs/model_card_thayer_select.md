@@ -33,3 +33,31 @@ identical new null-coordinate scenes. Full uncertainty maps were not persisted
 for the one-time development pass. The lockbox remains unavailable for model
 selection, debugging, calibration, threshold tuning, figures, or qualitative
 inspection.
+
+## Hierarchical safety-policy addendum
+
+The reconstruction model remains Phase-I Condition C at SHA-256
+`e9176dc5d5fe91a07bc72f9eb811c9692c2af9315f2c367135cbd84d3bffe382`.
+The hierarchical campaign did not add parameters to, fine-tune, or alter that
+model. It adds external lightweight CPU heads over frozen model-accessible
+features:
+
+- a five-seed F_COMBINED small-MLP ensemble for UNIQUE_VALID/NULL/AMBIGUOUS;
+- separate five-seed image-, flux-, and centroid-risk median/q=0.90 heads;
+- a separate five-seed confusion-risk ensemble;
+- vector scaling, temperature scaling, and split-conformal upper residuals fit
+  on natural calibration only.
+
+These heads are a research diagnostic, not a deployable release. The query gate
+worked, but the complete moderate-limit policy accepted only 0.05% of valid
+development scenes. The full-policy zero false acceptance for invalid queries
+therefore reflects abstention collapse, not useful safety. Raw risk-head outputs
+also showed log-to-linear tail instability, although log-space rankings and
+conformal marginal coverage were strong. Do not expose a reconstruction for a
+NULL or AMBIGUOUS query; do not treat marginal conformal coverage as
+class-conditional or deployment coverage; do not use generator variables as
+head inputs.
+
+The fresh development manifest was evaluated once after freeze. No lockbox
+evaluation exists. Current classification is **FAILURE** for the complete
+hierarchical policy.

@@ -852,3 +852,38 @@ Run: `outputs/runs/thayer_select_frozen_head_ablation_20260711_220756/`.
   calibration stability.
 - Zero development and lockbox access; zero reconstruction inference; all
   historical checkpoints unchanged.
+
+## 2026-07-11 — Hierarchical recoverability-policy campaign
+
+Run: `outputs/runs/thayer_select_hierarchical_safety_20260711_225657/`.
+
+- Pre-training drift audit: zero label mismatches across 40,500 contract-row
+  checks; maximum physical-covariate |SMD| `0.0535`; source-reuse |SMD|
+  `0.2762`; validation had 5 moderate and 37 permissive actionable positives.
+- Fresh non-development data: 15,000 Q-train, 2,000 Q-validation, 15,000
+  R-train, 2,000 R-validation, 6,000 natural calibration, and 3,000 stratified
+  diagnostic calibration scenes. Eighteen replay probes passed.
+- Frozen Condition-C features: 64 global + 112 multiscale prompt-local + 18
+  reconstruction-summary values; exact repeated MPS extraction; zero trainable
+  reconstruction parameters.
+- Query gate: F_COMBINED small-MLP five-seed ensemble; validation macro
+  F1/AUPRC `0.8811`/`0.9230`; NULL recall `0.9985`; AMBIGUOUS recall `0.8889`;
+  inversion removed in all seeds.
+- Valid-risk selections: image/flux used F_COMBINED small MLPs; centroid used
+  F_RECON_SUMMARY small MLP. Five-seed upper-risk Spearman means were `0.734`,
+  `0.816`, and `0.956`. Confusion AUROC/AUPRC means were `0.859`/`0.217` at
+  2.3% prevalence.
+- Split-conformal natural coverage: image `0.9000`, flux `0.9002`, centroid
+  `0.9002`; stratified diagnostic coverage `0.897`, `0.901`, `0.907`.
+- Frozen policy calibration was degenerate: 1/4,200 natural valid accepted and
+  0/1,000 stratified valid accepted.
+- Fresh development: 3,000 scenes, manifest SHA-256
+  `9ccb1626dcc158f43951ee15e03b6c00c3bcb01fc31e396a7d32e980d4ce51aa`,
+  read-only and evaluated once. Query gate accepted 66.65% valid, 0% NULL, and
+  9.2% AMBIGUOUS; full policy accepted one valid and no invalid scenes.
+- Diagnostic hierarchical catastrophic rates at 95/90/80/70% valid coverage:
+  `0.8253`/`0.8156`/`0.7931`/`0.7643`, not materially better than R1.
+- Decision: **FAILURE** for the complete campaign; successful query-validity
+  and tail-ranking subcomponents do not compensate for unusable coverage.
+- Condition C and every historical checkpoint remained unchanged; development
+  was not retuned; the lockbox remained untouched.

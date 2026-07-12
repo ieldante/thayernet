@@ -132,3 +132,36 @@ The single next experiment is to redesign and preregister the moderate
 reliability target with separate failure reasons. Do not begin a new head or
 backbone experiment until that target protocol is frozen. Development and the
 future lockbox remain unavailable for this design work.
+
+## Hierarchical-policy limitations and next step
+
+The hierarchical experiment establishes that query validity is learnable from
+frozen model-accessible features: NULL rejection was essentially perfect and
+ambiguity inversion disappeared. It also establishes that valid-only metric
+risks contain substantial rank signal. Neither result establishes a useful
+operating policy.
+
+The dominant limitation is feasibility under the frozen scientific limits.
+Condition-C development means were image NRMSE `2.257`, maximum per-band flux
+risk `11.735`, and centroid error `4.057` pixels, while the moderate policy
+limits were `0.75`, `0.50`, and `2.0`. After conformal calibration, only one
+natural-calibration valid scene and one development valid scene passed every
+gate. This is operational abstention collapse. Query-gate confidence alone was
+also anti-correlated with valid reconstruction safety at lower coverages, so it
+must not be used as a surrogate risk score.
+
+The five-seed risk heads were stable in log-space ranking but not uniformly
+stable after exponential inversion; several seeds produced very wide raw
+intervals. Marginal 90% conformal coverage does not guarantee conditional tail
+coverage, class-conditional coverage, or useful interval width. The historical
+R1 fresh-scene ranking remained at least as effective as the hierarchy at
+useful coverage.
+
+Do not retune this campaign after its one-time development result. The next
+experiment should use only train/validation/calibration artifacts and
+preregister: (1) an aperture-flux measurement audit; (2) log-space conditional
+conformal diagnostics; (3) a fixed catastrophic-risk budget; and (4) a minimum
+70% valid calibration coverage gate. Keep Condition C frozen and compare
+against R1 before authorizing any new development set. A targeted ambiguity
+pilot may use simulator optimization, matched source pairs, and multi-hypothesis
+truth sets, but the full Atlas and lockbox remain deferred.

@@ -32,3 +32,25 @@
    further head, backbone, representation, or ambiguity-construction change.
 9. **Still sealed — final lockbox.** Do not use the lockbox for contract design,
    target selection, calibration, debugging, visual review, or threshold tuning.
+
+## Roadmap update after hierarchical safety campaign
+
+10. **Complete — hierarchical policy experiment.** Query validity, separate
+    valid-only image/flux/centroid risks, confusion risk, vector scaling,
+    split-conformal upper bounds, and one frozen accept/abstain rule were tested
+    without changing Condition C.
+11. **Successful component — query gate.** The three-state gate removed the
+    ambiguity inversion, rejected all fresh development NULL queries, and cut
+    AMBIGUOUS false acceptance to 9.2% at 66.65% valid-query coverage.
+12. **Failed system gate — operational coverage.** The complete policy accepted
+    1/2,000 development valid scenes and did not beat the historical R1 ranking
+    at useful diagnostic coverage. Lockbox evaluation is not authorized.
+13. **Next experiment — risk-limit feasibility and conditional conformal.** Use
+    train/validation/calibration artifacts only. Audit aperture flux scaling and
+    log-tail stability, preregister a fixed catastrophic-risk budget plus at
+    least 70% valid calibration coverage, and compare with R1 before creating
+    another development set. Keep Condition C frozen.
+14. **Ambiguity benchmark — targeted pilot only.** A later pilot may combine
+    simulator optimization, matched source pairs, and multi-hypothesis truth
+    sets. Do not build the full Atlas and do not use development or lockbox
+    scenes for ambiguity engineering.
