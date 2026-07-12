@@ -81,3 +81,20 @@ training/validation-versus-calibration reconstruction-provenance change. No new
 inference or training was performed. The historical complete-policy result
 remains FAILURE, and a new prospectively preregistered train/validation/calibration-only
 feasibility campaign is required before another development set is authorized.
+
+## Prospective feasibility status — 2026-07-12
+
+The prospective train/validation/calibration-only run
+`outputs/runs/thayer_select_hierarchical_feasibility_20260712_010729/` is
+complete with **PARTIAL SUCCESS**. Its preregistration was hashed before every
+fit, Condition C was the only reconstructor across all 32,000 scenes, and the
+applicability audit found zero prior-style logical defects. Query validity and
+all continuous valid risks were strongly learnable; score calibration remained
+noncollapsed.
+
+The frozen catastrophic AUPRC gate was impossible at the observed 81.65%
+prevalence, and image/flux conditional calibration remained uneven despite
+90% marginal coverage. Those gates were not changed. No full policy or
+development manifest was created, the lockbox remained sealed, and the
+historical hierarchy remains FAILURE. A future full-policy campaign is not yet
+authorized.

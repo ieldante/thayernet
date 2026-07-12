@@ -63,3 +63,21 @@
     reconstruction provenance across train/validation/calibration, complete the
     row-level contract and drift audits, and pass the calibration-only minimum-
     coverage gate. The lockbox remains sealed.
+
+## Roadmap update after prospective feasibility
+
+17. **Complete with partial success — prospective component feasibility.** The
+    query gate and image/flux/centroid/confusion rankers passed under uniform
+    Condition-C provenance. Marginal calibration retained resolution.
+18. **Frozen-gate failure — catastrophic AUPRC criterion.** The observed
+    prevalence made the preregistered `1.25 × prevalence` AUPRC threshold exceed
+    1.0. Preserve the failure; do not reinterpret the excellent 0.997 AUPRC as
+    a formal pass.
+19. **Exactly one next experiment — conditional-calibration correction.** Keep
+    the reconstructor and heads frozen, preflight every gate for attainability,
+    replace the unbounded AP ratio with a bounded prevalence-adjusted lift, and
+    require 85–95% coverage plus bounded 95th-percentile width in each frozen
+    SNR/overlap subgroup.
+20. **Still prohibited — development and lockbox.** Do not build a development
+    manifest or full hierarchical policy until the corrective feasibility
+    experiment passes under a separately hashed preregistration.

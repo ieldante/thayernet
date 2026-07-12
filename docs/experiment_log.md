@@ -907,3 +907,28 @@ Run: `outputs/runs/thayer_select_hierarchical_safety_20260712_001405/`.
   report. Retrospective preregistration was refused.
 - Decision: stop before new inference/training. No development reevaluation,
   policy change, checkpoint change, or lockbox access occurred.
+
+## 2026-07-12 — Prospective hierarchical-safety feasibility
+
+Run: `outputs/runs/thayer_select_hierarchical_feasibility_20260712_010729/`.
+
+- Preregistration SHA-256: `f2184c169c9161e920988d32b217e56b78bb4688a65a6a0023944f9e73dec9d2`,
+  hashed before fitting.
+- Fresh scenes: 12,000 Q-train, 2,000 Q-validation, 12,000 UNIQUE_VALID
+  risk-train, 2,000 risk-validation, 4,000 natural calibration; no development
+  or lockbox scenes.
+- Uniform Condition-C checkpoint SHA-256:
+  `e9176dc5d5fe91a07bc72f9eb811c9692c2af9315f2c367135cbd84d3bffe382`.
+- Query five-seed macro F1 `0.872 ± 0.010`; NULL/AMBIGUOUS recalls
+  `1.000`/`0.877`; inversion removed in every seed.
+- Image/flux/centroid validation Spearman `0.860`/`0.867`/`0.949`, transferring
+  to natural calibration at `0.870`/`0.858`/`0.954`.
+- Confusion validation/calibration AUROC `0.866`/`0.844`.
+- Catastrophic validation AUROC/AUPRC `0.987`/`0.997`, but formal FAIL because
+  the frozen `1.25 × prevalence` AUPRC gate equals `1.0206`.
+- Query vector-scaling ECE `0.0266`; continuous marginal coverage ~`0.900`;
+  image/flux subgroup coverage minimum `0.691`, so calibration PARTIAL.
+- Decision: **PARTIAL SUCCESS**. Superseding correctness audit PASS; two
+  bookkeeping incidents are preserved with append-only corrections.
+- No operational policy, development evaluation, lockbox access, checkpoint
+  change, stage, commit, or push.

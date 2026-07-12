@@ -182,3 +182,20 @@ all empirical outcomes, complete row-level applicability and drift audits, and
 require nondegenerate calibration coverage before creating a new development
 manifest. Never reuse the historical development scenes for tuning and keep the
 lockbox sealed.
+
+## Prospective feasibility limitation and one next experiment
+
+The new prospective evidence removes the earlier mixed-provenance and
+applicability defects. It does not establish an operational hierarchy. The
+catastrophic-valid model ranked extremely well, but the preregistered AUPRC gate
+was mathematically unattainable at the realized prevalence and therefore fails
+without post-hoc repair. Image and flux conformal bounds achieved 90% marginal
+coverage while falling to 69–76% in the weakest frozen subgroups; rare extreme
+predictions also dominated mean interval width.
+
+Do not build a policy, generate development data, or access the lockbox. Run
+one separately preregistered train/validation/calibration-only conditional-
+calibration correction: preflight gate attainability, use a bounded
+prevalence-adjusted AP lift, keep Condition C and all heads frozen, calibrate
+log residuals with partial pooling over fixed SNR/overlap groups, and require
+85–95% subgroup coverage plus a bounded 95th-percentile width.

@@ -71,3 +71,18 @@ one-time development evaluation. A later append-only audit reproduced every
 persisted Phase-II moderate label exactly and made no model or policy change.
 Do not interpret that retrospective audit as preregistration, and do not
 authorize lockbox evaluation from the historical result.
+
+## Prospective feasibility addendum
+
+The 2026-07-12 feasibility campaign did not change Thayer-Select or produce a
+new deployable model. It reused byte-identical Phase-I Condition C for all
+training, validation, and calibration outcomes and fitted external CPU-only
+query/risk heads over frozen model-accessible features.
+
+The query gate and all risk rankers showed strong prospective signal, but the
+campaign is only PARTIAL SUCCESS: its catastrophic AUPRC gate was unattainable
+at the observed prevalence, and image/flux calibration was only marginally—not
+conditionally—reliable. No operational threshold or combined policy exists.
+There was zero development and lockbox access. Intended use remains controlled
+promptable selective galaxy deblending research; survey deployment, final
+selective-risk claims, and lockbox evaluation remain prohibited.
