@@ -5,6 +5,56 @@ must be frozen on the calibration partition and reported unchanged on the
 development-test partition. The future lockbox is excluded from all work in
 this document until a separately authorized final evaluation.
 
+## Authoritative Phase II contract — 2026-07-11
+
+This section supersedes older provisional target conventions for the controlled
+BTK Phase II campaign. Recoverability is an empirical property of the frozen
+reconstruction outcome. It is not generator difficulty, scene severity, or a
+morphology label.
+
+Three layers remain separate:
+
+1. Explanatory scene variables include separation, PSF-relative separation,
+   obstruction, visibility, flux/color/size ratios, ellipticity, SNR, source
+   count, and morphology. They are analysis metadata only.
+2. Oracle outcomes include requested-source MSE/MAE, normalized RMSE,
+   per-band flux error, color error, centroid error, confusion, hallucination,
+   forced selection, and catastrophic failure. They are available only to
+   supervised label generation and evaluation.
+3. Inference-time outputs are the requested-source reconstruction, bounded
+   pixel uncertainty, global contract-success probability, no-source
+   probability, and the downstream accept/abstain decision. The model sees
+   only the normalized blend and coordinate prompt.
+
+The predeclared strict, moderate, and permissive contracts respectively cap
+normalized RMSE at `0.40`, `0.75`, and `1.25`; maximum per-band relative flux
+error at `0.15`, `0.30`, and `0.50`; maximum color error at `0.15`, `0.30`, and
+`0.50` mag; and centroid error at `1`, `2`, and `3` pixels. All prohibit source
+confusion and catastrophic failure. Null queries additionally prohibit output
+absolute flux above 10% of blend absolute flux. Ambiguous queries have no
+arbitrary source truth and are unrecoverable for the reconstruction contract,
+so the desired decision is abstention. MODERATE is the intended primary
+contract; a documented closest-to-balanced fallback is permitted only if its
+training/validation teacher labels fall outside `[0.05, 0.95]`. All three
+contracts remain reported. No threshold is optimized on development data.
+
+In the completed campaign, MODERATE actionable success was 0.4% on combined
+training/validation labels and every contract was below the predeclared 5%
+learnability floor. The closest-to-balanced fallback therefore selected
+PERMISSIVE at 3.12%; this preserved the rule but did not remove the severe
+imbalance. Null rows can satisfy the zero-reconstruction outcome contract, but
+their global actionable-acceptance target is zero because the declared action
+is abstention; the separate no-source head target is one. Ambiguous actionable
+targets are also zero.
+
+Training labels are produced in a separate MPS inference stage using the
+frozen Phase-I Condition C checkpoint and fixed outcome metrics. The label
+table retains the teacher and metric hashes. R1 is later judged against its own
+reconstruction outcomes. Calibration uses only the fresh 2,000-scene
+calibration partition; architecture, checkpoints, contracts, calibrator,
+scores, thresholds, and metric code are frozen before a new development
+manifest is generated and evaluated once.
+
 ## BTK foundation clarification — 2026-07-11
 
 This document's older DR10-coadd target conventions are historical design

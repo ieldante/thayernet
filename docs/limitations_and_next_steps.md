@@ -1,5 +1,33 @@
 # Limitations and Next Steps
 
+## Thayer-Select Phase II boundary — 2026-07-11
+
+The promptability baseline is frozen and the recoverability campaign completed
+with partial success. Its largest known failure is not ordinary reconstruction
+error but request validity: the Phase-I reconstruction-only model hallucinated
+on every exact empty prompt under the declared criterion and often selected a
+real alternate source when queried there. Phase II fixes the semantics (the
+alternate coordinate is a valid request for that alternate galaxy), introduces
+explicit null and ambiguous classes, and tests calibrated abstention.
+
+This remains controlled BTK development work. It does not authorize a lockbox
+evaluation, a final-paper claim, calibrated per-pixel uncertainty language, or
+survey readiness. Optional independent training seeds are secondary to
+finishing the primary calibration and one-time frozen development evaluation.
+The selected PERMISSIVE actionable label remained only 3.12% positive, making
+head learning and calibration fragile. R1's calibrated score achieved AUROC
+0.875 but assigned ambiguous queries higher mean confidence than clear valid
+queries. Overall selective risk declined modestly, while catastrophic failure
+rose at 80% and 70% coverage. R1 null hallucination (8.25%) did not beat frozen
+Phase-I C (7.5%) or R0 (2.25%) on identical new null-coordinate scenes. The
+one-time development pass retained scalar uncertainty aggregates but not full
+maps; those maps were not regenerated.
+
+The next scientific gate is consistent valid-only selective-risk improvement
+across two fixed-protocol seed replications. Feasibility mining found zero
+candidate ambiguity pairs meeting both provisional cutoffs, so a full Ambiguity
+Atlas is not justified. Lockbox evaluation remains separately unauthorized.
+
 ## Current decision
 
 The grouped v0.2 Moderate retrain and grouped development evaluation are
@@ -83,3 +111,24 @@ Safe current wording separates the two development protocols:
 
 Do not claim survey readiness, independent-training-seed robustness, a
 leakage-cleared final result, or that heuristic artifact flags are ground truth.
+
+## Frozen-head ablation limitations and next step
+
+The moderate recoverability label has only five validation positives. Although
+balanced frozen heads achieved high validation AUROC and much higher AUPRC than
+the unweighted baseline, the paired head differences are uncertain and the
+validation-selected MLP degraded sharply on calibration. Ambiguity inversion
+persisted, catastrophic rejection remained weak, and both isotonic and the
+selected MLP's temperature-scaled scores had operationally important ties.
+
+The H4 centroid result is inconclusive: its AUPRC interval includes large gains
+and losses. The generator-metadata oracle is explanatory only and cannot be
+used at inference. Boundary proximity and contract sensitivity indicate target
+noise/heterogeneity but do not authorize post hoc relabeling.
+
+Do not claim that recoverability is nonlinearly solved, that cross-band
+centroids add independent value, or that selective abstention now succeeds.
+The single next experiment is to redesign and preregister the moderate
+reliability target with separate failure reasons. Do not begin a new head or
+backbone experiment until that target protocol is frozen. Development and the
+future lockbox remain unavailable for this design work.

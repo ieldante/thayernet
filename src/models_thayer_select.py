@@ -15,6 +15,7 @@ class ThayerSelectOutput(TypedDict):
     reconstruction: torch.Tensor
     log_variance: torch.Tensor
     recoverability: torch.Tensor
+    no_source_probability: torch.Tensor
 
 
 class ConvBlock(nn.Module):
@@ -73,6 +74,11 @@ class ThayerSelectNet(nn.Module):
             nn.SiLU(),
             nn.Linear(base_channels * 2, 1),
         )
+        self.no_source_head = nn.Sequential(
+            nn.Linear(base_channels * 4, base_channels * 2),
+            nn.SiLU(),
+            nn.Linear(base_channels * 2, 1),
+        )
 
     def forward(self, image_grz: torch.Tensor, prompt: torch.Tensor) -> ThayerSelectOutput:
         inputs = concatenate_image_and_prompt(image_grz, prompt)
@@ -97,8 +103,10 @@ class ThayerSelectNet(nn.Module):
 
         pooled = F.adaptive_avg_pool2d(bottleneck, output_size=1).flatten(1)
         recoverability = torch.sigmoid(self.recoverability_head(pooled))
+        no_source_probability = torch.sigmoid(self.no_source_head(pooled))
         return {
             "reconstruction": reconstruction,
             "log_variance": log_variance,
             "recoverability": recoverability,
+            "no_source_probability": no_source_probability,
         }

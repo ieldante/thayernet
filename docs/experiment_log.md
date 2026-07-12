@@ -11,6 +11,38 @@ This log records the main formal experiments and the development work that made
 them interpretable. Raw outputs, generated run directories, and saved model
 checkpoint files remain under `outputs/` and are not committed.
 
+## 2026-07-11 — Thayer-Select Phase I freeze and Phase II launch
+
+The group-safe BTK promptability baseline completed Conditions A/B/C for 20
+epochs on MPS. Condition C added exactly 144 parameters, reduced randomized
+mean requested-source MSE from `2.029e6` to `1.020e6`, and achieved 98.0%
+prompt-swap success with 0.2% output collapse. Source-region results remained
+heavy-tailed, and empty-prompt hallucination was 100% under the declared rule.
+The run `outputs/runs/thayer_select_prompt_ablation_20260711_164329` is frozen.
+
+Phase II was launched with fresh 10,000/1,500/2,000 train/validation/calibration
+scenes, four explicit query classes, empirical teacher-derived contract labels,
+R0 reconstruction-only and R1 bounded-recoverability conditions, calibration-
+only score mapping, and a development manifest generated only after full
+freeze. The lockbox remains metadata-only and sealed.
+
+### Phase II result
+
+The authoritative run is
+`outputs/runs/thayer_select_recoverability_20260711_191518`; an earlier
+`..._191127` run is preserved as a pre-training CSV-schema incident. R0 and R1
+completed all 20 MPS epochs. Append-only incident records preserve the
+actionable-label correction, two uncertainty-saturation stops, a reporting-only
+NumPy-boolean serialization resume that did not rerun inference, and a privacy
+scanner self-match correction.
+
+PERMISSIVE became primary under the predeclared imbalance fallback. Isotonic
+calibration achieved AUROC 0.8746, AUPRC 0.2475, and Brier 0.0456. Development
+risk declined modestly with abstention, but ambiguity ranking and useful-
+coverage catastrophic-error gates failed. The campaign is PARTIAL SUCCESS.
+Ambiguity feasibility found zero qualifying pairs among 77,671 candidate edges;
+the full atlas and lockbox remain unauthorized.
+
 ## Development Phase: Pipeline and Evaluation Setup
 
 - Data loading uses the local Galaxy10 DECaLS HDF5 file.
@@ -795,3 +827,28 @@ No optional second seed was launched because the earlier provisional final pool
 was demonstrably reused by grouped train/validation. Final-test independence is
 the next infrastructure blocker. All 16 pre-existing checkpoints remained
 unchanged; the grouped best/final checkpoints are separate timestamped files.
+
+## 2026-07-11 — Frozen-representation recoverability ablation
+
+Run: `outputs/runs/thayer_select_frozen_head_ablation_20260711_220756/`.
+
+- Frozen Phase-II R1 pooled-bottleneck features: 13,500 x 64 across training,
+  validation, and calibration; MPS encoder-only extraction.
+- Moderate positives: 41/10,000 training, 5/1,500 validation, 30/2,000
+  calibration.
+- Validation AUROC/AUPRC: H0 0.985/0.265, H1 0.983/0.516, H2 0.984/0.548,
+  H3 0.986/0.532, H4 0.989/0.561.
+- H2-H1 AUPRC difference: +0.033, paired 95% CI [-0.015, +0.184].
+- H4-H2 AUPRC difference: +0.012, paired 95% CI [-0.249, +0.275].
+- Validation-selected H2 calibration raw AUROC/AUPRC: 0.514/0.032.
+- H2 ambiguity gap remained +0.073; catastrophic rejection AUROC 0.654; null
+  hallucination rejection AUROC 0.948.
+- H2 isotonic calibration produced four values and an 87.6% largest plateau;
+  temperature avoided zero thresholds but still collapsed nominal 95%, 90%,
+  and 80% coverage to 100% realized coverage.
+- Oracle validation AUROC/AUPRC: 0.795/0.023; analysis-only.
+- Decision: **NO CLEAR IMPROVEMENT**. The original automatic nonlinear gate was
+  preserved and superseded because it ignored paired-CI materiality and
+  calibration stability.
+- Zero development and lockbox access; zero reconstruction inference; all
+  historical checkpoints unchanged.

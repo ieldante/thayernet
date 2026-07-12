@@ -13,6 +13,62 @@ import numpy as np
 import torch
 from torch.nn import functional as F
 
+from .prompt_semantics import QueryClass
+
+
+@dataclass(frozen=True)
+class ReliabilityContract:
+    """Predeclared Phase-II empirical reconstruction contract."""
+
+    name: str
+    max_normalized_rmse: float
+    max_relative_flux_error: float
+    max_color_error_mag: float
+    max_centroid_error_pixels: float
+    hallucination_flux_fraction: float = 0.10
+    catastrophic_normalized_rmse: float = 2.0
+
+
+PHASE2_CONTRACTS = {
+    "strict": ReliabilityContract("strict", 0.40, 0.15, 0.15, 1.0),
+    "moderate": ReliabilityContract("moderate", 0.75, 0.30, 0.30, 2.0),
+    "permissive": ReliabilityContract("permissive", 1.25, 0.50, 0.50, 3.0),
+}
+
+
+def phase2_contract_success(
+    metrics: dict[str, float | int | bool],
+    query_class: str | QueryClass,
+    contract: ReliabilityContract,
+) -> bool:
+    """Apply a contract to oracle outcomes, never to model inputs."""
+
+    query = QueryClass(query_class)
+    if not bool(metrics.get("evaluation_valid", False)):
+        return False
+    if query is QueryClass.AMBIGUOUS_SOURCE:
+        return False
+    if query is QueryClass.NULL_SOURCE:
+        return not bool(metrics.get("hallucination", True)) and not bool(
+            metrics.get("catastrophic_failure", True)
+        )
+    values = (
+        float(metrics.get("normalized_rmse", np.inf)),
+        float(metrics.get("max_relative_flux_error", np.inf)),
+        float(metrics.get("max_color_error_mag", np.inf)),
+        float(metrics.get("centroid_error_pixels", np.inf)),
+    )
+    if not np.isfinite(values).all():
+        return False
+    return bool(
+        values[0] <= contract.max_normalized_rmse
+        and values[1] <= contract.max_relative_flux_error
+        and values[2] <= contract.max_color_error_mag
+        and values[3] <= contract.max_centroid_error_pixels
+        and not bool(metrics.get("source_confusion", True))
+        and not bool(metrics.get("catastrophic_failure", True))
+    )
+
 
 @dataclass(frozen=True)
 class RecoverabilityThresholds:

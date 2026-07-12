@@ -9,6 +9,20 @@ under harder overlap conditions.
 This repository is a controlled synthetic benchmark. It is not a full
 survey-grade astronomical deblending pipeline.
 
+## Thayer-Select status
+
+Phase I promptability is complete and frozen: a four-channel compact model
+(three `g,r,z` image channels plus a Gaussian coordinate prompt) selected the
+requested member of a two-source BTK blend with 98.0% prompt-swap success.
+Phase II recoverability prediction and selective abstention completed with a
+**partial-success** classification. The calibrated score discriminated
+actionable contract success on calibration data (AUROC 0.875), and selective
+risk declined modestly with coverage, but ambiguous queries were scored higher
+than clear valid queries and catastrophic failure did not decline at 80%
+coverage. All current Thayer-Select evidence is controlled BTK development
+evidence, DR10 remains a real-sky out-of-distribution benchmark, and the future
+lockbox remains sealed.
+
 ## TL;DR
 
 Current development reference: **Thayer-BR v0.2 Moderate Grouped Retrain**.
