@@ -61,3 +61,13 @@ head inputs.
 The fresh development manifest was evaluated once after freeze. No lockbox
 evaluation exists. Current classification is **FAILURE** for the complete
 hierarchical policy.
+
+## Protocol-status correction
+
+The 2026-07-11 hierarchical result remains valid historical evidence but is not
+certified as a fully preregistered sequence: the required preregistration and
+full original-composite postmortem were absent before head fitting and the
+one-time development evaluation. A later append-only audit reproduced every
+persisted Phase-II moderate label exactly and made no model or policy change.
+Do not interpret that retrospective audit as preregistration, and do not
+authorize lockbox evaluation from the historical result.

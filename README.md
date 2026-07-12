@@ -1,5 +1,9 @@
 # Thayer-Net
 
+Current Thayer-Select status: the hierarchical safety policy is a failed,
+non-deployable historical experiment; a 2026-07-12 corrective audit refused
+retrospective preregistration and authorized no new development or lockbox use.
+
 Thayer-Net is a compact U-Net research testbed for controlled synthetic galaxy
 deblending with Galaxy10 DECaLS cutouts. It asks whether learned image-to-image
 models can reconstruct a known target galaxy from synthetic blends more

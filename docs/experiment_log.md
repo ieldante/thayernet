@@ -887,3 +887,23 @@ Run: `outputs/runs/thayer_select_hierarchical_safety_20260711_225657/`.
   and tail-ranking subcomponents do not compensate for unusable coverage.
 - Condition C and every historical checkpoint remained unchanged; development
   was not retuned; the lockbox remained untouched.
+
+## 2026-07-12 — Hierarchical protocol corrective audit
+
+Run: `outputs/runs/thayer_select_hierarchical_safety_20260712_001405/`.
+
+- Part A provenance passed on MPS availability, Condition-C hash, source-split
+  identity, empty staged index, and lockbox exclusion metadata.
+- Reconstructed `moderate_actionable_success` for all 13,500 persisted Phase-II
+  rows: zero actionable-label and zero underlying-contract mismatches.
+- Positive counts remained 41 training, 5 validation, and 30 calibration.
+- Confirmed scientific heterogeneity: 2,543 successful NULL outcomes and all
+  1,350 AMBIGUOUS rows are actionable negatives; mild and catastrophic valid
+  failures share the same negative class.
+- Confirmed provenance mismatch: training/validation outcomes use frozen
+  Condition C, calibration outcomes use Phase-II R1.
+- The historical run lacked the required pre-fit preregistration, original-
+  contract truth-table/postmortem artifacts, and explicit frozen-reconstructor
+  report. Retrospective preregistration was refused.
+- Decision: stop before new inference/training. No development reevaluation,
+  policy change, checkpoint change, or lockbox access occurred.

@@ -54,3 +54,12 @@
     simulator optimization, matched source pairs, and multi-hypothesis truth
     sets. Do not build the full Atlas and do not use development or lockbox
     scenes for ambiguity engineering.
+15. **Protocol correction — complete.** Preserve the 2026-07-11 hierarchical
+    result as historical evidence, but do not certify its sequence as fully
+    preregistered. The 2026-07-12 corrective audit reconstructed every original
+    composite label and stopped before new inference or fitting.
+16. **Next authorization gate — prospective feasibility only.** Before another
+    development manifest, freeze and hash a new preregistration, use one
+    reconstruction provenance across train/validation/calibration, complete the
+    row-level contract and drift audits, and pass the calibration-only minimum-
+    coverage gate. The lockbox remains sealed.

@@ -68,3 +68,16 @@ development manifest was generated after policy freeze and evaluated exactly
 once. The lockbox remained sealed. Recoverability is now documented as a
 derived policy, not a monolithic training label, but that policy is not ready
 for deployment or lockbox evaluation.
+
+## Protocol correction — 2026-07-12
+
+An append-only compliance audit found that the historical hierarchical run did
+not contain the required pre-fit preregistration or full original-contract
+postmortem. Those omissions cannot be repaired retrospectively after its
+one-time development evaluation. The exact persisted moderate composite was
+subsequently reconstructed for all 13,500 Phase-II rows with zero Boolean
+reapplication mismatches, but it confirmed a heterogeneous target and a
+training/validation-versus-calibration reconstruction-provenance change. No new
+inference or training was performed. The historical complete-policy result
+remains FAILURE, and a new prospectively preregistered train/validation/calibration-only
+feasibility campaign is required before another development set is authorized.

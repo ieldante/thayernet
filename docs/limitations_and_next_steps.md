@@ -165,3 +165,20 @@ conformal diagnostics; (3) a fixed catastrophic-risk budget; and (4) a minimum
 against R1 before authorizing any new development set. A targeted ambiguity
 pilot may use simulator optimization, matched source pairs, and multi-hypothesis
 truth sets, but the full Atlas and lockbox remain deferred.
+
+## Hierarchical protocol limitation
+
+The historical hierarchical campaign omitted the required preregistration file
+and full original-contract postmortem before fitting. Its development result
+must therefore remain historical evidence, not a fully preregistered policy
+claim. The corrective audit found no Boolean label-code mismatch, but confirmed
+that the learned binary target mixed inapplicable query states, mild failures,
+and catastrophes and that calibration labels came from a different
+reconstruction provenance than training/validation labels.
+
+The next experiment must be prospective and train/validation/calibration-only:
+hash the complete protocol before fitting, use a single frozen reconstructor for
+all empirical outcomes, complete row-level applicability and drift audits, and
+require nondegenerate calibration coverage before creating a new development
+manifest. Never reuse the historical development scenes for tuning and keep the
+lockbox sealed.
