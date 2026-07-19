@@ -932,3 +932,768 @@ Run: `outputs/runs/thayer_select_hierarchical_feasibility_20260712_010729/`.
   bookkeeping incidents are preserved with append-only corrections.
 - No operational policy, development evaluation, lockbox access, checkpoint
   change, stage, commit, or push.
+
+## 2026-07-12 — Prospective conditional-calibration correction
+
+- Run: `outputs/runs/thayer_select_conditional_calibration_20260712_021556/`.
+- Preregistration SHA-256:
+  `95a67082acbe0921af7db64f3d78c5280d18f58442f71b0de16364228bc8494d`.
+- Exact original-sag reproduction: image/flux minimum `0.691429`.
+- All frozen subgroups supported; no extra calibration scenes generated.
+- Selected marginal coverage: image `0.9029`, flux `0.8982`, centroid `0.9007`.
+- Selected worst supported coverage: image `0.6373`, flux `0.6839`, centroid
+  `0.8882`.
+- Natural-calibration Spearman: image `0.8700`, flux `0.8617`, centroid
+  `0.9520`.
+- Catastrophic sanity: validation AUROC/AUPRC `0.9872`/`0.9971`; attainable
+  AUPRC gate `0.9541`, PASS.
+- Decision: image FAIL, flux FAIL, centroid PASS, overall **FAILURE**.
+- Condition C stayed frozen; zero reconstruction inference, development
+  access, lockbox access, policy construction, staging, or commits.
+
+## 2026-07-12 — Partially pooled scale correction
+
+- Run: `outputs/runs/thayer_select_scale_correction_20260712_024957/`.
+- Preregistration SHA-256:
+  `4d2d6701e3cfe0847a0b88bb5ae04ca8f3ef514ce8747e3b123670bb57c80d96`.
+- Exact baseline reproduction: image `0.9029`/`0.6373`, flux
+  `0.8982`/`0.6839`, centroid `0.9007`/`0.8882` marginal/worst coverage.
+- Five connected-source-component folds produced held-out-only risk
+  predictions with zero source overlap and zero calibration target leakage.
+- Selected O0 Huber log-residual scale objective for image and flux.
+- Partially pooled marginal/worst coverage: image `0.9189`/`0.5492`, flux
+  `0.9218`/`0.6788`.
+- Median-width inflation: image `1.336x`, flux `1.055x`; ranking remained
+  `0.877`/`0.866`.
+- Worst-subgroup bootstrap 95% lower bounds: image `0.477`, flux `0.614`.
+- Non-deployable oracle worst coverage: image `0.914`, flux `0.905`; diagnostic
+  only and marginally overcovering.
+- Decision: image FAIL, flux FAIL, centroid PASS, overall **FAILURE**.
+- One integrity-only continuation incident is preserved: Pandas initially
+  treated literal `NULL` as NA, then a generic helper used logit rather than
+  documented probability ensembling. Both were corrected without refitting or
+  changing calibration results.
+- Zero reconstruction inference, development/lockbox access, policy
+  construction, historical overwrite, staging, commit, or push.
+
+## 2026-07-12 — Shape-constrained quantile scale correction
+
+- Authoritative run:
+  `outputs/runs/thayer_select_shape_constrained_quantile_20260712_033406/`.
+- Preregistration SHA-256:
+  `93c047c6cacd3db51340860ed1d0f5e086b78b4b4fd0277bc4ed88cc083c575c`.
+- Training-only OOF proxy endpoint checks reproduced within `1e-10`; global
+  monotonicity was rejected.
+- Q1/Q2 satisfied every convexity and upper-half monotonicity constraint; Q2's
+  corrected positive interaction was bounded and nonnegative.
+- Validation selected Q1 for image and flux. Q2 improved worst supported
+  validation-cell coverage by `0.000` for both risks.
+- Selected marginal/worst calibration coverage: image `0.9221`/`0.5440`, flux
+  `0.9221`/`0.5907`.
+- Median-width inflation: image `1.723x`, flux `1.303x`; p95 widths `3.012`
+  and `10.163`.
+- Worst-subgroup bootstrap 95% lower bounds: image `0.473`, flux `0.522`.
+- Decision: image FAIL, flux FAIL, centroid PASS, overall **FAILURE**.
+- Integrity audit PASS: 18 tests, zero constraint violations, exact post-fit
+  centering, 456 historical checkpoints unchanged, and zero
+  neural/development/lockbox access.
+- A prior restart at `..._032938` is superseded: its centering constant was
+  initialized before optimization rather than recomputed from the learned
+  basis. No result from that run is authoritative. The defect was corrected,
+  regression-tested, and the full campaign restarted without overwriting it.
+
+## 2026-07-12 — Observable-regime distillation
+
+- Run:
+  `outputs/runs/thayer_select_observability_distillation_20260712_035843/`.
+- Preregistration SHA-256:
+  `8ec5b644fba2658f32eeac43edea0e5f8d4e3301a6b108cf3d1f932722dddbff`.
+- All conditional, oracle, partially pooled, and corrected Q1/Q2 baselines
+  reproduced at `1e-10` before fitting.
+- A0 exact four-proxy validation AUROC: `0.7113`.
+- Selected A3 five-seed validation AUROC: `0.9014 ± 0.0035`; normalized AP
+  lift `0.3725`; source-component bootstrap AUROC lower bound `0.8827`.
+- Validation/calibration SNR Spearman: `0.883`/`0.889`; obstruction Spearman:
+  `0.456`/`0.479`.
+- Joint-hard validation/calibration AUROC: `0.906`/`0.880`; AUPRC:
+  `0.430`/`0.325`.
+- Frozen gate failures: recall at precision 0.70 `0.0835 < 0.30`;
+  calibration Brier `0.1397 > 0.0642`; calibration ECE `0.2191 > 0.15`.
+- Decision: **OBSERVATIONAL INFORMATION LIMIT — FAILURE**. GroupDRO, new
+  quantile fitting, and predicted/multigroup calibration were not run.
+- Condition C unchanged; 536 historical checkpoints unchanged; 22 relevant
+  tests passed; development/lockbox accesses zero.
+- Two pre-fit append-only incidents are preserved: calibration access ordering
+  was corrected before execution, and object-dtype scene IDs required a
+  fit-only loader continuation after feature extraction but before fitting.
+
+## 2026-07-12 — Explicit-PSF provenance and variation audit
+
+- Authoritative run:
+  `outputs/runs/thayer_select_psf_conditioning_20260712_043442/`.
+- Audited 12,000 training, 2,000 validation, and 4,000 natural-calibration
+  scenes; 54,000 scene-band provenance rows.
+- Exact renderer: BTK default SurveyCodex LSST PSF, implemented as an
+  axisymmetric GalSim Kolmogorov-plus-Airy convolution at 0.2 arcsec/pixel.
+- Fixed g/r/z FWHM: `0.86`/`0.81`/`0.77` arcsec.
+- Unique combined scene configurations: `1`; effective count: `1.0`;
+  within-band scene variation: zero up to floating-point aggregation roundoff.
+- Sampled native-grid PSF replay passed for 27 scene-band checks across all
+  partitions.
+- Decision: **PSF NON-INFORMATIVE BY CONSTRUCTION**.
+- The campaign stopped before preregistration, fitting, controls, risk or
+  calibration continuation, development, or lockbox access.
+- Exactly one next experiment: prospectively generate scenes with realistic
+  varying PSFs.
+- Three incomplete attempts are preserved and superseded; all stopped before
+  preregistration or fitting, and none altered historical artifacts.
+
+## 2026-07-12 — Competing-hypothesis recoverability feasibility
+
+- Authoritative run:
+  `outputs/runs/thayer_competing_hypotheses_20260712_131111/`.
+- Preregistration SHA-256:
+  `692b4194da0486b8240fcda8227d36df9b1654187dd5c670d60c69b8c5fd5a4b`.
+- Compatible inventory: Condition C, R0, and reconstruction-only R1 map to the
+  common source-layer contract but share one architecture cluster; cross-family
+  auditing stopped before training.
+- Route-B Atlas pool: 30,000 scenes from approved training/validation groups;
+  100 numerical pairs; first 25 frozen after exact replay and five-page visual
+  artifact audit.
+- Forward score: calibrated on exactly 2,000 calibration scenes; global 99th-
+  percentile threshold 1.031580046990072.
+- Empirical witnesses: 49/50 noisy observations for constructed truth
+  decompositions; 18/50 for same-cluster model candidates.
+- Atlas deblender behavior: all 75 pair/model rows contained at least one unsafe
+  noisy requested reconstruction; Condition C returned nearly the same
+  mean-scene answer on 25/25 divergent pairs, R0 on 16/25, and R1 on 1/25.
+- Correctness: 180 tests and 23 subtests passed across the isolated main/BTK
+  environments; 556 historical checkpoints, source split, and catalog were
+  unchanged; development and lockbox access counts were zero.
+- Decision: **PARTIAL SUCCESS**. No auditor, catalog policy, or cross-family
+  claim was produced.
+
+## 2026-07-12 — Ambiguity Atlas v0 and competing-hypothesis recoverability
+
+- Run: `outputs/runs/thayer_ambiguity_atlas_v0_20260712_145627/`.
+- Preregistration SHA-256:
+  `2b54bf035f5a51721b4d012faa84060bb926a81610463fcb393c16d5f3f39185`.
+- Fresh scenes: 30,000 training/search, 2,000 validation, and 3,000 calibration;
+  development and lockbox access counts remained zero.
+- Route 1: 100/100 numerical candidates passed; 25 were visually reviewed and
+  frozen. Route 2: 25/25 final bounded optimization pairs passed; 600 trials
+  are preserved.
+- Constructed witnesses: 50/50. Same-cluster model-candidate witnesses: 19/50.
+- Operational baseline: diameter AUROC 0.4712 and zero recall at 4% control
+  false positives; R1 unsafe-confidence AUROC 0.9176.
+- Decision: **ATLAS PASS; AMBIGUITY-WITNESS DETECTOR FAIL; AUDITOR BLOCKED**.
+
+## 2026-07-12 — Prompted ResUNet candidate-diversity feasibility
+
+- Authoritative run:
+  `outputs/runs/thayer_prompted_resunet_diversity_20260712_154122/`.
+- Preregistration SHA-256:
+  `d412f2071e49bf53ccf4633021d2ced8f43ffe32a160b537542be3ab10798884`.
+- One earlier run stopped before rendering or fitting after an internal decoder
+  channel/parameter-count inconsistency was caught; its artifacts are preserved.
+- Final architecture: 199,219 trainable parameters, six residual blocks,
+  fresh initialization, no Condition-C weight import.
+- Source isolation: all 59 Atlas/targeted-feasibility groups excluded; 10,000
+  training and 1,500 validation scenes; 11,500/11,500 full replays passed.
+- MPS training: 20/20 epochs; best epoch 18; best normalized validation MSE
+  `0.03862`; no CPU fallback.
+- Pre-Atlas result: prompt-swap `0.3947 < 0.80`; individual requested identity
+  `0.695 < 0.75`; output collapse `0.00067`; whole-image MSE ratio to Condition C
+  `1.1205`.
+- Decision: **PROMPTABILITY FAILURE — ATLAS EVALUATION NOT AUTHORIZED**.
+- Atlas, development, and lockbox access counts: 0/0/0. No auditor or catalog
+  policy was trained.
+
+## 2026-07-12 — Thayer-PU prompted probabilistic U-Net
+
+- Run: `outputs/runs/thayer_probabilistic_unet_20260712_163340/`.
+- Preregistration SHA-256:
+  `eb62db24da7c77f35f56d1187f561f88a2e63e2acd89c01c859c1fd2213b2b09`.
+- Canonical per-sample hash audit: 11/11 pass.
+- Source isolation: 59 Atlas-related groups excluded; 24,000 collision-pool
+  scenes and 20,000 final scenes; 20,000/20,000 final replays passed.
+- Model: 170,278 parameters, latent dimension 8, Condition-C warm start,
+  truth-free prior, training-only posterior, six-channel full decomposition.
+- Training: 30/30 MPS epochs; best epoch 27; no fallback.
+- Non-Atlas gates: latent use, promptability, prior/posterior gap, forward
+  consistency, and selective control concentration all passed.
+- Promptability: majority-of-16 swaps 0.9875; individual prior identity 0.99384;
+  best-of-16 identity 0.99425; collapse 0.00106.
+- Atlas one-pass: witnesses 24/50; AUROC 0.856, bootstrap interval 0.751–0.942;
+  recall at 4% control false positives 0.32; safe-control witnesses 0.08;
+  own/alternate truth coverage 0/0.
+- Decision: **PARTIAL SUCCESS**. Atlas evaluation count 1; development and
+  lockbox access 0/0; no post-Atlas tuning or auditor training.
+
+## 2026-07-12 — Thayer-PF posterior/decoder sufficiency gate
+
+- Run: `outputs/runs/thayer_flow_prior_20260712_182516/`.
+- Persisted Thayer-PU and Atlas metrics reproduced without new Atlas inference.
+- Frozen truth-coverage metric synthetic audit: pass.
+- Part D: K=32; 256 ordinary scenes; all 250 validation near-collision pairs;
+  MPS inference with fallback prohibited.
+- Own-truth coverage: ordinary 0%; near-collision 0%.
+- Cross-decoded paired alternate coverage: 0%; alternate identity 1.76%.
+- Forward-consistent sample fractions: 0.930 ordinary, 1.000 near-own, and
+  1.000 near-cross.
+- Decision: **FAILURE — DECODER/POSTERIOR INSUFFICIENT; FLOW PROHIBITED**.
+- Flow fitting / Atlas / development / lockbox access counts: 0/0/0/0.
+
+## 2026-07-12 — Thayer-MH ambiguity-set decoder
+
+- Run: `outputs/runs/thayer_multiple_hypotheses_20260712_190701/`.
+- Expanded Atlas-related exclusion: 36,288 groups; development and lockbox
+  commitments remained zero.
+- Targets: 12,000/3,000 training, 1,500/500 validation, and 1,500/500
+  calibration ordinary/ambiguous observations; 2,000 validated pairs.
+- Architecture: shared K=2 token decoder, 120,022 parameters; 30 MPS epochs;
+  best validation epoch 27; no fallback.
+- Promptability: token-0/1 and set-level prompt swap all 0.992; requested MSE
+  ratio to Condition C 0.864.
+- Coverage: ordinary own 0%; near own 0%; near alternate 0%; both-mode 0%.
+- Forward-consistent fractions: ordinary 0.933; near-collision 1.000.
+- Decision: **FAILURE — NON-ATLAS SET COVERAGE FAILED; ATLAS PROHIBITED**.
+- Atlas / development / lockbox access counts: 0/0/0.
+
+## 2026-07-12 — Thayer-ME two-expert capacity gate
+
+- Run: `outputs/runs/thayer_two_expert_decoder_20260712_203121/`.
+- Thayer-MH promptability, reconstruction, coverage, forward consistency, and
+  zero Atlas inference reproduced exactly from persisted artifacts.
+- Exact Thayer-MH scenes and targets reused; all 2,000 pair gates and hashes
+  passed without regeneration.
+- Architecture: 72,672 shared encoder parameters plus two disjoint 46,470-
+  parameter expert decoders; 165,612 total.
+- Microset: 32 ordinary and 32 ambiguous training-only observations from 16
+  pairs; 400 MPS epochs; no fallback.
+- Expert-1/expert-2/set prompt swap: 0.969/0.969/0.953.
+- Ordinary/ambiguous forward consistency: 0.969/1.000.
+- Ordinary, own, alternate, and both-mode truth coverage: 0/0/0/0; median
+  ordinary expert diameter 5.166.
+- Decision: **REPRESENTATIONAL OR LOSS IMPLEMENTATION FAILURE**.
+- Full fit / Atlas / development / lockbox access counts: 0/0/0/0.
+
+## 2026-07-12 — Thayer-LG frozen loss-geometry audit
+
+- Created and preregistered
+  `outputs/runs/thayer_loss_geometry_20260712_205733/` before per-scene loss
+  inspection.
+- Reproduced all persisted Thayer-ME micro-overfit gates and frozen input
+  hashes without model inference.
+- Passed exact-truth output-contract, prompt mapping, forward plausibility,
+  own/alternate/both-mode coverage, and ordinary concentration sanity checks.
+- Found truth objective-optimal on 10/64 rows; a compromise beat truth on
+  54/64 rows and all 32 ambiguous rows.
+- Found forward loss dominant at truth, frequent source/forward gradient
+  conflict, collapsed-mean assignment ties, and immediate coverage loss along
+  a lower-objective truth-to-trained path.
+- Detached full-objective optimization from truth lowered loss and destroyed
+  coverage. No model weights, Atlas, development rows, or lockbox rows were
+  touched.
+
+## 2026-07-12 — Thayer-SA scientific-alignment correction
+
+- Created `outputs/runs/thayer_scientific_alignment_20260712_220315/` and
+  reproduced the Thayer-LG diagnosis before freezing the objective and gates.
+- Froze preregistration SHA-256
+  `6ef3bc2505a5677e3acade93a818566105c26368f532dca40b60121f839ddc26`.
+- Surrogate Spearman/Kendall/threshold agreement: 0.990679/0.957683/1.000000;
+  exact truth value and gradient were zero.
+- Exact truth remained at full coverage. Final own/alternate/both-mode coverage
+  was 0/0/0 from trained output, 0.281/0.281/0.250 from collapsed mean, and
+  0.438/0.438/0.312 from wrong source allocation.
+- Decision: **FAILURE — CORRECTED OBJECTIVE STILL MISALIGNED**. Assignment and
+  neural stages were not reached; no checkpoint, Atlas, development, or
+  lockbox access occurred.
+
+## 2026-07-12 — Thayer-OC output-space conditioning
+
+- Created `outputs/runs/thayer_output_conditioning_20260712_225459/`; froze
+  preregistration SHA-256
+  `4202c5ddc9b9733138168b2acc650334e1ef10b002f7799071a3a12bc827e484`
+  before per-scene loads or detached optimization.
+- Reproduced 16/16 Thayer-SA and Thayer-ME baselines and passed 6/6 coordinate
+  round-trip/projection cases.
+- Compared raw Adam, raw L-BFGS, T/D Adam, T/D L-BFGS, alternating T/D, and
+  threshold-Jacobian-preconditioned T/D under frozen budgets.
+- No global method passed. Best ordinary coverage was 0.438; best ambiguous
+  own/alternate/both-mode coverages were 0.844/0.875/0.812, from different
+  method/initialization combinations.
+- C2, C4, and C5 moved exact truth outside full coverage and were ineligible.
+- Scientific decision: **PARTIAL SUCCESS — SCIENTIFIC-BASIN EXTREMITY**.
+- Strict correctness: **FAIL**; the actual-objective HVP/finite-difference
+  condition estimate was unresolved. Neural training and Atlas/development/
+  lockbox access remained zero; 593/593 checkpoints were unchanged.
+
+## 2026-07-12 — Thayer-FP direct scientific-feasibility projection
+
+- Froze and hashed the 64-row projection/micro-learning protocol before every
+  per-scene load or optimization.
+- Reproduced all authoritative Thayer-ME, Thayer-SA, and Thayer-OC baselines;
+  left the prior HVP status unresolved without a new curvature claim.
+- Projected all 256 expert/prompt pairings with P0. Final projected target-set
+  coverage and forward consistency were 100% in every required category.
+- Median P0 alpha was 0.999979 and median normalized correction was 0.946369;
+  flux-z was most often limiting.
+- P1 reduced correction but missed the strict 0.95 target interior on three
+  pairings, so P0 was frozen globally.
+- Trained unchanged Thayer-ME for 400 MPS-only epochs with direct
+  requested/companion loss. All four truth-coverage rates remained zero;
+  ordinary diameter was 3.564 and output nonnegativity failed.
+- Decision: **FAILURE — PROJECTED TARGETS FEASIBLE; UNCHANGED THAYER-ME CANNOT
+  MEMORIZE THEM**. No Atlas, development, or lockbox access occurred.
+
+## 2026-07-13 — Thayer-CL output-contract preflight
+
+- Created `outputs/runs/thayer_capacity_ladder_20260713_005215/` and froze
+  preregistration SHA-256
+  `b3d77b7726f5f117c1fa70946730cc213d1db3015798c9bcfa058b3ceb03ed23`
+  before all per-scene loads, model construction, and optimization.
+- Reproduced 24/24 Thayer-FP checks, including complete P0 feasibility, median
+  alpha/correction, 173/256 z-flux limiting entries, and the diagnostic neural
+  trajectory.
+- Traced negatives to the unconstrained linear head. Positive inverse-
+  normalization scales preserved them in physical source layers.
+- Found zero contract-selected compliant mappings and three distinct
+  admissible but unfrozen replacements. Stopped before L0-L3 construction,
+  synthetic fitting, or neural training.
+- Decision: **FAIL-CLOSED — NO UNIQUE CONTRACT-COMPLIANT OUTPUT MAPPING**.
+  Strict correctness is **FAIL** because the initial checkpoint inventory was
+  incomplete before per-scene loading; a complete closure audit verified
+  594/594 historical checkpoints unchanged. Atlas, development, and lockbox
+  access counts remained zero.
+
+## 2026-07-13 — Thayer-CL strict metadata-correct rerun
+
+- Preserved the first append-only `20260713_005215` attempt and created
+  `outputs/runs/thayer_capacity_ladder_20260713_013132/` to correct only its
+  incomplete pre-load checkpoint inventory.
+- Froze preregistration SHA-256
+  `d44778017b45a1a21109b19cd5e623c76b0a2353128c10a5ad8a7edbfb27820c`
+  after inventorying all 594 historical checkpoints and before any per-scene
+  tensor load, model construction, or optimizer step.
+- Reproduced all 24 Thayer-FP checks and the same physical-negative provenance:
+  the raw linear head emitted negative values that positive inverse-
+  normalization scales preserved in the metric-facing physical source layers.
+- Found zero frozen eligible mappings and three distinct unfrozen admissible
+  mappings. The campaign again stopped at Part D before L0-L3 construction,
+  preflight fitting, or neural training.
+- Decision: **FAIL-CLOSED — NO UNIQUE CONTRACT-COMPLIANT OUTPUT MAPPING**.
+  Strict correctness is **PASS** with 27/27 checks; all 594 historical
+  checkpoints remained byte-identical. Atlas, development, and lockbox access
+  counts remained zero.
+
+## 2026-07-13 — Thayer-OP fixed-L0 output parameterization
+
+- Created `outputs/runs/thayer_output_parameterization_20260713_023120/` and
+  froze preregistration SHA-256
+  `c6abcb8ba70888bc9a14477968933713c0729a4e32065f7f2becfcec9c468597`
+  before per-scene loading and fitting.
+- Held the Condition-C encoder, two 46,470-parameter L0 expert decoders, P0
+  targets, hard assignment, initialization policy, optimizer, order, and step
+  budget fixed; only ReLU, square, or absolute value changed in forward.
+- All three mappings passed full target representability, gradient/numerical
+  preflight, five stop-rule self-tests, and five synthetic MPS fits per mapping.
+  Physical negative and nonfinite event counts remained zero.
+- Each mapping received 3,200 MPS optimizer steps on the same ordinary scene
+  and 3,200 on the same ambiguous scene. Every mapping finished with zero
+  ordinary coverage and zero ambiguous both-mode coverage.
+- Decision: **NO MAPPING PASSES**. Stopped before eight-scene fitting, selected
+  no mapping, and did not authorize the decoder-capacity ladder. Atlas,
+  development, and lockbox access counts remained zero.
+
+## 2026-07-13 — Thayer-RI repository-integrity and fixed-feature audit
+
+- Started from an empty staged index and preserved the existing working tree.
+- Installed a strict exact-path Python access guard and closed a ten-module
+  local execution graph. All 391 high-risk static occurrences were classified.
+- Independent production/reference comparisons passed 13 groups with zero
+  mismatches. Seven corrected nonnegative golden cases and seven differential
+  truth-injection variants passed.
+- Exact lineage selected training scene row 12000 and P0 row 32 only.
+  Ordinary, eight-scene, remaining-microset, Atlas, development, and lockbox
+  access counts were zero.
+- No result-changing production defect was found and no production source was
+  edited. Both experts and both final heads received gradients and updates;
+  the encoder hash remained unchanged.
+- D0: square passed all three coverage gates; ReLU and absolute value failed.
+- D1: square passed all three coverage gates with frozen rank-six heads.
+- D2: square's 204-parameter final-head-only readout reduced target loss by
+  about 28.5% but retained zero own, alternate, and both-mode coverage.
+- D3 and tangent diagnostics were not authorized by the frozen progression
+  rule. Primary outcome: **FROZEN-FEATURE CONDITIONING BARRIER**.
+- All five executed condition/mapping pairs received exactly 5,000 MPS steps.
+  All 600 inventoried historical checkpoints matched before and after.
+
+## 2026-07-13 — Thayer-D3 square full-L0 fixed-feature diagnostic
+
+- Created the append-only Thayer-D3 run and froze preregistration SHA-256
+  `08fe5d9bf97ca98e0cb79b161082e62c6022f014f23cfba9cad389f4aca2deda`
+  before every tensor load.
+- Reproduced all 54 persisted evaluation rows for square D0, D1, and D2. D0
+  and D1 retained 100% own/alternate/both coverage; D2 retained 0%/0%/0%.
+- Matched the joined cache, one-scene payload, square initial-state artifact,
+  P0 hashes, square checkpoint, and D0-D2 endpoints. Initial raw, mapped,
+  physical, penultimate, assignment, and target-loss values were exact.
+- Found that the D1 endpoint artifact lacks `penultimate_expert_1` and
+  `penultimate_expert_2`. Preserved the output artifact without reconstructing
+  or rerunning D1.
+- Decision: **FROZEN-INPUT PROVENANCE FAILURE — D3 NOT RUN**. No optimizer,
+  autograd trace, decoder update, tangent diagnostic, broader scene, Atlas,
+  development, or lockbox access occurred.
+
+## 2026-07-13 — Thayer-D1R square D1 endpoint replay
+
+- Created `outputs/runs/thayer_d1_endpoint_replay_20260713_113715/` and froze
+  preregistration SHA-256
+  `0ebd166e1ea33b306d4dc78fe748dcd0240ada5d24dfd9d4d282ac763507faf2`
+  before every scientific tensor load.
+- Reproduced the authoritative 54-row D1 metadata, exact initial state, six
+  cached feature hashes, four P0 hashes, rank-six frozen heads, and all 600
+  historical checkpoint hashes.
+- Optimized only two detached `[2,16,60,60]` paired-prompt tensors with the
+  frozen AdamW `0.03`, clip `5.0`, 5,000-step MPS protocol. No neural parameter,
+  encoder, or decoder body entered the optimizer.
+- Matched all 54 physical trajectory hashes. The final objective was
+  `3.1026115010490685e-09`; raw, mapped, and physical outputs were byte-identical
+  and own/alternate/both-mode coverage was 100%/100%/100%.
+- Persisted four named prompt/expert endpoint tensors plus output, assignment,
+  optimizer-provenance, schema, and canonical-hash artifacts.
+- A restricted fresh process reproduced the endpoint outputs and metrics. All
+  13 batch/serialization checks passed with zero difference.
+- Decision: **SUCCESS — D1 ENDPOINT PERSISTED AND REPLAYED**. D3 was not run.
+  A separate square-only D3 campaign is authorized; broader scenes, Atlas,
+  development, lockbox, eight-scene fitting, and capacity scaling remain closed.
+
+## 2026-07-13 — Thayer-D3R authoritative full-L0 retry
+
+- Created `outputs/runs/thayer_full_l0_d3r_20260713_121652/` and froze
+  preregistration SHA-256
+  `8a995ec98e162cab54e69d0efdcae6dd340a7c0f0082280548cb28ae28cacb72`
+  before scientific tensor loading.
+- Passed the exact-path guard self-test, all frozen input byte hashes, and all
+  600 historical checkpoint hashes.
+- Stopped before optimizer construction after a Matplotlib import dependency
+  attempted prohibited cache deletion and PyTorch's tempfile probe could not
+  complete under the no-delete contract.
+- Decision: **EXECUTION-READINESS FAILURE — D3 NOT RUN**. No one-step trace,
+  decoder update, trajectory, tangent diagnostic, broader scene, Atlas array,
+  development, or lockbox access occurred. No retry was attempted.
+
+## 2026-07-13 — Thayer-D3B runtime bootstrap readiness
+
+- Created `outputs/runs/thayer_d3_runtime_readiness_20260713_125352/` and froze
+  preregistration SHA-256
+  `6c543ed014771b6a39d49d017a16533c962f7217b7eac1054d4b9b959ecc6b55`
+  before all third-party imports.
+- Reproduced the Matplotlib lock-file and PyTorch tempfile cleanup operations
+  under bootstrap scratch with exact call stacks.
+- Passed all guard self-tests and four final process modes: two cold, one warm
+  cache reuse, and one fresh process after shutdown. Every process emitted
+  `READY_FOR_SCIENTIFIC_TENSOR_LOAD`.
+- Strict phases recorded zero deletion, cache write, blocked read, protected
+  access, or Matplotlib import. Shutdown cleanup stayed inside scratch.
+- The pure forward evaluator matched an independent reference in all ten
+  synthetic cases with zero file I/O. All 21 D1R prerequisites, eleven named
+  metadata containers, four scientific source hashes, and 600 historical
+  checkpoint hashes matched.
+- Decision: **READINESS PASS — D3 NOT RUN**. No scientific tensor, model,
+  optimizer, decoder forward, JVP, VJP, Atlas, development, or lockbox access
+  occurred. D3 remains scientifically unknown.
+
+## 2026-07-13 — Thayer-D3B superseding exact-environment readiness
+
+- Preserved the earlier `thayer_d3_runtime_readiness_20260713_125352` record
+  but rejected its readiness conclusion because its preregistered shared
+  runtime paths did not exactly match the per-process launch roots.
+- Created `outputs/runs/thayer_d3_runtime_readiness_20260713_130859/` and froze
+  preregistration SHA-256
+  `6a2a067a273de952acfad473b67d72d761e52a583abb29ebb505b4792a48d4f8`
+  before all third-party imports, including exact environment values for both
+  cold processes, warm reuse, the post-shutdown process, and postprocessing.
+- Passed the final guard self-test, two cold processes, warm-cache reuse, one
+  fresh process after shutdown, and isolated metadata postprocessing. Every
+  readiness process emitted exactly `READY_FOR_SCIENTIFIC_TENSOR_LOAD`.
+- Strict phases recorded zero deletion attempts, cache writes, blocked events,
+  protected access, or Matplotlib imports. Shutdown removed only generated
+  runtime scratch after the readiness status was flushed.
+- The pure evaluator matched the independent reference in all ten synthetic
+  cases with zero file I/O. All 21 D1R prerequisites, eleven named metadata
+  containers, four scientific source hashes, and 600 historical checkpoint
+  hashes matched.
+- Decision: **READINESS PASS — D3 NOT RUN**. No scientific tensor, model,
+  optimizer, decoder forward, JVP, VJP, Atlas, development, or lockbox access
+  occurred. D3 remains scientifically unknown.
+
+## 2026-07-13 — Thayer-D3B clean authoritative closure
+
+- Preserved `thayer_d3_runtime_readiness_20260713_130859` after its runtime
+  passed but its independent closure audit failed: the bootstrap inventory did
+  not record `CUBLAS_WORKSPACE_CONFIG`, so exact dictionary comparison failed.
+- Added that already-frozen variable to the bootstrap inventory without
+  changing its value or any scientific path, then created
+  `outputs/runs/thayer_d3_runtime_readiness_20260713_131306/`.
+- Froze preregistration SHA-256
+  `7beeefeafa2496aa6171304ca0cf2656ffa2351adc5ee1cbd44370f38526e3f2`
+  before all third-party imports. Every observed process environment exactly
+  matched the preregistered map.
+- Passed the final guard self-test, both cold processes, warm-cache reuse, one
+  fresh process after shutdown, isolated metadata postprocessing, pure
+  evaluator tests, 21 D1R prerequisites, eleven metadata containers, four
+  source hashes, and all 600 historical checkpoint hashes.
+- Decision: **READINESS PASS — D3 NOT RUN**. Strict phases had zero deletion,
+  cache write, blocked read, protected access, or Matplotlib import. No
+  scientific tensor, model, optimizer, decoder forward, JVP, VJP, Atlas,
+  development, or lockbox access occurred. D3 remains scientifically unknown.
+
+## 2026-07-13 — Thayer-D3B authoritative process-inventory closure
+
+- Preserved `thayer_d3_runtime_readiness_20260713_134646` as non-authoritative.
+  Its first closure passed, but it did not persist every required initial,
+  bootstrap, strict-end, and post-shutdown inventory or independently validate
+  the complete postprocessor lifecycle from its access log.
+- Created
+  `outputs/runs/thayer_d3_runtime_readiness_20260713_135017/` and froze
+  preregistration SHA-256
+  `c5272757ce125d6603b615005b33002bb7aee6703790788a2d725c0f7c1106f6`
+  before all third-party imports.
+- Passed 16/16 guard self-tests and the 26-check final closure. The primary,
+  both cold, warm-cache, and shutdown-audited scientific processes emitted the
+  exact readiness marker. Their strict phases had zero deletion, cache or
+  bytecode write, blocked read, protected access, or Matplotlib import, and
+  their frozen runtime inventories did not change.
+- The separate Matplotlib/Agg postprocessor emitted its independent marker,
+  allowed zero scientific reads, imported zero project modules, and confined
+  both lifecycle operations to its own disposable runtime. The production
+  forward evaluator matched the independent reference on all twelve synthetic
+  cases with zero file I/O.
+- All 21 D1R prerequisites, eleven named metadata containers, exact scientific
+  code hashes, and all 600 historical checkpoints matched. No scientific
+  tensor, model, optimizer, decoder forward, JVP, VJP, Atlas, development, or
+  lockbox access occurred. Decision: **READINESS PASS — D3 NOT RUN**. One
+  separately preregistered square-only one-scene D3 campaign is operationally
+  permitted; D3 remains scientifically unknown.
+
+## 2026-07-13 — Thayer-D3A preregistration completeness stop
+
+- Created `outputs/runs/thayer_authoritative_d3_20260713_145040/` with a
+  standard-library-only orchestrator and froze preregistration SHA-256
+  `209aa4a2fdad6917536a010cb497eeb437c5b1a0994f948d279b60b63972e899`.
+- Matched 27/27 runtime-readiness hashes, 11/11 scientific-container hashes,
+  and 600/600 historical checkpoints without deserializing a tensor.
+- Found that the isolated evidence did not persist the scientific sky vector
+  and plausibility thresholds required by the pure forward evaluator and full
+  truth-coverage gate. Synthetic readiness fixtures were not substituted and
+  prohibited historical paths were not reopened.
+- Decision: **PREREGISTRATION INCOMPLETE — D3 NOT RUN**. Third-party imports,
+  tensor loads, models, optimizers, decoder forwards, D3 steps, postprocessing,
+  and protected-data accesses were all zero.
+
+## 2026-07-13 — Thayer-D3C scientific contract capsule
+
+- Created the corrected authoritative record
+  `outputs/runs/thayer_d3_scientific_capsule_20260713_155637/` and
+  froze preregistration SHA-256
+  `bb3ce7d68a42f88f52c54aa485448a929020782708aa251d38abb0f2ecdf819f`
+  before extracting any sky or threshold value.
+- Enumerated 97 required D3 scientific dependencies from the exact bootstrap,
+  evaluator, reference evaluator, truth-coverage, assignment, mapping, runtime,
+  artifact, and row-identity contracts. All 97 resolved with zero conflicts.
+- Built capsule SHA-256
+  `8a76ccdfa659a7291f0f9b73e0cb4d4c8adfb317b9902fc8ad5763e6d17b7d21`
+  and schema SHA-256
+  `42a974a7ef2b48a7108ef350d2d119c3955f3df325411784c9a22da9cf975f40`.
+- Passed the strict schema, hash chain, all 16 corruption tests, all 12
+  production/reference evaluator cases, zero evaluator I/O, and four
+  cwd/environment process modes. The capsule-only launcher emitted both
+  required authorization markers.
+- Decision: **SCIENTIFIC CONTRACT CAPSULE PASS — D3 NOT RUN**. No scientific
+  tensor, model, optimizer, decoder forward, gradient, or D3 step occurred.
+- Preserved the earlier preclosure run
+  `outputs/runs/thayer_d3_scientific_capsule_20260713_153815/` as
+  non-authoritative after finding that its generic small-JSON guard did not
+  recursively enforce selected-value rank inside mappings. The corrected run
+  proves rank-1 acceptance, rank-2 rejection, and 65-scalar rejection.
+
+## 2026-07-13 — Thayer-D3E executable contract
+
+- Created authoritative append-only run
+  `outputs/runs/thayer_d3_executable_contract_20260713_164320/` and froze
+  preregistration SHA-256
+  `b5a69f70c0f24f287da1f70a4a33e876fe9c8186be7c4e3c0eea67804bf1eede`
+  before container-member inspection or model and optimizer construction.
+- Reproduced the exact nine capsule-v1 requirements missing from the actual
+  consumer, then built one canonical 180-entry registry with identical builder,
+  validator, preflight, consumer, and runtime-access sets.
+- Passed capsule-v2 schema and hash chain, every scientific container header,
+  exact two-expert L0 construction and state loading, production-shape
+  synthetic MPS forward, assignment/loss/evaluator references, one AdamW step,
+  checkpoint reload and fresh-process replay, and all 25 consumer corruption
+  tests.
+- Built executable bundle SHA-256
+  `884d35e7ee385b2bb0b7d0e65aaf6bc18121fa209db6a17cc101ef12e32f4045`.
+  The actual consumer and future launcher emitted the required authorization
+  markers.
+- Decision: **EXECUTABLE D3 CONTRACT PASS — SCIENTIFIC D3 NOT RUN**. Scientific
+  array loads, scientific D3 steps, and Atlas, development, and lockbox access
+  were zero. D3 remains scientifically unknown.
+
+## 2026-07-13 — Thayer-D3S scientific attempt
+
+- Froze no partial preregistration and loaded no scientific tensor.
+- Matched executable-bundle SHA-256
+  `884d35e7ee385b2bb0b7d0e65aaf6bc18121fa209db6a17cc101ef12e32f4045`
+  and confirmed the 180-entry registry.
+- Found that the bundle lacks the required expert-activity/death gate,
+  prompt-collapse stop, optional tangent protocol, complete primary-outcome
+  mapping, and semantic-state rules.
+- Decision: **EXECUTABLE BUNDLE REGRESSION — D3 NOT RUN**. D3 and capacity
+  remain unknown; broader data and the capacity ladder remain closed.
+
+## 2026-07-13 — Thayer-D3P policy closure
+
+- Created authoritative append-only run
+  `outputs/runs/thayer_d3_policy_contract_20260713_173955/` and froze
+  preregistration SHA-256
+  `6edc2bbbfa1d98172dfbfdae6f28bf983099fab1200245f80e055590eab4543c`
+  before policy definitions, fixtures, launcher changes, or bundle v3.
+- Reproduced the exact five-family bundle-v2 regression and enumerated the
+  complete 16-policy consumer surface.
+- Passed 76 synthetic fixtures, all 106 launcher policy branches, 256/256
+  outcome combinations, semantic-state collision and replay tests, exact
+  six-set equality, and 30/30 bundle corruptions.
+- Built bundle-v3 SHA-256
+  `30ac88c635774d0fb4518bedde66fa459d67b1c1a323816c12d1e37b4614b61c`.
+  The actual launcher emitted all four readiness markers.
+- Decision: **D3 POLICY CONTRACT PASS — SCIENTIFIC D3 NOT RUN**. Scientific
+  tensor, model, optimizer, decoder-forward, and D3-step counts were zero;
+  Atlas, development, and lockbox remained untouched.
+
+## 2026-07-13 — Thayer-D3I
+
+- Reproduced the historical launcher regression with six pre-fix failures.
+- Added append-only bridge-v4 orchestration and worker/postprocess sources.
+- Passed the actual synthetic full stack, fresh-process replay, exact flow
+  closure, and 25/25 integration corruptions.
+- Froze bridge SHA-256
+  `3ab6e4a525297f48cc7fd9428651c604aa1236ed0a4425f9953c5b5772345dc5`.
+- Mandatory science loaded eight allowlisted containers / 91 members and then
+  stopped before model construction on `D3I-D1-MEMBER-CONTRACT`; two external
+  bytecode-cache reads were also blocked.
+- Outcome: `IMPLEMENTATION_OR_CONTRACT_FAILURE`; authorization: `none`.
+  Historical checkpoints were 600/600 unchanged; protected access was zero.
+
+## 2026-07-13 — Thayer-D3I41
+
+- Reproduced the v4 dtype and lazy-serialization defects before correction.
+- Candidate 001 stopped before bridge creation on a Correction-B helper
+  reference and was preserved; candidate 002 passed 58 tests, 25 inherited and
+  18 new corruptions, synthetic/replay/isolation/flow, and MPS gates.
+- Scientific continuation loaded 8 containers / 91 members and passed all four
+  corrected dtype contracts, then stopped before model construction on
+  `V41_MEMBER_INVENTORY_HASH_DOMAIN_ERROR`.
+- Outcome: `IMPLEMENTATION_OR_CONTRACT_FAILURE`; authorization: `none`;
+  600/600 historical checkpoints and all frozen sources remained unchanged.
+
+## 2026-07-13 — Thayer-D3I41R1
+
+- Froze a 30-row independent ledger; exact required tests passed 19/19.
+- Production-schema checkpoint probes passed in two cold and one warm process.
+- Candidate 001 failed worker import and was superseded within scope.
+- Candidate 002 stopped on an unrelated append-only log collision before worker
+  launch; no scientific payload was loaded and authorization remains `none`.
+## 2026-07-14 — Thayer-Audit v0
+
+- Run: `outputs/runs/thayer_audit_v0_20260714_154655/`.
+- Preregistration SHA-256:
+  `3ca55b23997c8bfb0d6be2d395096020ab04df1d730f043d04a0b7c6d6a9f1c2`.
+- Source-group-safe historical held-out fold: 7,055 PRE and 7,025 POST training
+  episodes; zero base-fit or auditor-partition group overlap.
+- Fixed MPS auditors: A1 28,307 parameters; A2 155,209 parameters; three seeds
+  2026071501–2026071503; zero reconstruction training.
+- PRE validation/calibration macro-F1 `0.8947/0.7980`, null recall
+  `1.0000/0.9988`, ambiguous recall `0.9009/0.9100`.
+- POST unsafe prevalence `1.0`; AUROC undefined; no threshold met the joint
+  coverage/risk constraints. Fail-closed accepted coverage was `0.0`.
+- Atlas/control abstention was `1.0/1.0` after policy freeze and was not used
+  for success.
+- Append-only outcome mapping correction: **DIRECT_AUDITOR_PARTIAL** because
+  query detection was useful while coverage, POST ranking, and family gates
+  failed. No prospective v1 authorization.
+- D3 remained unchanged; truth-only features were supervision/evaluation only;
+  development outcomes and final lockbox access counts remained zero.
+
+## 2026-07-14 — Thayer-PU Eligibility v1
+
+- Run: `outputs/runs/thayer_pu_eligibility_v1_20260714_213113/`.
+- Preregistration SHA-256:
+  `6f5cd5de57e7810aab947c9c59e955bb09215abb5d32251dff663cbf753d578c`.
+- Froze epoch-27 Thayer-PU checkpoint SHA-256 `c1d17a…557e`, K=16 seeds
+  2026077600–2026077615, truth-free mean aggregation, and MPS batch size 8.
+- Built 3,998/793/2,800 source-group-disjoint fit/selection-excluded source
+  manifests without retraining.
+- Prompt identity passed at 1.0 majority and 1.0 individual success. Repeated
+  batch-8 and batch-4/batch-8 hashes were exact.
+- All 24 scenes failed exact single-scene/batched candidate and deployed hashes;
+  full inference stopped. Outcome: `THAYER_PU_DEPLOYMENT_INELIGIBLE`.
+- Condition C replayed 12,493 unsafe / 0 safe with zero substantive mismatch.
+  No auditor, safety labels for Thayer-PU, Atlas selection, development, or
+  lockbox evaluation occurred.
+
+## 2026-07-14 — Thayer-Audit Family-E v0
+
+- Run: `outputs/runs/thayer_family_e_v0_20260714_195256/`.
+- Froze preregistration SHA-256
+  `256bffe3bc53b572b7596bba844f0afdbf4abf3c4cb1d8906fc0ad08663d8881`
+  before model construction or tensor loading.
+- Froze 10,000/2,000/2,000 group-disjoint valid-query manifests and five
+  2,000-row connected-source-group OOF folds.
+- Synthetic MPS simplex allocation passed nonnegativity, conservation
+  (maximum error `4.76837158203125e-07`), finite-gradient, low-flux, and
+  zero-source checks.
+- Full frozen-target audit found observed negative fractions
+  `0.486877/0.481794/0.482363` and target-sum exceedances in every episode.
+- Stopped before architecture construction. Outcome:
+  `DATA_OR_IMPLEMENTATION_FAILURE`.
+- No training, checkpoint, reconstruction, replay, safety label, bootstrap,
+  family comparison, auditor, development, Atlas-selection, or lockbox access
+  occurred.
+
+## 2026-07-14 — Family-E1 signed-noise-residual preflight
+
+- Run:
+  `outputs/runs/thayer_family_e1_signed_noise_residual_preflight_v0_20260714_202340/`.
+- Froze preregistration SHA-256
+  `be546f7f1aa2ec04f1a76f84bc5305c87521d5b89331c681dc3cdf18a5293d3b`
+  before new source-tensor loading.
+- Froze one in-forward ReLU requested/companion mapping and signed algebraic
+  observation-closure residual; no alternative mapping was tested.
+- Synthetic MPS gates passed without CPU fallback.
+- Full 10,000/2,000/2,000 audit passed: zero mapped-source negatives,
+  finite residuals with both signs, source round-trip within tolerance, and
+  float32 closure error at most `0.015625`.
+- Outcome: `SIGNED_NOISE_RESIDUAL_CONTRACT_PASS`.
+- No model, optimizer, checkpoint, reconstruction, safety label, bootstrap,
+  auditor, development, Atlas-selection, or lockbox access occurred.
+
+## 2026-07-14 — Thayer-Family-E1-v0
+
+- Run: `outputs/runs/thayer_family_e1_v0_20260714_214715/`.
+- Preregistration SHA-256:
+  `33c65102ec946cb980709fe66ca3728e85e0066c844354932af49d31c2aa65d5`.
+- Constructed exactly one 1,162,662-parameter 4-channel compact coordinate
+  U-Net with a six-channel in-forward ReLU source head and derived signed
+  residual.
+- Physical and objective-alignment audits passed; truth was stationary and no
+  compromise beat truth.
+- Ordinary micro-overfit passed with `0.998960` objective reduction and 1.0
+  prompt identity.
+- Difficult and mixed-eight prompt identity was `0.50/0.5625`, below 0.90;
+  outcome `FAMILY_E1_RECONSTRUCTION_FAILURE`.
+- Full training, OOF, replay, safety labeling, family comparison, bootstrap,
+  and auditor training did not run. Protected-data access stayed `0/0/0`.

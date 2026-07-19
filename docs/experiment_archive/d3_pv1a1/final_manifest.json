@@ -1,0 +1,23 @@
+{
+  "authoritative_scientific_outcome": "MIXED_CAUSE",
+  "branch_scientific_status": "UNKNOWN",
+  "counters": {
+    "backward_passes": 5000,
+    "branch_decisions": 1,
+    "checkpoints": 54,
+    "decoder_forwards": 10108,
+    "model_constructions": 1,
+    "optimizer_steps": 5000,
+    "target_dependent_losses": 5054
+  },
+  "downstream_authorization": "none",
+  "first_target_dependent_loss_was_irreversible": true,
+  "l0_scientific_result": "FAIL",
+  "l0_terminal_step": 5000,
+  "protected_legacy_loads": 0,
+  "protocol_identifier": "THAYER-D3-PV1-A1",
+  "runtime_replay_agreement": true,
+  "schema_version": "thayer-d3-pv1-a1-authoritative-scientific-outcome-v1",
+  "selected_branch": "NONE",
+  "source_changed_after_first_loss": false
+}

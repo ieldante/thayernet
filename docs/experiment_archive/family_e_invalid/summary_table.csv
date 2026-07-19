@@ -1,0 +1,4 @@
+gate,status,reason
+ordinary_one_scene,NOT_RUN,Part-E target-representability prerequisite failed
+difficult_one_scene,NOT_RUN,Part-E target-representability prerequisite failed
+mixed_eight_scene,NOT_RUN,Part-E target-representability prerequisite failed

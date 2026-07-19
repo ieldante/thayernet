@@ -1,0 +1,13 @@
+method,query_state,samples,accepted,coverage,catastrophic_rate_accepted,null_false_accept_rate,ambiguous_false_accept_rate,exposed_hallucination_rate,exposed_forced_source_rate
+condition_c_reconstruction_only,UNIQUE_VALID,2000,2000,1.0,0.832,,,,
+condition_c_reconstruction_only,NULL,500,500,1.0,,1.0,,0.054,
+condition_c_reconstruction_only,AMBIGUOUS,500,500,1.0,,,1.0,,0.192
+original_monolithic_R1,UNIQUE_VALID,2000,2000,1.0,0.7895,,,,
+original_monolithic_R1,NULL,500,500,1.0,,1.0,,0.048,
+original_monolithic_R1,AMBIGUOUS,500,500,1.0,,,1.0,,0.374
+hierarchical_query_gate_only,UNIQUE_VALID,2000,1333,0.6665,0.927231807951988,,,,
+hierarchical_query_gate_only,NULL,500,0,0.0,,0.0,,0.0,
+hierarchical_query_gate_only,AMBIGUOUS,500,46,0.092,,,0.092,,0.016
+complete_hierarchical_policy,UNIQUE_VALID,2000,1,0.0005,0.0,,,,
+complete_hierarchical_policy,NULL,500,0,0.0,,0.0,,0.0,
+complete_hierarchical_policy,AMBIGUOUS,500,0,0.0,,,0.0,,0.0

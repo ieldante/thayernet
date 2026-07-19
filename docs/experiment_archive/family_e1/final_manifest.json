@@ -1,0 +1,24 @@
+{
+  "activation": "SiLU",
+  "architecture_id": "THAYER_FAMILY_E1_COMPACT_COORDINATE_UNET",
+  "architecture_variants_constructed": 1,
+  "attention": false,
+  "batch_norm": false,
+  "encoder_widths": [
+    24,
+    48,
+    96,
+    128
+  ],
+  "group_norm_groups": 8,
+  "input_channels": 4,
+  "latent_variables": false,
+  "model_source": "src/family_e1.py",
+  "model_source_sha256": "b40a5467c3f16ce94ab0860e43a5d9937b8a86ef0c01afc0f4c4da844e8201e7",
+  "output_raw_channels": 6,
+  "parameter_ceiling": 3000000,
+  "signed_residual": "observed-requested-companion",
+  "source_mapping": "in_forward_relu",
+  "trainable_parameters": 1162662,
+  "upsampling": "bilinear_align_corners_false"
+}

@@ -1,0 +1,2 @@
+decision,witness_count,baseline_witness_count,candidate_diameter_auroc,baseline_auroc,recall_at_4pct_control_fpr,baseline_recall,own_truth_coverage,alternate_truth_coverage,safe_control_false_witness_rate,forward_consistency_rate,exact_next_experiment
+PARTIAL SUCCESS,24,19,0.856,0.4712,0.32,0.0,0.0,0.0,0.08,1.0,"Preregister one focused conditional normalizing-flow prior correction on the frozen Thayer-PU representation, retaining every current non-Atlas and Atlas gate."

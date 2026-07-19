@@ -1,0 +1,6 @@
+gate,observed,threshold,pass
+spearman,0.990678899426534,>=0.95,True
+kendall,0.957682531474849,>=0.90,True
+threshold_side_agreement,1.0,>=0.98,True
+truth_ranked_best,0.0,strict minimum,True
+approved_above_compromise,2.481529597309418,>truth,True

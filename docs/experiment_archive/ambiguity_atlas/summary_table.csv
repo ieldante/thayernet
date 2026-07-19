@@ -1,0 +1,9 @@
+gate,status,evidence
+ATLAS_FEASIBILITY,PASS,25 frozen validated Route-1 pairs; 25 valid Route-2 feasibility pairs; exact replay and visual artifact audit
+CONSTRUCTED_AMBIGUITY_WITNESS,PASS_FINITE_COUNTEREXAMPLE,50/50 noisy observations retain two divergent constructed truth decompositions
+OPERATIONAL_AMBIGUITY_WITNESS,FAIL,"diameter AUROC 0.4712, recall 0.0000; did not beat confidence"
+DEBLENDER_FAILURE_ON_ATLAS,PASS,75/75 pair/model rows have at least one unsafe noisy requested reconstruction
+MODEL_CANDIDATE_WITNESS,FAIL_OPERATIONAL_GATE,19/50 noisy observations; candidates share one architecture cluster
+CROSS_DEBLENDER_AUDIT,BLOCKED,one meaningfully distinct compatible family cluster; no auditor trained
+CATALOG_SAFETY_COVERAGE,NOT_RUN,requires cross-family gate; no coverage or bias claim
+FINAL_DEVELOPMENT_OR_LOCKBOX,NOT_OPENED,zero access by contract and audit

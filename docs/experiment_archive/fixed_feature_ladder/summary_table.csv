@@ -1,0 +1,13 @@
+condition,mapping,status,optimizer_steps,optimizer_parameter_count,initial_target_loss,final_target_loss,target_residual_capture,own_coverage,alternate_coverage,both_mode_coverage,prompt_identity,forward_consistency,physical_minimum,finite_output_fraction,target_hashes_unchanged,final_physical_sha256,artifact,effective_design_rank_expert_1,effective_design_rank_expert_2
+D0,relu,FAIL,5000,86400,3.4652563044801354e-05,4.201239426038228e-05,-0.21238923095141904,0.0,0.0,0.0,1.0,1.0,0.0,1.0,True,597e6af0d5e35c2a140b03d2d775fbafbb10bdd1bac670b0fd9bf3f7b0b92bf7,<REPOSITORY_ROOT>/outputs/runs/thayer_repository_integrity_20260713_031653/fixed_feature_retry/d0_superseding_v2/relu_final.pt,,
+D0,square,PASS,5000,86400,6.228743131941883e-06,3.614716304056742e-10,0.9999419671637201,1.0,1.0,1.0,1.0,1.0,8.97781315956081e-09,1.0,True,58a672a7464126dfa6cfaa401c5c901d75ecd87840cf8023a8467a802e8661ff,<REPOSITORY_ROOT>/outputs/runs/thayer_repository_integrity_20260713_031653/fixed_feature_retry/d0_superseding_v2/square_final.pt,,
+D0,absolute,FAIL,5000,86400,1.6069454431999475e-05,2.5872363949019928e-06,0.8389966251903382,0.0,0.0,0.0,1.0,1.0,3.6502186162579164e-07,1.0,True,bbcd4e4e1c747e984c627c85ea98a23fdd3795a4a08437658fa104656b30162f,<REPOSITORY_ROOT>/outputs/runs/thayer_repository_integrity_20260713_031653/fixed_feature_retry/d0_superseding_v2/absolute_final.pt,,
+D1,relu,SKIPPED_PRECEDING_GATE,0,0,,,,,,,,,,,True,,,,
+D1,square,PASS,5000,230400,6.228743131941883e-06,3.1026115010490685e-09,0.9995018880317702,1.0,1.0,1.0,1.0,1.0,2.5710669704359645e-10,1.0,True,79ce0af8503282208538c2717efe024bd3df83808f3fead07ff624cda85b9229,<REPOSITORY_ROOT>/outputs/runs/thayer_repository_integrity_20260713_031653/fixed_feature_retry/d1_superseding_v2/square_final.pt,,
+D1,absolute,SKIPPED_PRECEDING_GATE,0,0,,,,,,,,,,,True,,,,
+D2,relu,SKIPPED_PRECEDING_GATE,0,0,,,,,,,,,,,True,,,,
+D2,square,FAIL,5000,204,6.228743131941883e-06,4.451560016605072e-06,0.2853196989651352,0.0,0.0,0.0,1.0,1.0,6.305030803011036e-11,1.0,True,bf200edddac665fc5c6b1ff83c6216403adc04e10a84aaad7f69a595c520a63f,<REPOSITORY_ROOT>/outputs/runs/thayer_repository_integrity_20260713_031653/fixed_feature_retry/d2_superseding_v2/square_final.pt,17,17
+D2,absolute,SKIPPED_PRECEDING_GATE,0,0,,,,,,,,,,,True,,,,
+D3,relu,SKIPPED_PRECEDING_GATE,0,0,,,,,,,,,,,True,,,,
+D3,square,SKIPPED_PRECEDING_GATE,0,0,,,,,,,,,,,True,,,,
+D3,absolute,SKIPPED_PRECEDING_GATE,0,0,,,,,,,,,,,True,,,,

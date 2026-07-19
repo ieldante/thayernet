@@ -1,0 +1,9 @@
+scene_index,scene_id,level_4_classification,level_5_classification,unique_under_any_family,minimum_structural_family_required,oracle_flux_v1_minimum,best_scene_classification
+0,v2_r_training_00000,NON_IDENTIFIABLE,NEAR_UNIQUE,False,none,Level 4,NEAR_UNIQUE
+3,v2_r_training_00003,PARTIALLY_IDENTIFIABLE,NON_IDENTIFIABLE,False,none,Level 4,PARTIALLY_IDENTIFIABLE
+5,v2_r_training_00005,NON_IDENTIFIABLE,NEAR_UNIQUE,False,none,Level 4,NEAR_UNIQUE
+6,v2_r_training_00006,PARTIALLY_IDENTIFIABLE,NEAR_UNIQUE,False,none,Level 5,NEAR_UNIQUE
+18,v2_r_training_00018,NON_IDENTIFIABLE,NEAR_UNIQUE,False,none,Level 5,NEAR_UNIQUE
+51,v2_r_training_00051,PARTIALLY_IDENTIFIABLE,PARTIALLY_IDENTIFIABLE,False,none,none,PARTIALLY_IDENTIFIABLE
+73,v2_r_training_00073,PARTIALLY_IDENTIFIABLE,NEAR_UNIQUE,False,none,Level 4,NEAR_UNIQUE
+81,v2_r_training_00081,NEAR_UNIQUE,PARTIALLY_IDENTIFIABLE,False,none,Level 5,NEAR_UNIQUE

@@ -1,0 +1,7 @@
+gate,status,evidence
+promptability,FAIL,swap 0.394667 < 0.80; individual 0.695 < 0.75
+candidate_contract,FAIL,batch-geometry candidate hashes differed
+architecture_diversity,NOT_EVALUATED,pre-Atlas stop
+witness_improvement,NOT_EVALUATED,pre-Atlas stop
+diameter,NOT_EVALUATED,pre-Atlas stop
+overall,FAILURE,promptability failed; Atlas inference prohibited

@@ -1,0 +1,492 @@
+{
+  "affected_mask_definition": "mean(abs(blended-target), RGB) > 0.02",
+  "all_integrity_checks_passed": true,
+  "array_hash_method": "sha256(dtype_ascii+shape_ascii+contiguous_bytes)_v1",
+  "base_seed": 2026071001,
+  "completed_at": "2026-07-10T10:42:04.674909-04:00",
+  "contains_raw_image_arrays": false,
+  "core_mask_definition": "evaluation_core_mask_p85_v1",
+  "dataset_path": "data/Galaxy10_DECals.h5",
+  "development_not_final": "Fresh duplicate-safe grouped development manifests. These are not a locked final-paper test and may be used for grouped retraining/evaluation only.",
+  "generator_version": "thayer_grouped_blend_manifest_development_v1",
+  "halo_mask_definition": "halo_band_mask_manhattan_v1, 5 iterations",
+  "integrity_check_count": 71,
+  "integrity_checks_passed": 71,
+  "known_scope_limitations": [
+    "Galaxy10 DECaLS inputs are RGB display cutouts, not calibrated FITS flux images.",
+    "The historical generator applies optional blur to the target and noise after compositing.",
+    "Generator difficulty is a parameter label; blend_severity_score is measured damage, not model difficulty.",
+    "These fresh grouped manifests are development infrastructure and not a locked final-paper test."
+  ],
+  "manifest_columns_in_order": [
+    "sample_id",
+    "suite",
+    "source_split",
+    "target_source_index",
+    "target_group_id",
+    "target_label",
+    "contaminant_source_index",
+    "contaminant_group_id",
+    "contaminant_label",
+    "sample_seed",
+    "attempt_index",
+    "shift_x",
+    "shift_y",
+    "brightness_scale",
+    "blur_sigma",
+    "noise_std",
+    "rotation_degrees",
+    "affected_threshold",
+    "size_ratio",
+    "mask_fraction",
+    "core_obstruction_fraction",
+    "blend_severity_score",
+    "target_pxscale",
+    "contaminant_pxscale",
+    "blend_sha256",
+    "affected_mask_sha256",
+    "core_mask_sha256",
+    "halo_mask_sha256",
+    "generator_version",
+    "generator_sha256",
+    "dataset_sha256",
+    "source_split_manifest_sha256",
+    "schema_version",
+    "manifest_role",
+    "development_not_final",
+    "suite_display_name",
+    "training_component",
+    "accepted_sample_index",
+    "candidate_seed",
+    "numpy_bit_generator",
+    "seed_derivation",
+    "source_selection_draws",
+    "target_exact_sha256",
+    "contaminant_exact_sha256",
+    "target_coordinate_group_key",
+    "contaminant_coordinate_group_key",
+    "target_ra",
+    "target_dec",
+    "target_redshift",
+    "contaminant_ra",
+    "contaminant_dec",
+    "contaminant_redshift",
+    "target_group_size",
+    "contaminant_group_size",
+    "target_image_sha256",
+    "contaminant_image_sha256",
+    "shift_l1_pixels",
+    "shift_l2_pixels",
+    "rotation_enabled",
+    "generation_difficulty",
+    "target_area_pixels",
+    "target_radius_pixels",
+    "contaminant_area_pixels",
+    "contaminant_radius_pixels",
+    "pixel_size_ratio",
+    "angular_size_ratio",
+    "affected_pixel_count",
+    "core_pixel_count",
+    "core_affected_pixel_count",
+    "noncore_affected_pixel_count",
+    "halo_pixel_count",
+    "identity_affected_mse",
+    "identity_affected_mae",
+    "halo_dilation_iters",
+    "target_blur_or_noise_correction_present",
+    "sampling_max_shift",
+    "sampling_brightness_low",
+    "sampling_brightness_high",
+    "sampling_blur_low",
+    "sampling_blur_high",
+    "sampling_noise_low",
+    "sampling_noise_high",
+    "sampling_rotation_low",
+    "sampling_rotation_high",
+    "constraint_min_size_ratio",
+    "constraint_max_size_ratio",
+    "constraint_min_mask_fraction",
+    "constraint_min_core_obstruction",
+    "constraints_met",
+    "target_contaminant_groups_distinct",
+    "target_contaminant_sources_distinct",
+    "replay_validation_selected",
+    "replay_validation_status",
+    "replay_max_abs_difference",
+    "array_hash_method",
+    "manifest_builder_sha256",
+    "generator_combined_sha256",
+    "sample_fingerprint_sha256"
+  ],
+  "manifest_file_sha256": {
+    "compact_bright_test_blends.csv": "781e5a82fb2b23739747c21d32b047d88c2faa89f766c67f86d0dc315aad3876",
+    "hard_stress_test_blends.csv": "9936a823102aa5243df102ecc0e4ec6fd6d4f73bcf0e8e754e103584cef8c2b1",
+    "high_core_obstruction_test_blends.csv": "72f70cd2bc533726d782712babd3442b268f78aa5c8e879bb6b76aba837e2479",
+    "manifest_integrity_check.csv": "1f6ee09e03a5155cdb2cfcc40cc9b0ec514eec2ef78c209eda503215e7116ae0",
+    "normal_test_blends.csv": "da56a62da61fb9b25ed6a2dbf852c8433658a765473258e9aaae3b6eac209cdf",
+    "train_blends.csv": "052bb73f4a2933e1d77561a1d6e7141b11e06cdd85b63ae88c22aa52bbffd532",
+    "val_blends.csv": "918ff3bc383a9b4798fbdce557c250193de83f847ebcd41162745b68a59e6b0f"
+  },
+  "manifest_role": "duplicate_safe_grouped_development_benchmark",
+  "output_directory": "data/manifests/grouped_blends_20260710_103233",
+  "paper_ready_final_test": false,
+  "preload_all_images": true,
+  "provenance": {
+    "output_sha256": {
+      "compact_bright_test_blends.csv": "781e5a82fb2b23739747c21d32b047d88c2faa89f766c67f86d0dc315aad3876",
+      "hard_stress_test_blends.csv": "9936a823102aa5243df102ecc0e4ec6fd6d4f73bcf0e8e754e103584cef8c2b1",
+      "high_core_obstruction_test_blends.csv": "72f70cd2bc533726d782712babd3442b268f78aa5c8e879bb6b76aba837e2479",
+      "manifest_integrity_check.csv": "1f6ee09e03a5155cdb2cfcc40cc9b0ec514eec2ef78c209eda503215e7116ae0",
+      "normal_test_blends.csv": "da56a62da61fb9b25ed6a2dbf852c8433658a765473258e9aaae3b6eac209cdf",
+      "train_blends.csv": "052bb73f4a2933e1d77561a1d6e7141b11e06cdd85b63ae88c22aa52bbffd532",
+      "val_blends.csv": "918ff3bc383a9b4798fbdce557c250193de83f847ebcd41162745b68a59e6b0f"
+    },
+    "source_sha256": {
+      "config_sha256": "3bceafd07cdee13bd6a51ba3e2e8d78b7ea2c82689abf520611fdeb732e76270",
+      "dataset_sha256": "19aefc477c41bb7f77ff07599a6b82a038dc042f889a111b0d4d98bb755c1571",
+      "generator_combined_sha256": "918548ecb459c6818bd056027902e102157e4d7da2dd17f2a0af0c909559a16c",
+      "generator_sha256": "fd7b1ccdb7b61dead932b2cc4e02aa378def709c6384dcecfce9d876276ab3bc",
+      "manifest_builder_sha256": "e3bb01ae69d9ebd004e2456529e89b23c8408b356a1b57413f7cad52d22f60f3",
+      "source_split_manifest_sha256": "bc6a16b1a008e2815ea8e6e097bb99005d360b4537046802b5d58adce106cbda",
+      "utils_sha256": "0f9bed54b8f61e282a32383421067d0837e0006f4cb740c58ad0681dd1bef0aa"
+    }
+  },
+  "qualitative_examples_inspected": false,
+  "sample_seed_replay_contract": "Pass sample_seed directly to np.random.default_rng and make one src.blend.blend_pair call with the row's explicit sources/parameters.",
+  "schema_version": "thayer_grouped_blend_manifest_schema_v1",
+  "seed_derivation": "sha256_utf8_pipe_delimited_first_uint64_little_endian_v1",
+  "source_column_alias_mapping": {
+    "coordinate_group_key": "coordinate_group_key",
+    "dec": "dec",
+    "exact_sha256": "exact_sha256",
+    "group_id": "group_id",
+    "group_size": "group_size",
+    "label": "label",
+    "pxscale": "pxscale",
+    "ra": "ra",
+    "redshift": "redshift",
+    "source_index": "source_index",
+    "split": "split"
+  },
+  "source_hashes": {
+    "config_sha256": "3bceafd07cdee13bd6a51ba3e2e8d78b7ea2c82689abf520611fdeb732e76270",
+    "dataset_sha256": "19aefc477c41bb7f77ff07599a6b82a038dc042f889a111b0d4d98bb755c1571",
+    "generator_combined_sha256": "918548ecb459c6818bd056027902e102157e4d7da2dd17f2a0af0c909559a16c",
+    "generator_sha256": "fd7b1ccdb7b61dead932b2cc4e02aa378def709c6384dcecfce9d876276ab3bc",
+    "manifest_builder_sha256": "e3bb01ae69d9ebd004e2456529e89b23c8408b356a1b57413f7cad52d22f60f3",
+    "source_split_manifest_sha256": "bc6a16b1a008e2815ea8e6e097bb99005d360b4537046802b5d58adce106cbda",
+    "utils_sha256": "0f9bed54b8f61e282a32383421067d0837e0006f4cb740c58ad0681dd1bef0aa"
+  },
+  "source_split_counts": {
+    "test": 2659,
+    "train": 12417,
+    "validation": 2660
+  },
+  "source_split_group_counts": {
+    "test": 2650,
+    "train": 12374,
+    "validation": 2651
+  },
+  "source_split_manifest": "data/manifests/grouped_source_split_20260710_100907/source_split_manifest.csv",
+  "status": "complete",
+  "suite_summaries": [
+    {
+      "candidate_attempts": 8679,
+      "component_counts": {
+        "brightness_size": 1600,
+        "high_overlap_core": 2400,
+        "normal": 4000
+      },
+      "display_name": "Grouped balanced training",
+      "filename": "train_blends.csv",
+      "manifest_spec": {
+        "blur_range": [
+          0.0,
+          0.3
+        ],
+        "brightness_range": [
+          0.5,
+          1.2
+        ],
+        "component": "balanced_schedule",
+        "display_name": "Grouped balanced training",
+        "filename": "train_blends.csv",
+        "max_attempts_per_sample": 16,
+        "max_shift": 56,
+        "max_size_ratio": null,
+        "min_core_obstruction": null,
+        "min_mask_fraction": 0.0,
+        "min_size_ratio": null,
+        "n_samples": 8000,
+        "name": "train",
+        "noise_range": [
+          0.0,
+          0.01
+        ],
+        "rotation_range": [
+          0.0,
+          0.0
+        ],
+        "source_split": "train"
+      },
+      "mean_core_obstruction_fraction": 0.6081882974310904,
+      "mean_mask_fraction": 0.0871075839996338,
+      "mean_size_ratio": 1.0394271819024494,
+      "n_samples": 8000,
+      "rejected_candidates": 679,
+      "replay_rows_checked": 8000,
+      "source_split": "train",
+      "suite": "train",
+      "unique_contaminant_sources": 5902,
+      "unique_source_groups": 9000,
+      "unique_target_sources": 5920
+    },
+    {
+      "candidate_attempts": 1097,
+      "component_counts": {
+        "brightness_size": 200,
+        "high_overlap_core": 300,
+        "normal": 500
+      },
+      "display_name": "Grouped balanced validation",
+      "filename": "val_blends.csv",
+      "manifest_spec": {
+        "blur_range": [
+          0.0,
+          0.3
+        ],
+        "brightness_range": [
+          0.5,
+          1.2
+        ],
+        "component": "balanced_schedule",
+        "display_name": "Grouped balanced validation",
+        "filename": "val_blends.csv",
+        "max_attempts_per_sample": 16,
+        "max_shift": 56,
+        "max_size_ratio": null,
+        "min_core_obstruction": null,
+        "min_mask_fraction": 0.0,
+        "min_size_ratio": null,
+        "n_samples": 1000,
+        "name": "validation",
+        "noise_range": [
+          0.0,
+          0.01
+        ],
+        "rotation_range": [
+          0.0,
+          0.0
+        ],
+        "source_split": "validation"
+      },
+      "mean_core_obstruction_fraction": 0.6091379796688595,
+      "mean_mask_fraction": 0.08880445861816406,
+      "mean_size_ratio": 1.0610396788746086,
+      "n_samples": 1000,
+      "rejected_candidates": 97,
+      "replay_rows_checked": 1000,
+      "source_split": "validation",
+      "suite": "validation",
+      "unique_contaminant_sources": 825,
+      "unique_source_groups": 1401,
+      "unique_target_sources": 828
+    },
+    {
+      "candidate_attempts": 1000,
+      "component_counts": {
+        "normal": 1000
+      },
+      "display_name": "Grouped normal development test",
+      "filename": "normal_test_blends.csv",
+      "manifest_spec": {
+        "blur_range": [
+          0.0,
+          0.3
+        ],
+        "brightness_range": [
+          0.5,
+          1.2
+        ],
+        "component": "normal",
+        "display_name": "Grouped normal development test",
+        "filename": "normal_test_blends.csv",
+        "max_attempts_per_sample": 16,
+        "max_shift": 56,
+        "max_size_ratio": null,
+        "min_core_obstruction": null,
+        "min_mask_fraction": 0.0,
+        "min_size_ratio": null,
+        "n_samples": 1000,
+        "name": "normal_test",
+        "noise_range": [
+          0.0,
+          0.01
+        ],
+        "rotation_range": [
+          0.0,
+          0.0
+        ],
+        "source_split": "test"
+      },
+      "mean_core_obstruction_fraction": 0.36650404090209143,
+      "mean_mask_fraction": 0.08190895080566406,
+      "mean_size_ratio": 1.038137970336676,
+      "n_samples": 1000,
+      "rejected_candidates": 0,
+      "replay_rows_checked": 1000,
+      "source_split": "test",
+      "suite": "normal_test",
+      "unique_contaminant_sources": 857,
+      "unique_source_groups": 1423,
+      "unique_target_sources": 836
+    },
+    {
+      "candidate_attempts": 1103,
+      "component_counts": {
+        "hard_stress": 1000
+      },
+      "display_name": "Grouped hard-stress development test",
+      "filename": "hard_stress_test_blends.csv",
+      "manifest_spec": {
+        "blur_range": [
+          0.0,
+          0.15
+        ],
+        "brightness_range": [
+          0.8,
+          1.4
+        ],
+        "component": "hard_stress",
+        "display_name": "Grouped hard-stress development test",
+        "filename": "hard_stress_test_blends.csv",
+        "max_attempts_per_sample": 500,
+        "max_shift": 18,
+        "max_size_ratio": null,
+        "min_core_obstruction": null,
+        "min_mask_fraction": 0.01,
+        "min_size_ratio": 0.75,
+        "n_samples": 1000,
+        "name": "hard_stress_test",
+        "noise_range": [
+          0.0,
+          0.006
+        ],
+        "rotation_range": [
+          0.0,
+          0.0
+        ],
+        "source_split": "test"
+      },
+      "mean_core_obstruction_fraction": 0.8944314045586913,
+      "mean_mask_fraction": 0.08889181518554687,
+      "mean_size_ratio": 1.0496517713826643,
+      "n_samples": 1000,
+      "rejected_candidates": 103,
+      "replay_rows_checked": 1000,
+      "source_split": "test",
+      "suite": "hard_stress_test",
+      "unique_contaminant_sources": 825,
+      "unique_source_groups": 1395,
+      "unique_target_sources": 818
+    },
+    {
+      "candidate_attempts": 3228,
+      "component_counts": {
+        "compact_bright": 1000
+      },
+      "display_name": "Grouped compact-bright development test",
+      "filename": "compact_bright_test_blends.csv",
+      "manifest_spec": {
+        "blur_range": [
+          0.0,
+          0.08
+        ],
+        "brightness_range": [
+          1.35,
+          1.95
+        ],
+        "component": "compact_bright",
+        "display_name": "Grouped compact-bright development test",
+        "filename": "compact_bright_test_blends.csv",
+        "max_attempts_per_sample": 900,
+        "max_shift": 24,
+        "max_size_ratio": 0.9,
+        "min_core_obstruction": null,
+        "min_mask_fraction": 0.004,
+        "min_size_ratio": 0.15,
+        "n_samples": 1000,
+        "name": "compact_bright_test",
+        "noise_range": [
+          0.0,
+          0.006
+        ],
+        "rotation_range": [
+          0.0,
+          0.0
+        ],
+        "source_split": "test"
+      },
+      "mean_core_obstruction_fraction": 0.7413724430991039,
+      "mean_mask_fraction": 0.06026034545898438,
+      "mean_size_ratio": 0.7836944142402201,
+      "n_samples": 1000,
+      "rejected_candidates": 2228,
+      "replay_rows_checked": 1000,
+      "source_split": "test",
+      "suite": "compact_bright_test",
+      "unique_contaminant_sources": 712,
+      "unique_source_groups": 1387,
+      "unique_target_sources": 773
+    },
+    {
+      "candidate_attempts": 1213,
+      "component_counts": {
+        "high_core_obstruction": 1000
+      },
+      "display_name": "Grouped high-core-obstruction development test",
+      "filename": "high_core_obstruction_test_blends.csv",
+      "manifest_spec": {
+        "blur_range": [
+          0.0,
+          0.12
+        ],
+        "brightness_range": [
+          0.9,
+          1.5
+        ],
+        "component": "high_core_obstruction",
+        "display_name": "Grouped high-core-obstruction development test",
+        "filename": "high_core_obstruction_test_blends.csv",
+        "max_attempts_per_sample": 1200,
+        "max_shift": 12,
+        "max_size_ratio": null,
+        "min_core_obstruction": 0.82,
+        "min_mask_fraction": 0.01,
+        "min_size_ratio": 0.7,
+        "n_samples": 1000,
+        "name": "high_core_obstruction_test",
+        "noise_range": [
+          0.0,
+          0.006
+        ],
+        "rotation_range": [
+          0.0,
+          0.0
+        ],
+        "source_split": "test"
+      },
+      "mean_core_obstruction_fraction": 0.9620182578684565,
+      "mean_mask_fraction": 0.09303971862792969,
+      "mean_size_ratio": 1.0617178526086135,
+      "n_samples": 1000,
+      "rejected_candidates": 213,
+      "replay_rows_checked": 1000,
+      "source_split": "test",
+      "suite": "high_core_obstruction_test",
+      "unique_contaminant_sources": 845,
+      "unique_source_groups": 1410,
+      "unique_target_sources": 827
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "changing_prompt_changes_output_rate": 1.0,
+  "output_collapse_rate": 0.002,
+  "prompt_sensitivity_ratio_mean": 1.6074548439533782,
+  "scene_count": 1000,
+  "small_offset_absolute_sensitivity_mean": 1.8570775075554848,
+  "source_swap_success_rate": 0.98
+}

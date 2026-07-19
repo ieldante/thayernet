@@ -1,83 +1,72 @@
-# Thayer-Select project roadmap
+# Project roadmap
 
-1. **Complete — promptability.** Freeze the group-safe CatSim partitions,
-   validate explicit-seed replay, compare centered/unprompted/randomized/
-   prompted controls, and establish prompt-swap behavior.
-2. **Complete with partial success — recoverability.** R0 and R1 completed,
-   calibration used calibration only, and the newly frozen development manifest
-   was evaluated once. Discrimination and risk–coverage improved, but ambiguity
-   ranking and catastrophic-error gates failed.
-3. **Next authorized — replication.** Repeat R1 with two independent initialization
-   and minibatch-order seeds without changing architecture, manifests, losses,
-   contracts, calibration protocol, or metrics.
-4. **Not yet authorized — ambiguity benchmark.** Feasibility mining checked
-   77,671 filtered candidate edges and found zero pairs meeting both provisional
-   cutoffs. Do not build a full Ambiguity Atlas yet.
-5. **Separately authorized — final/real-sky evaluation.** Keep the lockbox
-   sealed until the full protocol is frozen. Treat DR10 as a real-sky OOD
-   benchmark with its independent source-only/PSF/unit gates, not as a shortcut
-   around controlled validation.
+The canonical scientific history is in the
+[complete research program map](thayer_research_program_map.md). This roadmap
+contains only current decisions. The long pre-curation roadmap is preserved
+unchanged in
+[`project_roadmap_pre_canonical_archive.md`](research_archive/project_roadmap_pre_canonical_archive.md).
 
-## Roadmap update after frozen-head ablation
+## Complete — Phase I mechanistic map
 
-6. **Complete — seed replication and root-cause analysis.** Phase-II instability,
-   ambiguity inversion, isotonic collapse, low-SNR failure concentration, and
-   unused frozen-latent information are documented.
-7. **Complete with no clear improvement — frozen-head diagnostic.** H0-H4,
-   calibration comparisons, the centroid augmentation, and the non-deployable
-   oracle used only train/validation/calibration evidence. No development or
-   lockbox evaluation occurred.
-8. **Exactly one next experiment — target redesign.** Redesign and preregister
-   the moderate reliability contract with failure-specific labels before any
-   further head, backbone, representation, or ambiguity-construction change.
-9. **Still sealed — final lockbox.** Do not use the lockbox for contract design,
-   target selection, calibration, debugging, visual review, or threshold tuning.
+- Reconciled the early neural, prompting, recoverability, ambiguity, model-
+  family, loss-geometry, output-contract, D0–D3, and audit branches.
+- Proved unrestricted additive non-identifiability in the frozen direct-output
+  contract.
+- Mapped conditional oracle, flux-free S1, same-PSF S2, PSF-diverse P2, and
+  external-photometry interventions across the selected eight scenes.
+- Classified PRE as useful but not fully validated, identifiability as the
+  strongest functioning audit, and POST as blocked by label collapse.
+- Curated compact authorities while keeping raw/protected/bulky artifacts
+  local-only.
 
-## Roadmap update after hierarchical safety campaign
+## Next — Phase II independent validation
 
-10. **Complete — hierarchical policy experiment.** Query validity, separate
-    valid-only image/flux/centroid risks, confusion risk, vector scaling,
-    split-conformal upper bounds, and one frozen accept/abstain rule were tested
-    without changing Condition C.
-11. **Successful component — query gate.** The three-state gate removed the
-    ambiguity inversion, rejected all fresh development NULL queries, and cut
-    AMBIGUOUS false acceptance to 9.2% at 66.65% valid-query coverage.
-12. **Failed system gate — operational coverage.** The complete policy accepted
-    1/2,000 development valid scenes and did not beat the historical R1 ranking
-    at useful diagnostic coverage. Lockbox evaluation is not authorized.
-13. **Next experiment — risk-limit feasibility and conditional conformal.** Use
-    train/validation/calibration artifacts only. Audit aperture flux scaling and
-    log-tail stability, preregister a fixed catastrophic-risk budget plus at
-    least 70% valid calibration coverage, and compare with R1 before creating
-    another development set. Keep Condition C frozen.
-14. **Ambiguity benchmark — targeted pilot only.** A later pilot may combine
-    simulator optimization, matched source pairs, and multi-hypothesis truth
-    sets. Do not build the full Atlas and do not use development or lockbox
-    scenes for ambiguity engineering.
-15. **Protocol correction — complete.** Preserve the 2026-07-11 hierarchical
-    result as historical evidence, but do not certify its sequence as fully
-    preregistered. The 2026-07-12 corrective audit reconstructed every original
-    composite label and stopped before new inference or fitting.
-16. **Next authorization gate — prospective feasibility only.** Before another
-    development manifest, freeze and hash a new preregistration, use one
-    reconstruction provenance across train/validation/calibration, complete the
-    row-level contract and drift audits, and pass the calibration-only minimum-
-    coverage gate. The lockbox remains sealed.
+Follow the frozen
+[Phase-II validation plan](research_archive/phase_ii_validation_plan.md).
 
-## Roadmap update after prospective feasibility
+1. Create a fresh, group-disjoint scene sample excluding Scenes 0, 3, 5, 6,
+   18, 51, 73, and 81.
+2. Freeze the structural family, total-photometry uncertainty, start count,
+   optimizer budget, endpoint clustering, diameters, and decision thresholds.
+3. Compare single-observation flux-free S1, total external photometry, and P2
+   with matched starts and budgets.
+4. Test the prespecified photometry-benefit hypothesis and low-`|ΔB/T|`
+   stratum without post-hoc threshold tuning.
+5. Report exact confidence intervals, multiplicity-adjusted inference, failed
+   optimizations, out-of-support cases, and all abstentions.
 
-17. **Complete with partial success — prospective component feasibility.** The
-    query gate and image/flux/centroid/confusion rankers passed under uniform
-    Condition-C provenance. Marginal calibration retained resolution.
-18. **Frozen-gate failure — catastrophic AUPRC criterion.** The observed
-    prevalence made the preregistered `1.25 × prevalence` AUPRC threshold exceed
-    1.0. Preserve the failure; do not reinterpret the excellent 0.997 AUPRC as
-    a formal pass.
-19. **Exactly one next experiment — conditional-calibration correction.** Keep
-    the reconstructor and heads frozen, preflight every gate for attainability,
-    replace the unbounded AP ratio with a bounded prevalence-adjusted lift, and
-    require 85–95% coverage plus bounded 95th-percentile width in each frozen
-    SNR/overlap subgroup.
-20. **Still prohibited — development and lockbox.** Do not build a development
-    manifest or full hierarchical policy until the corrective feasibility
-    experiment passes under a separately hashed preregistration.
+Minimal, moderate, and publication-grade sample sizes and compute-reduction
+rules are specified in the plan. The existing eight scenes may inform runtime,
+metric freezing, and stratum definitions only; they are not validation data.
+
+## After independent validation — robustness
+
+Only if the primary Phase-II contract remains scientifically useful:
+
+- perturb prompt coordinates;
+- introduce PSF estimation error;
+- test noise misspecification and correlation;
+- test structural/morphology misspecification;
+- audit an independent implementation of the structured solver and
+  identifiability logic;
+- evaluate direct reconstruction accuracy for independently unique targets.
+
+## Later — operational and real-data closure
+
+- Replace truth-derived routing features with validated observable quantities.
+- Measure false authorization, unnecessary acquisition, and abstention costs
+  for `RECONSTRUCT`, `ACQUIRE PHOTOMETRY`, and `DON’T EVEN TRY`.
+- Revisit POST only after an eligible reconstructor supplies a nondegenerate
+  independently verified safe/unsafe population.
+- Perform survey-specific unit, PSF, morphology, catalog, and source-only
+  closure before any real-data performance or safety claim.
+
+## Deferred / unresolved
+
+- Full D3 capacity and eight-scene ladders.
+- Larger population-prevalence estimation.
+- Operational external-photometry acquisition policy.
+- Real-survey deployment.
+
+These branches remain `UNKNOWN`, `EXPLORATORY`, or `BLOCKED`; absence of a run
+is not a negative result.

@@ -1,0 +1,7 @@
+{
+  "authorization": "Thayer-Audit v1 is not authorized.",
+  "next_step": "Recommend exactly one new family: Thayer-Audit Family-E v0 \u2014 One Nonnegative Flux-Conserving Frozen Family Eligibility Audit.",
+  "outcome": "THAYER_PU_ELIGIBLE_BUT_LABEL_COLLAPSED",
+  "post_auditor_trained": false,
+  "thayer_audit_v1_authorized": false
+}

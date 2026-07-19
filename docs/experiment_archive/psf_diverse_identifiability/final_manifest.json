@@ -1,0 +1,125 @@
+{
+  "all_required_artifacts_present": true,
+  "campaign": "Thayer-PSF-Diverse-Flux-Identifiability-v0",
+  "commits_created": 0,
+  "conditioning_improvement_family_count": 15,
+  "counts": {
+    "P2": {
+      "level_4": 0,
+      "level_5": 0,
+      "union": 0
+    },
+    "S1": {
+      "level_4": 0,
+      "level_5": 0,
+      "union": 0
+    },
+    "S2": {
+      "level_4": 0,
+      "level_5": 0,
+      "union": 0
+    }
+  },
+  "final_report_sha256": "68440bf6f7aedd788d03c471a140740266211e18a698b860b417812f8d5e5a68",
+  "git_index_empty": true,
+  "historical_integrity_status": "PASS",
+  "max_budget_endpoints": 64,
+  "multistart_figure_count": 32,
+  "optimizer_failures": 64,
+  "oracle_leakage": false,
+  "outcome": "PSF_DIVERSE_CONDITIONING_IMPROVES_WITHOUT_UNIQUENESS",
+  "priornet_authorized": false,
+  "protected_access_zero": true,
+  "readme_unchanged": true,
+  "recommended_next_experiment": "Thayer-External-Photometry-vs-PSF-Diversity-v0",
+  "required_artifacts": {
+    "figures/condition_transition_heatmap.png": {
+      "exists": true,
+      "sha256": "2a5a43ae19092d99e4bf1ddae1a2a5ecf39971f88ed90a818643567f1a7ba89a"
+    },
+    "figures/psf_a_vs_psf_b.png": {
+      "exists": true,
+      "sha256": "c30931dd95061cfcd5accae035233fc0f10e260eb20deb1cdd9ecc1f9d566b93"
+    },
+    "figures/recoverability_frontier_s1_s2_p2.png": {
+      "exists": true,
+      "sha256": "35c9cc65dedbfb8c2b2c6b9e916a9a2113e5650e78af1288bf0c3188419fe11d"
+    },
+    "manifests/historical_integrity.json": {
+      "exists": true,
+      "sha256": "7041e8d7a9e5cffdf92959f5e4420187b02fac0bbed4733f920d836209422704"
+    },
+    "manifests/historical_integrity_final.json": {
+      "exists": true,
+      "sha256": "70e4a9172a2468ead1220163f032a21c91b66511bfb3126d7d294acbc7319dbd"
+    },
+    "manifests/input_hashes.json": {
+      "exists": true,
+      "sha256": "e18971e7425297dc84ef5d1c965b3577c4662057f181039a5ec84e068d180d73"
+    },
+    "manifests/protected_data_access.json": {
+      "exists": true,
+      "sha256": "886a02c6b4201458d92b8cd746a20a9dc7c2e91a6a96b4316796d1d0b6ed94fc"
+    },
+    "manifests/psf_hashes.json": {
+      "exists": true,
+      "sha256": "dcf3db9e5ff2f31ae18314a954c775cdc1dd8da6d357f9d2b8bf4df10e0b324d"
+    },
+    "preregistration/frozen_protocol.md": {
+      "exists": true,
+      "sha256": "78fc33430547ef1026b6eec2a3fd37755fe014fb2966f82b42236ee1045aa0f9"
+    },
+    "preregistration/frozen_psf_pair.md": {
+      "exists": true,
+      "sha256": "a46a0137b5d978e3705a9626c881515c05552558b33353e1732a809f7b7f7d9c"
+    },
+    "preregistration/post_science_finalization_amendment.json": {
+      "exists": true,
+      "sha256": "8276fadfcdce97a9d7f5b1e907ca1ca4a5274b2fc5ccc657a67e4e08c5cb1ec2"
+    },
+    "reports/final_report.md": {
+      "exists": true,
+      "sha256": "68440bf6f7aedd788d03c471a140740266211e18a698b860b417812f8d5e5a68"
+    },
+    "tables/comparison_to_single_observation_flux_free.csv": {
+      "exists": true,
+      "sha256": "99a2c8294046698673f732ba25ba1c9b1be0f3a052510a9b7e8f7a592f475c45"
+    },
+    "tables/condition_transition_matrix.csv": {
+      "exists": true,
+      "sha256": "556810ef2e06d73ae2a371a39dfef8bcd5946d4da2c8a8bf4542370d08de8cf7"
+    },
+    "tables/fitted_source_fluxes.csv": {
+      "exists": true,
+      "sha256": "5edf2a87059fc185b780af0e092a203d964f5a1aeec428107a4e07d831bcb7a6"
+    },
+    "tables/full_psf_diverse_metrics.csv": {
+      "exists": true,
+      "sha256": "ee489642534f3d32e5c3167392e41dbdc397eaddc1322336d9ab0ef269e9785a"
+    },
+    "tables/multistart_endpoints.csv": {
+      "exists": true,
+      "sha256": "151b1fd48be3bb14e15971b39788a2d913dc4b75b1358ef100fe4c086af86cee"
+    },
+    "tables/oracle_information_audit.csv": {
+      "exists": true,
+      "sha256": "cfa5a31df3ea82b6170f8b34144aa5870ba12386254b41af46aa3b0dd3b01b10"
+    },
+    "tables/psf_diversity_metrics.csv": {
+      "exists": true,
+      "sha256": "6fa6273d5201943478fdfab6ec0483c33d0388c4f79920cf255046b62b8708e5"
+    },
+    "tables/psf_information_gain.csv": {
+      "exists": true,
+      "sha256": "99a2c8294046698673f732ba25ba1c9b1be0f3a052510a9b7e8f7a592f475c45"
+    },
+    "tables/scene_family_condition_summary.csv": {
+      "exists": true,
+      "sha256": "508760935c9968fefa4f73f3e4f2c1c986aef3abae498885ccb9d734230b49b5"
+    }
+  },
+  "residual_figure_count": 32,
+  "singular_value_figure_count": 32,
+  "source_reconstruction_figure_count": 32,
+  "timestamp_utc": "2026-07-18T02:39:15.000606+00:00"
+}

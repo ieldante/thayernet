@@ -1,0 +1,23 @@
+{
+  "campaign": "Thayer-Model-9-Preparation-v0",
+  "status": "MODEL_9_FOUNDATION_READY",
+  "scientific_experiment_executed": false,
+  "scientific_scene_access": 0,
+  "protocol_sha256": "5b37499d0ea957ddb36b3737a5c24ae4aa489f5fd066b3012dafbb475157695b",
+  "protocol_json_sha256": "8235923adabe28407fcceabc883448c4afd9006a5e00b633170430a191f6e692",
+  "authoritative_validation_sha256": "a353f5a7e6609f7425bfab5c58ab446bc1e405f445c3e32376417e75b0b249da",
+  "final_report_sha256": "286cc6b65e182559606ab0cc1771f8cc2576ad83aabe77b5cbc7d86a50924a69",
+  "engineering_report_sha256": "3bf824526af608f567d23483ee48faebd9e5721cdae033f5d4f6e65d38aaa2a0",
+  "test_results_sha256": "173d1369a67e6df2ac7a36a8b3089f4cf90d8d65e61aed6c3fc17835abcf5b09",
+  "source_hash_manifest_sha256": "849e1db1b776e63fcc1ba5dffbafb0f1647b55eeb2e97af4f53dfdd4676603b5",
+  "historical_integrity_sha256": "d3c21fbbfad3c54bed440068343772b93eabdba8f61e0375f5aaee4c36395d67",
+  "access_audit_sha256": "b3fbd43a0c76303ab9065f4b73d8c104817dcc455da4cd8094c703bc607ad42b",
+  "preparation_tests_passed": 25,
+  "compatibility_tests_passed": 40,
+  "historical_checkpoints_matched": 600,
+  "historical_checkpoint_mismatches": 0,
+  "readme_unchanged": true,
+  "git_index_empty": true,
+  "commits_created": 0,
+  "recommended_next_experiment": "Thayer-Flux-Free-Identifiability-v0"
+}

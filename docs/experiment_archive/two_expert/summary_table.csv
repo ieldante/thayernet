@@ -1,0 +1,11 @@
+gate,threshold,observed,pass
+ordinary_own_truth_coverage,>=0.90,0.0,False
+ordinary_median_expert_diameter,<=1.0,5.165994663826593,False
+ambiguous_own_truth_coverage,>=0.90,0.0,False
+ambiguous_alternate_truth_coverage,>=0.90,0.0,False
+ambiguous_both_mode_coverage,>=0.90,0.0,False
+expert_1_prompt_swap,>=0.90,0.96875,True
+expert_2_prompt_swap,>=0.90,0.96875,True
+set_prompt_swap,>=0.90,0.953125,True
+ordinary_forward_consistency,>=0.90,0.96875,True
+ambiguous_forward_consistency,>=0.90,1.0,True

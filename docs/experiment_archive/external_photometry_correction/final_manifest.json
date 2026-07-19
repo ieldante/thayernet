@@ -1,0 +1,106 @@
+{
+  "authorization_gate_status": "PASS",
+  "campaign": "Thayer-External-Photometry-Convergence-Correction-v0",
+  "commits_created": 0,
+  "fit_classifications": {
+    "scene_0_PER_BAND_SOURCE_PHOTOMETRY": "CONVERGED_MODERATE_PROMISE",
+    "scene_0_TOTAL_SOURCE_PHOTOMETRY": "CONVERGED_MODERATE_PROMISE",
+    "scene_6_PER_BAND_SOURCE_PHOTOMETRY": "CONVERGED_NO_CLEAR_GAIN",
+    "scene_6_TOTAL_SOURCE_PHOTOMETRY": "CONVERGED_NO_CLEAR_GAIN"
+  },
+  "fit_records": {
+    "scene_000_per_band_source_photometry.json": {
+      "bytes": 17983,
+      "sha256": "ff16840dd3d22bb85a81bfbb616105e400fe40a9614adc8ab9f10998a81643ec"
+    },
+    "scene_000_total_source_photometry.json": {
+      "bytes": 17960,
+      "sha256": "6d8451ea71ecff6d2fd88d40d4c11e2c77a9b13e4731bae759390f74d0d4f63e"
+    },
+    "scene_006_per_band_source_photometry.json": {
+      "bytes": 18129,
+      "sha256": "5ce9dfeae1c0c002632628754218b577eeb8a9f9e3e8f7504437ea15de273724"
+    },
+    "scene_006_total_source_photometry.json": {
+      "bytes": 17938,
+      "sha256": "cab9ea75eea136dca617dd13e4388f8c4576da70af2641c979205de8071cdc00"
+    }
+  },
+  "four_fits_complete": true,
+  "git_index_empty": true,
+  "head_unchanged": true,
+  "historical_integrity_status": "PASS",
+  "max_budget_endpoints": 2,
+  "only_authorized_change": {
+    "max_nfev_after": 500,
+    "max_nfev_before": 150
+  },
+  "optimizer_failures": 2,
+  "outcome": "EXTERNAL_PHOTOMETRY_TARGETED_CAMPAIGN_JUSTIFIED",
+  "protected_data_access_zero": true,
+  "readme_unchanged": true,
+  "recommended_next_experiment": "Thayer-External-Photometry-Scene-Stratification-v0",
+  "replay_exact_all_fits": true,
+  "required_artifacts": {
+    "figures/preflight_vs_500eval_comparison.png": {
+      "bytes": 56713,
+      "exists": true,
+      "sha256": "5e8525869788eeca675085ff0b0d70f65ed3a31bd25df7db6eba00249dd380e0"
+    },
+    "manifests/historical_integrity.json": {
+      "bytes": 5917,
+      "exists": true,
+      "sha256": "7f5f8246b48b33aea0c05d1d8feb539499d1a7310362ad15ca199c7717f3efc9"
+    },
+    "manifests/input_hashes.json": {
+      "bytes": 5148,
+      "exists": true,
+      "sha256": "ddbb1d273ed88888d52b417fd40e6c8082d1834c8f742c06412ef68358a12610"
+    },
+    "preregistration/frozen_protocol.md": {
+      "bytes": 2888,
+      "exists": true,
+      "sha256": "9494deb35882d0810ad68df4c2ed29c7efd3fec933d07836519b72e40f4fcb17"
+    },
+    "reports/final_report.md": {
+      "bytes": 3884,
+      "exists": true,
+      "sha256": "8667e7152245f160e21e14f643e872d220f7ef1477b3b7592a1c4f04febf7cfd"
+    },
+    "tables/comparison_to_preflight.csv": {
+      "bytes": 3925,
+      "exists": true,
+      "sha256": "2bd8337bc71104e60ba539bb27b34cc779da6fe1a207d64ba1ed1e3445a19a6c"
+    },
+    "tables/comparison_to_s1_and_p2.csv": {
+      "bytes": 1640,
+      "exists": true,
+      "sha256": "8f78bcb3e38cccf3c1c5f40ee5f3da0c103b81fa34275608b1e9bf9c17a93445"
+    },
+    "tables/convergence_correction_endpoints.csv": {
+      "bytes": 31870,
+      "exists": true,
+      "sha256": "dd8b106856dd9d680d19d28dc4918b5dec5ea1e2bce2c0a47e801f10928fb961"
+    },
+    "tables/convergence_correction_summary.csv": {
+      "bytes": 3291,
+      "exists": true,
+      "sha256": "edc8e2f98af043bb9d19e18bb307c34e3ea7c37da4eff4043a49f69de71c78eb"
+    },
+    "tables/fitted_source_fluxes.csv": {
+      "bytes": 3624,
+      "exists": true,
+      "sha256": "5392530dcf8921e50832e49cdcf2c52764f1a592f7574883352093ed58d120db"
+    },
+    "tables/oracle_information_audit.csv": {
+      "bytes": 784,
+      "exists": true,
+      "sha256": "5d55229633903340ca09d821bc39dfd69a790801a8249bb8ea7b1b043eda61b8"
+    }
+  },
+  "runtime_seconds": 854.857279458,
+  "scene_0_one_class_survived": true,
+  "scene_6_material_gain": false,
+  "sixteen_endpoints_retained": true,
+  "timestamp_utc": "2026-07-19T01:10:53.205404+00:00"
+}

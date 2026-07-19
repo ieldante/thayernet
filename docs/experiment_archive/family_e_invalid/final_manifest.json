@@ -1,0 +1,14 @@
+{
+  "status": "NOT_CONSTRUCTED_PART_E_STOP",
+  "architecture_id": "FAMILY_E_COMPACT_COORDINATE_UNET",
+  "frozen_widths": [
+    24,
+    48,
+    96,
+    128
+  ],
+  "expected_trainable_parameters": 1162737,
+  "hard_ceiling": 3000000,
+  "instantiated_models": 0,
+  "reason": "Frozen target representability failed before model construction."
+}

@@ -1,0 +1,17 @@
+scene_index,scene_id,family,oracle_flux_v1_classification,flux_free_classification,comparison
+0,v2_r_training_00000,sersic,UNIQUE,NON_IDENTIFIABLE,several isolated tolerance-quality source solutions are present
+0,v2_r_training_00000,bulge_disk,UNIQUE,NEAR_UNIQUE,"one solution class remains but conditioning, gradient, identity, or a strict diameter rule fails"
+3,v2_r_training_00003,sersic,UNIQUE,PARTIALLY_IDENTIFIABLE,residual null/classes remain but requested-source and allocation diameters stay below the strict uniqueness threshold
+3,v2_r_training_00003,bulge_disk,UNIQUE,NON_IDENTIFIABLE,several isolated tolerance-quality source solutions are present
+5,v2_r_training_00005,sersic,UNIQUE,NON_IDENTIFIABLE,several isolated tolerance-quality source solutions are present
+5,v2_r_training_00005,bulge_disk,UNIQUE,NEAR_UNIQUE,"one solution class remains but conditioning, gradient, identity, or a strict diameter rule fails"
+6,v2_r_training_00006,sersic,OUT_OF_SUPPORT,PARTIALLY_IDENTIFIABLE,residual null/classes remain but requested-source and allocation diameters stay below the strict uniqueness threshold
+6,v2_r_training_00006,bulge_disk,UNIQUE,NEAR_UNIQUE,"one solution class remains but conditioning, gradient, identity, or a strict diameter rule fails"
+18,v2_r_training_00018,sersic,OUT_OF_SUPPORT,NON_IDENTIFIABLE,several isolated tolerance-quality source solutions are present
+18,v2_r_training_00018,bulge_disk,UNIQUE,NEAR_UNIQUE,"one solution class remains but conditioning, gradient, identity, or a strict diameter rule fails"
+51,v2_r_training_00051,sersic,OUT_OF_SUPPORT,PARTIALLY_IDENTIFIABLE,residual null/classes remain but requested-source and allocation diameters stay below the strict uniqueness threshold
+51,v2_r_training_00051,bulge_disk,OUT_OF_SUPPORT,PARTIALLY_IDENTIFIABLE,residual null/classes remain but requested-source and allocation diameters stay below the strict uniqueness threshold
+73,v2_r_training_00073,sersic,UNIQUE,PARTIALLY_IDENTIFIABLE,residual null/classes remain but requested-source and allocation diameters stay below the strict uniqueness threshold
+73,v2_r_training_00073,bulge_disk,UNIQUE,NEAR_UNIQUE,"one solution class remains but conditioning, gradient, identity, or a strict diameter rule fails"
+81,v2_r_training_00081,sersic,OUT_OF_SUPPORT,NEAR_UNIQUE,"one solution class remains but conditioning, gradient, identity, or a strict diameter rule fails"
+81,v2_r_training_00081,bulge_disk,UNIQUE,PARTIALLY_IDENTIFIABLE,residual null/classes remain but requested-source and allocation diameters stay below the strict uniqueness threshold

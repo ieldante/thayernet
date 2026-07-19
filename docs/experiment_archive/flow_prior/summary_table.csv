@@ -1,0 +1,4 @@
+subset,evaluation_units,posterior_samples_per_unit,target_truth_coverage_rate,alternate_truth_coverage_rate,mean_forward_consistent_fraction,mean_source_identity_fraction,median_best_target_scientific_distance,mean_best_of_k_requested_mse_normalized,mean_requested_mse_normalized,all_finite
+ordinary,512,32,0.0,0.0,0.92987060546875,0.99609375,6.371040328594204,0.2905129148738297,0.3232154824225404,True
+near_own,500,32,0.0,0.0,1.0,0.978,7.82618784341658,0.00019620425999164581,0.00019792135438183322,True
+near_cross,500,32,0.0,0.0,1.0,0.017625,7.832267691699794,0.00034700906771468,0.0003489383646810893,True

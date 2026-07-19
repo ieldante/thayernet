@@ -1,0 +1,92 @@
+{
+  "authorization_gate_status": "PASS",
+  "campaign": "Thayer-External-Photometry-Stratification-Convergence-Correction-v0",
+  "commits_created": 0,
+  "completed_at_utc": "2026-07-19T08:33:40.351099+00:00",
+  "corrected_analysis_created": true,
+  "exact_runtime_seconds": 4357.357411709,
+  "files": {
+    "figures/corrected_decision_tree.png": {
+      "bytes": 48355,
+      "sha256": "c8a135cf8688d1568ea5e71ff26c2ca4c0d3583f1f5968719b68d76fb2d3dab3"
+    },
+    "figures/corrected_information_source_comparison.png": {
+      "bytes": 42476,
+      "sha256": "4410dd4976551c96a843c0fe3f4bd0dfe0492827f2d625ee8154ff1553e5397d"
+    },
+    "manifests/historical_integrity.json": {
+      "bytes": 21394,
+      "sha256": "90b82fa12b3e539231714a8e159c6e960689ff5389b04ca1fb69fbd2a480ffa3"
+    },
+    "manifests/input_hashes.json": {
+      "bytes": 7369,
+      "sha256": "11ad675d295abd7818b7a52eed0231ea87703285901abcad784ca9de2337002d"
+    },
+    "preregistration/frozen_protocol.md": {
+      "bytes": 4342,
+      "sha256": "13159d39cd56f2b661a8fbe77edb9b834ab91958cdcef344093b091c05633d7c"
+    },
+    "reports/final_report.md": {
+      "bytes": 4435,
+      "sha256": "249e699353e2ed2547eb966433b1db5387999d575734b8a89a02e0e334982c1b"
+    },
+    "tables/comparison_to_500eval.csv": {
+      "bytes": 2017,
+      "sha256": "535d12576e064af975c15a57b10e8749937b13861f91bd090d67a59f6491126f"
+    },
+    "tables/comparison_to_p2.csv": {
+      "bytes": 1120,
+      "sha256": "bec68ec5f85a976cc855fbab3d470d4c545e5b988f8045fae06ba5e75d6cb364"
+    },
+    "tables/convergence_correction_endpoints.csv": {
+      "bytes": 16416,
+      "sha256": "eefbb2529ae3a213c89fc99e59af60bb35381fb3e8469613de7b9f0b4a7a1ff2"
+    },
+    "tables/convergence_correction_summary.csv": {
+      "bytes": 2236,
+      "sha256": "29395e35ccd596b10ed9ff7f2eb9a85027d814635bdfd4ff8b799b4229180a5a"
+    },
+    "tables/corrected_eight_scene_summary.csv": {
+      "bytes": 4513,
+      "sha256": "279c67f9ec3c525f39565ae75a3ae287224d1c090eadb43619cdf62a46634cf3"
+    },
+    "tables/corrected_feature_ranking.csv": {
+      "bytes": 2890,
+      "sha256": "41bbee29891adfbd347505b2ec2f5805051e1293c448aa321389575eaa19eb6e"
+    },
+    "tables/corrected_scene_ranking.csv": {
+      "bytes": 5973,
+      "sha256": "f0f7cad55fcdb26058fade9fa36269fb7db4f4814fac2a9f99055c6b64c493f7"
+    },
+    "tables/fitted_source_fluxes.csv": {
+      "bytes": 1056,
+      "sha256": "805525f3f96f81a3b39dc1eff371077a9d5b6eaeee49a4bd9538dc87e266b909"
+    },
+    "tables/oracle_information_audit.csv": {
+      "bytes": 718,
+      "sha256": "5cc1d8f805c70083f691b93763b2fd7826924be2ea66aa3bc8c13294923eb7a3"
+    }
+  },
+  "git_index_empty": true,
+  "head_unchanged": true,
+  "historical_checkpoints_unchanged": true,
+  "historical_integrity_status": "PASS",
+  "historical_reports_unchanged": true,
+  "next_experiment": "Thayer-External-Photometry-Stratification-Independent-Scene-Validation-v0",
+  "only_authorized_scientific_change": {
+    "max_nfev_after": 2000,
+    "max_nfev_before": 500
+  },
+  "protected_data_access_zero": true,
+  "readme_unchanged": true,
+  "resolved_scenes": [
+    5,
+    18
+  ],
+  "scene_classifications": {
+    "18": "NOT_HELPFUL",
+    "5": "HELPFUL"
+  },
+  "status": "STRATIFICATION_DATASET_COMPLETE",
+  "unresolved_scenes": []
+}

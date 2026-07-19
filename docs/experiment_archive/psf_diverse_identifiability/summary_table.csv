@@ -1,0 +1,73 @@
+scene_index,scene_id,family,level,condition,classification,unique,source,minimum_structural_family_required
+0,v2_r_training_00000,sersic,Level 4,S1,NON_IDENTIFIABLE,False,completed_authoritative_predecessor,
+0,v2_r_training_00000,bulge_disk,Level 5,S1,NEAR_UNIQUE,False,completed_authoritative_predecessor,
+3,v2_r_training_00003,sersic,Level 4,S1,PARTIALLY_IDENTIFIABLE,False,completed_authoritative_predecessor,
+3,v2_r_training_00003,bulge_disk,Level 5,S1,NON_IDENTIFIABLE,False,completed_authoritative_predecessor,
+5,v2_r_training_00005,sersic,Level 4,S1,NON_IDENTIFIABLE,False,completed_authoritative_predecessor,
+5,v2_r_training_00005,bulge_disk,Level 5,S1,NEAR_UNIQUE,False,completed_authoritative_predecessor,
+6,v2_r_training_00006,sersic,Level 4,S1,PARTIALLY_IDENTIFIABLE,False,completed_authoritative_predecessor,
+6,v2_r_training_00006,bulge_disk,Level 5,S1,NEAR_UNIQUE,False,completed_authoritative_predecessor,
+18,v2_r_training_00018,sersic,Level 4,S1,NON_IDENTIFIABLE,False,completed_authoritative_predecessor,
+18,v2_r_training_00018,bulge_disk,Level 5,S1,NEAR_UNIQUE,False,completed_authoritative_predecessor,
+51,v2_r_training_00051,sersic,Level 4,S1,PARTIALLY_IDENTIFIABLE,False,completed_authoritative_predecessor,
+51,v2_r_training_00051,bulge_disk,Level 5,S1,PARTIALLY_IDENTIFIABLE,False,completed_authoritative_predecessor,
+73,v2_r_training_00073,sersic,Level 4,S1,PARTIALLY_IDENTIFIABLE,False,completed_authoritative_predecessor,
+73,v2_r_training_00073,bulge_disk,Level 5,S1,NEAR_UNIQUE,False,completed_authoritative_predecessor,
+81,v2_r_training_00081,sersic,Level 4,S1,NEAR_UNIQUE,False,completed_authoritative_predecessor,
+81,v2_r_training_00081,bulge_disk,Level 5,S1,PARTIALLY_IDENTIFIABLE,False,completed_authoritative_predecessor,
+0,v2_r_training_00000,sersic,Level 4,S2,NON_IDENTIFIABLE,False,new_joint_fit,
+0,v2_r_training_00000,sersic,Level 4,P2,PARTIALLY_IDENTIFIABLE,False,new_joint_fit,
+0,v2_r_training_00000,bulge_disk,Level 5,S2,NON_IDENTIFIABLE,False,new_joint_fit,
+0,v2_r_training_00000,bulge_disk,Level 5,P2,NON_IDENTIFIABLE,False,new_joint_fit,
+3,v2_r_training_00003,sersic,Level 4,S2,NON_IDENTIFIABLE,False,new_joint_fit,
+3,v2_r_training_00003,sersic,Level 4,P2,NON_IDENTIFIABLE,False,new_joint_fit,
+3,v2_r_training_00003,bulge_disk,Level 5,S2,NON_IDENTIFIABLE,False,new_joint_fit,
+3,v2_r_training_00003,bulge_disk,Level 5,P2,NEAR_UNIQUE,False,new_joint_fit,
+5,v2_r_training_00005,sersic,Level 4,S2,NON_IDENTIFIABLE,False,new_joint_fit,
+5,v2_r_training_00005,sersic,Level 4,P2,NON_IDENTIFIABLE,False,new_joint_fit,
+5,v2_r_training_00005,bulge_disk,Level 5,S2,NEAR_UNIQUE,False,new_joint_fit,
+5,v2_r_training_00005,bulge_disk,Level 5,P2,NON_IDENTIFIABLE,False,new_joint_fit,
+6,v2_r_training_00006,sersic,Level 4,S2,PARTIALLY_IDENTIFIABLE,False,new_joint_fit,
+6,v2_r_training_00006,sersic,Level 4,P2,PARTIALLY_IDENTIFIABLE,False,new_joint_fit,
+6,v2_r_training_00006,bulge_disk,Level 5,S2,NEAR_UNIQUE,False,new_joint_fit,
+6,v2_r_training_00006,bulge_disk,Level 5,P2,NEAR_UNIQUE,False,new_joint_fit,
+18,v2_r_training_00018,sersic,Level 4,S2,PARTIALLY_IDENTIFIABLE,False,new_joint_fit,
+18,v2_r_training_00018,sersic,Level 4,P2,PARTIALLY_IDENTIFIABLE,False,new_joint_fit,
+18,v2_r_training_00018,bulge_disk,Level 5,S2,PARTIALLY_IDENTIFIABLE,False,new_joint_fit,
+18,v2_r_training_00018,bulge_disk,Level 5,P2,NEAR_UNIQUE,False,new_joint_fit,
+51,v2_r_training_00051,sersic,Level 4,S2,NON_IDENTIFIABLE,False,new_joint_fit,
+51,v2_r_training_00051,sersic,Level 4,P2,NON_IDENTIFIABLE,False,new_joint_fit,
+51,v2_r_training_00051,bulge_disk,Level 5,S2,NEAR_UNIQUE,False,new_joint_fit,
+51,v2_r_training_00051,bulge_disk,Level 5,P2,NON_IDENTIFIABLE,False,new_joint_fit,
+73,v2_r_training_00073,sersic,Level 4,S2,PARTIALLY_IDENTIFIABLE,False,new_joint_fit,
+73,v2_r_training_00073,sersic,Level 4,P2,PARTIALLY_IDENTIFIABLE,False,new_joint_fit,
+73,v2_r_training_00073,bulge_disk,Level 5,S2,NON_IDENTIFIABLE,False,new_joint_fit,
+73,v2_r_training_00073,bulge_disk,Level 5,P2,NON_IDENTIFIABLE,False,new_joint_fit,
+81,v2_r_training_00081,sersic,Level 4,S2,NEAR_UNIQUE,False,new_joint_fit,
+81,v2_r_training_00081,sersic,Level 4,P2,NEAR_UNIQUE,False,new_joint_fit,
+81,v2_r_training_00081,bulge_disk,Level 5,S2,PARTIALLY_IDENTIFIABLE,False,new_joint_fit,
+81,v2_r_training_00081,bulge_disk,Level 5,P2,NEAR_UNIQUE,False,new_joint_fit,
+0,v2_r_training_00000,union,minimum permitted family,S1,NEAR_UNIQUE,False,derived_union,none
+3,v2_r_training_00003,union,minimum permitted family,S1,PARTIALLY_IDENTIFIABLE,False,derived_union,none
+5,v2_r_training_00005,union,minimum permitted family,S1,NEAR_UNIQUE,False,derived_union,none
+6,v2_r_training_00006,union,minimum permitted family,S1,NEAR_UNIQUE,False,derived_union,none
+18,v2_r_training_00018,union,minimum permitted family,S1,NEAR_UNIQUE,False,derived_union,none
+51,v2_r_training_00051,union,minimum permitted family,S1,PARTIALLY_IDENTIFIABLE,False,derived_union,none
+73,v2_r_training_00073,union,minimum permitted family,S1,NEAR_UNIQUE,False,derived_union,none
+81,v2_r_training_00081,union,minimum permitted family,S1,NEAR_UNIQUE,False,derived_union,none
+0,v2_r_training_00000,union,minimum permitted family,S2,NON_IDENTIFIABLE,False,derived_union,none
+3,v2_r_training_00003,union,minimum permitted family,S2,NON_IDENTIFIABLE,False,derived_union,none
+5,v2_r_training_00005,union,minimum permitted family,S2,NEAR_UNIQUE,False,derived_union,none
+6,v2_r_training_00006,union,minimum permitted family,S2,NEAR_UNIQUE,False,derived_union,none
+18,v2_r_training_00018,union,minimum permitted family,S2,PARTIALLY_IDENTIFIABLE,False,derived_union,none
+51,v2_r_training_00051,union,minimum permitted family,S2,NEAR_UNIQUE,False,derived_union,none
+73,v2_r_training_00073,union,minimum permitted family,S2,PARTIALLY_IDENTIFIABLE,False,derived_union,none
+81,v2_r_training_00081,union,minimum permitted family,S2,NEAR_UNIQUE,False,derived_union,none
+0,v2_r_training_00000,union,minimum permitted family,P2,PARTIALLY_IDENTIFIABLE,False,derived_union,none
+3,v2_r_training_00003,union,minimum permitted family,P2,NEAR_UNIQUE,False,derived_union,none
+5,v2_r_training_00005,union,minimum permitted family,P2,NON_IDENTIFIABLE,False,derived_union,none
+6,v2_r_training_00006,union,minimum permitted family,P2,NEAR_UNIQUE,False,derived_union,none
+18,v2_r_training_00018,union,minimum permitted family,P2,NEAR_UNIQUE,False,derived_union,none
+51,v2_r_training_00051,union,minimum permitted family,P2,NON_IDENTIFIABLE,False,derived_union,none
+73,v2_r_training_00073,union,minimum permitted family,P2,PARTIALLY_IDENTIFIABLE,False,derived_union,none
+81,v2_r_training_00081,union,minimum permitted family,P2,NEAR_UNIQUE,False,derived_union,none

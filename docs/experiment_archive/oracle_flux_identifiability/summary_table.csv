@@ -1,0 +1,65 @@
+best_relative_exact_residual,classification,condition_number,diameter,diameter_status,null_space,number_of_exact_observation_consistent_solutions,prior,prior_level,prompt_identity_unique,rank,requested_galaxy_identifiable,scene,scene_id,truth_in_prior_support
+0.0,UNIDENTIFIABLE,infinity,infinity,unbounded source-pair Euclidean diameter,10800,uncountably infinite,No prior,0,False,10800,False,0,v2_r_training_00000,True
+0.0,UNIDENTIFIABLE,infinity,10.0,exact inherited primary diameter,10800,uncountably infinite,Nonnegative flux,1,False,10800,False,0,v2_r_training_00000,True
+0.0,UNIDENTIFIABLE,infinity,1.817387172047633,certified lower bound from prompt-consistent LP vertices,10797,uncountably infinite,Flux conservation,2,False,10797,False,0,v2_r_training_00000,True
+2.3836191290108322e-08,UNIDENTIFIABLE,infinity,0.19749105993269694,certified lower bound from smooth flux-preserving exchange,10797,uncountably infinite,Smoothness,3,False,10797,False,0,v2_r_training_00000,True
+5.804596486803227e-08,UNIQUE,1.6848963894156164,0.0,exact singleton,0,1,Elliptical Sersic,4,True,8,True,0,v2_r_training_00000,True
+5.804596486803227e-08,UNIQUE,1.7388547775662955,0.0,exact singleton,0,1,Bulge + disk,5,True,12,True,0,v2_r_training_00000,True
+5.804596486803227e-08,UNIQUE,1.7240522609630697,0.0,exact singleton,0,1,Shared color profile,6,True,8,True,0,v2_r_training_00000,True
+5.804596486803227e-08,UNIQUE,1.7240522609630697,0.0,exact singleton,0,1,Weak astrophysical morphology prior,7,True,8,True,0,v2_r_training_00000,True
+0.0,UNIDENTIFIABLE,infinity,infinity,unbounded source-pair Euclidean diameter,10800,uncountably infinite,No prior,0,False,10800,False,3,v2_r_training_00003,True
+0.0,UNIDENTIFIABLE,infinity,10.0,exact inherited primary diameter,10800,uncountably infinite,Nonnegative flux,1,False,10800,False,3,v2_r_training_00003,True
+0.0,UNIDENTIFIABLE,infinity,8.741893156023009,certified lower bound from prompt-consistent LP vertices,10797,uncountably infinite,Flux conservation,2,False,10797,False,3,v2_r_training_00003,True
+2.4691147012157027e-08,UNIDENTIFIABLE,infinity,3.8587357401761864,certified lower bound from smooth flux-preserving exchange,10797,uncountably infinite,Smoothness,3,False,10797,False,3,v2_r_training_00003,True
+6.05504161659983e-08,UNIQUE,1.5459499616448493,0.0,exact singleton,0,1,Elliptical Sersic,4,True,8,True,3,v2_r_training_00003,True
+6.05504161659983e-08,UNIQUE,1.5666022070762113,0.0,exact singleton,0,1,Bulge + disk,5,True,12,True,3,v2_r_training_00003,True
+6.05504161659983e-08,UNIQUE,1.5423965942709115,0.0,exact singleton,0,1,Shared color profile,6,True,8,True,3,v2_r_training_00003,True
+6.05504161659983e-08,UNIQUE,1.5423965942709115,0.0,exact singleton,0,1,Weak astrophysical morphology prior,7,True,8,True,3,v2_r_training_00003,True
+0.0,UNIDENTIFIABLE,infinity,infinity,unbounded source-pair Euclidean diameter,10800,uncountably infinite,No prior,0,False,10800,False,5,v2_r_training_00005,True
+0.0,UNIDENTIFIABLE,infinity,10.0,exact inherited primary diameter,10800,uncountably infinite,Nonnegative flux,1,False,10800,False,5,v2_r_training_00005,True
+0.0,UNIDENTIFIABLE,infinity,5.409678902952583,certified lower bound from prompt-consistent LP vertices,10797,uncountably infinite,Flux conservation,2,False,10797,False,5,v2_r_training_00005,True
+2.4683613535033606e-08,UNIDENTIFIABLE,infinity,4.819313449182606,certified lower bound from smooth flux-preserving exchange,10797,uncountably infinite,Smoothness,3,False,10797,False,5,v2_r_training_00005,True
+5.4059987826428144e-08,UNIQUE,1.0284587488694332,0.0,exact singleton,0,1,Elliptical Sersic,4,True,8,True,5,v2_r_training_00005,True
+5.405996398404536e-08,UNIQUE,1.0069688146854932,0.0,exact singleton,0,1,Bulge + disk,5,True,12,True,5,v2_r_training_00005,True
+5.405996398404536e-08,UNIQUE,1.0063948954516304,0.0,exact singleton,0,1,Shared color profile,6,True,8,True,5,v2_r_training_00005,True
+5.405996398404536e-08,UNIQUE,1.0063948954516304,0.0,exact singleton,0,1,Weak astrophysical morphology prior,7,True,8,True,5,v2_r_training_00005,True
+0.0,UNIDENTIFIABLE,infinity,infinity,unbounded source-pair Euclidean diameter,10800,uncountably infinite,No prior,0,False,10800,False,6,v2_r_training_00006,True
+0.0,UNIDENTIFIABLE,infinity,10.0,exact inherited primary diameter,10800,uncountably infinite,Nonnegative flux,1,False,10800,False,6,v2_r_training_00006,True
+0.0,UNIDENTIFIABLE,infinity,5.070514680811083,certified lower bound from prompt-consistent LP vertices,10797,uncountably infinite,Flux conservation,2,False,10797,False,6,v2_r_training_00006,True
+2.6598118858872855e-08,UNIDENTIFIABLE,infinity,0.7368353127950471,certified lower bound from smooth flux-preserving exchange,10797,uncountably infinite,Smoothness,3,False,10797,False,6,v2_r_training_00006,True
+0.0028177975348888515,UNIDENTIFIABLE,4.292902338510008,,undefined because exact support is empty,0,0,Elliptical Sersic,4,False,8,False,6,v2_r_training_00006,False
+5.405869088254612e-07,UNIQUE,4.766947869737831,0.0,exact singleton,0,1,Bulge + disk,5,True,18,True,6,v2_r_training_00006,True
+4.458417857076974e-07,UNIQUE,4.350432715194958,0.0,exact singleton,0,1,Shared color profile,6,True,14,True,6,v2_r_training_00006,True
+4.458417857076974e-07,UNIQUE,4.350432715194958,0.0,exact singleton,0,1,Weak astrophysical morphology prior,7,True,14,True,6,v2_r_training_00006,True
+0.0,UNIDENTIFIABLE,infinity,infinity,unbounded source-pair Euclidean diameter,10800,uncountably infinite,No prior,0,False,10800,False,18,v2_r_training_00018,True
+0.0,UNIDENTIFIABLE,infinity,10.0,exact inherited primary diameter,10800,uncountably infinite,Nonnegative flux,1,False,10800,False,18,v2_r_training_00018,True
+0.0,UNIDENTIFIABLE,infinity,2.709215651238569,certified lower bound from prompt-consistent LP vertices,10797,uncountably infinite,Flux conservation,2,False,10797,False,18,v2_r_training_00018,True
+2.389304736640036e-08,UNIDENTIFIABLE,infinity,0.30772668034065953,certified lower bound from smooth flux-preserving exchange,10797,uncountably infinite,Smoothness,3,False,10797,False,18,v2_r_training_00018,True
+0.004773262446767631,UNIDENTIFIABLE,1.6216994312200412,,undefined because exact support is empty,0,0,Elliptical Sersic,4,False,8,False,18,v2_r_training_00018,False
+9.524893945318008e-07,UNIQUE,2.086909279857397,0.0,exact singleton,0,1,Bulge + disk,5,True,18,True,18,v2_r_training_00018,True
+9.524893945318008e-07,UNIQUE,1.8085919658124197,0.0,exact singleton,0,1,Shared color profile,6,True,14,True,18,v2_r_training_00018,True
+9.524893945318008e-07,UNIQUE,1.8085919658124197,0.0,exact singleton,0,1,Weak astrophysical morphology prior,7,True,14,True,18,v2_r_training_00018,True
+0.0,UNIDENTIFIABLE,infinity,infinity,unbounded source-pair Euclidean diameter,10800,uncountably infinite,No prior,0,False,10800,False,51,v2_r_training_00051,True
+0.0,UNIDENTIFIABLE,infinity,10.0,exact inherited primary diameter,10800,uncountably infinite,Nonnegative flux,1,False,10800,False,51,v2_r_training_00051,True
+0.0,UNIDENTIFIABLE,infinity,5.12574904588519,certified lower bound from prompt-consistent LP vertices,10797,uncountably infinite,Flux conservation,2,False,10797,False,51,v2_r_training_00051,True
+2.6579512033454377e-08,UNIDENTIFIABLE,infinity,3.1421063098193325,certified lower bound from smooth flux-preserving exchange,10797,uncountably infinite,Smoothness,3,False,10797,False,51,v2_r_training_00051,True
+0.00011142503445670272,UNIDENTIFIABLE,1.0569908000931987,,undefined because exact support is empty,0,0,Elliptical Sersic,4,False,8,False,51,v2_r_training_00051,False
+3.8436283830959e-06,UNIDENTIFIABLE,1.096842279325496,,undefined because exact support is empty,0,0,Bulge + disk,5,False,17,False,51,v2_r_training_00051,False
+3.385616749044288e-06,UNIDENTIFIABLE,1.117097242652558,,undefined because exact support is empty,0,0,Shared color profile,6,False,14,False,51,v2_r_training_00051,False
+3.385616749044288e-06,UNIDENTIFIABLE,1.117097242652558,,undefined because exact support is empty,0,0,Weak astrophysical morphology prior,7,False,14,False,51,v2_r_training_00051,False
+0.0,UNIDENTIFIABLE,infinity,infinity,unbounded source-pair Euclidean diameter,10800,uncountably infinite,No prior,0,False,10800,False,73,v2_r_training_00073,True
+0.0,UNIDENTIFIABLE,infinity,10.0,exact inherited primary diameter,10800,uncountably infinite,Nonnegative flux,1,False,10800,False,73,v2_r_training_00073,True
+0.0,UNIDENTIFIABLE,infinity,4.373892444035559,certified lower bound from prompt-consistent LP vertices,10797,uncountably infinite,Flux conservation,2,False,10797,False,73,v2_r_training_00073,True
+2.6404427681311282e-08,UNIDENTIFIABLE,infinity,1.6295437373936912,certified lower bound from smooth flux-preserving exchange,10797,uncountably infinite,Smoothness,3,False,10797,False,73,v2_r_training_00073,True
+6.253086785791786e-08,UNIQUE,1.6575689189601701,0.0,exact singleton,0,1,Elliptical Sersic,4,True,8,True,73,v2_r_training_00073,True
+6.253084514697424e-08,UNIQUE,1.669139909059209,0.0,exact singleton,0,1,Bulge + disk,5,True,12,True,73,v2_r_training_00073,True
+6.253084514697424e-08,UNIQUE,1.6515049813107163,0.0,exact singleton,0,1,Shared color profile,6,True,8,True,73,v2_r_training_00073,True
+6.253084514697424e-08,UNIQUE,1.6515049813107163,0.0,exact singleton,0,1,Weak astrophysical morphology prior,7,True,8,True,73,v2_r_training_00073,True
+0.0,UNIDENTIFIABLE,infinity,infinity,unbounded source-pair Euclidean diameter,10800,uncountably infinite,No prior,0,False,10800,False,81,v2_r_training_00081,True
+0.0,UNIDENTIFIABLE,infinity,10.0,exact inherited primary diameter,10800,uncountably infinite,Nonnegative flux,1,False,10800,False,81,v2_r_training_00081,True
+0.0,UNIDENTIFIABLE,infinity,5.621839167675049,certified lower bound from prompt-consistent LP vertices,10797,uncountably infinite,Flux conservation,2,False,10797,False,81,v2_r_training_00081,True
+2.4539237653882815e-08,UNIDENTIFIABLE,infinity,5.41633118482255,certified lower bound from smooth flux-preserving exchange,10797,uncountably infinite,Smoothness,3,False,10797,False,81,v2_r_training_00081,True
+0.01271982176507292,UNIDENTIFIABLE,1.0264443934418042,,undefined because exact support is empty,0,0,Elliptical Sersic,4,False,8,False,81,v2_r_training_00081,False
+5.2803772072725105e-08,UNIQUE,1.1835468023369171,0.0,exact singleton,0,1,Bulge + disk,5,True,18,True,81,v2_r_training_00081,True
+5.5118849876506326e-08,UNIQUE,1.1829795645480468,0.0,exact singleton,0,1,Shared color profile,6,True,14,True,81,v2_r_training_00081,True
+5.5118849876506326e-08,UNIQUE,1.1829795645480468,0.0,exact singleton,0,1,Weak astrophysical morphology prior,7,True,14,True,81,v2_r_training_00081,True

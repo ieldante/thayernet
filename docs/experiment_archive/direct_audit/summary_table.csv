@@ -1,0 +1,3 @@
+partition,threshold,valid_count,accepted_valid_count,accepted_coverage,accept_all_valid_unsafe_rate,accepted_unsafe_rate,unsafe_rate_reduction,accept_all_valid_catastrophic_rate,accepted_catastrophic_rate,catastrophic_rate_reduction,null_acceptance,ambiguous_acceptance
+validation,0.9999999999999999,668,0,0.0,1.0,0.0,1.0,1.0,0.0,1.0,0.0,0.0
+calibration,0.9999999999999999,2800,0,0.0,1.0,0.0,1.0,0.9989285714285714,0.0,1.0,0.0,0.0

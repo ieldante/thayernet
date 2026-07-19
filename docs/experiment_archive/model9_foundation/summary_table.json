@@ -1,0 +1,222 @@
+{
+  "access_counts": {
+    "atlas": 0,
+    "development": 0,
+    "frozen_scientific_scenes": 0,
+    "isolated_source_arrays": 0,
+    "lockbox": 0,
+    "neural_training_steps": 0
+  },
+  "analytic_fixtures": {
+    "coincident_classification": "NON_IDENTIFIABLE",
+    "coincident_flux_condition": "inf",
+    "coincident_flux_null": 3,
+    "coincident_flux_rank": 3,
+    "coincident_solution_classes": 2,
+    "full_separated_condition": 38.08040148147971,
+    "full_separated_hessian_condition": 1450.1169769906671,
+    "full_separated_null": 0,
+    "full_separated_rank": 14,
+    "separated_classification": "UNIQUE",
+    "separated_flux_condition": 1.856950810988848,
+    "separated_flux_null": 0,
+    "separated_flux_rank": 6
+  },
+  "boundary_symmetry_errors": {
+    "bulge_only_max_abs": 0.0,
+    "disk_only_max_abs": 0.0
+  },
+  "campaign": "Thayer-Model-9-Preparation-v0",
+  "checks": {
+    "analytic_rank_fixtures": true,
+    "classification_logic": true,
+    "deterministic_replay": true,
+    "gradient_finite_differences": true,
+    "independent_galsim_renderer": true,
+    "optimizer_convergence": true,
+    "oracle_information_audit": true,
+    "physical_renderers": true,
+    "psf_normalization": true,
+    "symmetry_boundaries": true
+  },
+  "gradient_checks": [
+    {
+      "absolute_error": 5.100812132192861e-09,
+      "analytic_norm": 18.0793582362386,
+      "finite_difference_norm": 18.07935823778168,
+      "fixture": "separated_sersic",
+      "relative_error": 2.821345793974779e-10
+    },
+    {
+      "absolute_error": 2.678280768558988e-09,
+      "analytic_norm": 15.15496445622857,
+      "finite_difference_norm": 15.15496445633742,
+      "fixture": "separated_bulge_disk",
+      "relative_error": 1.767262982552888e-10
+    }
+  ],
+  "optimizer": {
+    "chi_square": 3.045715304397639e-28,
+    "gradient_norm": 3.2929605624235327e-12,
+    "max_parameter_error": 2.842170943040401e-14,
+    "nfev": 7,
+    "success": true
+  },
+  "oracle_audit": {
+    "extra_input_names": [],
+    "reason": "all solver inputs are permitted and observation-derived where required",
+    "status": "PASS",
+    "trace": [
+      {
+        "input": "observed",
+        "oracle": false,
+        "provenance": "frozen_blended_observation",
+        "sha256": "8480a8b48e40c1d380eaaffa96a17edb0a8b1c82056027b3919708acf9eaa1ba"
+      },
+      {
+        "input": "requested_center_xy",
+        "oracle": false,
+        "provenance": "frozen_requested_coordinate_prompt",
+        "sha256": "916112360bedea2dc8bd34155c3a503a7c4e231ce2c79e131d820ae71961da46"
+      },
+      {
+        "input": "companion_center_xy",
+        "oracle": false,
+        "provenance": "frozen_task_coordinate_contract",
+        "sha256": "2ddfaab241c6dc859d9b125ace5b32a48acd2a293210cd75a34499338b880e52"
+      },
+      {
+        "input": "psf",
+        "oracle": false,
+        "provenance": "known_frozen_psf",
+        "sha256": "8ab10616365ff4762a03f9c3136a1feb51c61db08115672cc9de25571cd81556"
+      },
+      {
+        "input": "noise_sigma",
+        "oracle": false,
+        "provenance": "declared_noise_convention",
+        "sha256": "33262c6642cbddf36c67a964194a79f208006544960006f2600e345ee638f967"
+      },
+      {
+        "input": "image_geometry",
+        "oracle": false,
+        "provenance": "observation_shape_and_known_pixel_scale",
+        "sha256": "9d71923ac675b6546f36003b8371f0877ef0355ea4ea6cc71b86d0c42f1ae799"
+      },
+      {
+        "input": "structural_family_and_bounds",
+        "oracle": false,
+        "provenance": "frozen_level_4_or_5_support",
+        "sha256": "0368b80bf97733fdb79396fe42307b5850da983ebfc7e2b1f8dbe96ceb361ac9"
+      },
+      {
+        "input": "source_flux_support_and_start_scale",
+        "oracle": false,
+        "provenance": "nonnegative_unbounded_support_with_observation_noise_initialization_scale",
+        "sha256": "355f4618f8c62860b834ed95bd65351159acf41cbf437c20be8bf41ad02e13f2"
+      }
+    ]
+  },
+  "oracle_negative_control": {
+    "reason": "prohibited oracle input: true_per_source_flux",
+    "status": "FAIL",
+    "trace": []
+  },
+  "physical_fixtures": [
+    {
+      "closure_error": 4.440892098500626e-16,
+      "companion_flux_error": 0.0,
+      "companion_sha256": "4dc7ac778336e65cef4923a43fe1ece69ba71c46712758ce9c318ded2bbb4edb",
+      "family": "sersic",
+      "finite_sources": true,
+      "fixture": "separated_sersic",
+      "nonnegative_sources": true,
+      "requested_flux_error": 0.0,
+      "requested_sha256": "0f3c37337ccf55000e4029cc2647a0ab8e705bc32d516a02203649af595a90a9",
+      "signed_residual_max": 4.163336342344337e-16,
+      "signed_residual_min": -4.0245584642661925e-16
+    },
+    {
+      "closure_error": 0.0,
+      "companion_flux_error": 1.4210854715202004e-14,
+      "companion_sha256": "365fc040d91a3a22cbedced44c244d5f388c288098283be810a5f45836728093",
+      "family": "sersic",
+      "finite_sources": true,
+      "fixture": "coincident_ambiguous_sersic",
+      "nonnegative_sources": true,
+      "requested_flux_error": 1.4210854715202004e-14,
+      "requested_sha256": "18e2a1e022ccc2da7410cae05d25d8a85e8eeb5dcf50758351a86eafeed40c17",
+      "signed_residual_max": 2.220446049250313e-16,
+      "signed_residual_min": -4.440892098500626e-16
+    },
+    {
+      "closure_error": 8.881784197001252e-16,
+      "companion_flux_error": 2.842170943040401e-14,
+      "companion_sha256": "bbb73014d216f96ac54266aa19338ac014972b9be260013010b58c05e49ffbfa",
+      "family": "bulge_disk",
+      "finite_sources": true,
+      "fixture": "separated_bulge_disk",
+      "nonnegative_sources": true,
+      "requested_flux_error": 0.0,
+      "requested_sha256": "c1b7763b3293683eddd7a202d262bb1fd4c6126cacb73c20e7463fb44e5cb4db",
+      "signed_residual_max": 8.881784197001252e-16,
+      "signed_residual_min": -7.563394355258879e-16
+    }
+  ],
+  "protocol": {
+    "acceptable_gradient_norm": 1e-05,
+    "angle_bounds_radians": [
+      0.0,
+      3.141592653589793
+    ],
+    "axis_ratio_bounds": [
+      0.1,
+      1.0
+    ],
+    "bulge_fraction_bounds": [
+      0.0,
+      1.0
+    ],
+    "endpoint_image_rtol": 1e-06,
+    "flux_initialization_total_multiplier": 1.0,
+    "ftol": 1e-10,
+    "gtol": 1e-10,
+    "half_light_radius_bounds_arcsec": [
+      0.03,
+      3.0
+    ],
+    "invalid_zero_flux_fraction": 1e-08,
+    "max_nfev": 500,
+    "maximum_condition_number": 1000000.0,
+    "model_acceptance_quantile": 0.99,
+    "objective_accept_atol": 1e-08,
+    "objective_accept_rtol": 1e-08,
+    "optimizer_seed": 2026071519,
+    "oversample": 4,
+    "pixel_scale_arcsec": 0.2,
+    "psf_kernel_size": 31,
+    "sersic_n_bounds": [
+      0.5,
+      6.0
+    ],
+    "starts_per_family": 16,
+    "symmetry_tolerance": 1e-10,
+    "unique_flux_allocation_diameter": 0.001,
+    "unique_image_diameter": 0.001,
+    "unique_morphology_diameter": 0.001,
+    "xtol": 1e-10
+  },
+  "psf_normalization_error": 0.0,
+  "renderer_reference_errors": {
+    "n_1_relative_l2": 0.001126254466050061,
+    "n_4_relative_l2": 0.03327354973392693
+  },
+  "replay": {
+    "endpoint_count": 1,
+    "exact_record_match": true,
+    "first_sha256": "3356ed0e9509c34b33943fb29c970621974f614725954f1f17cc8e91472a94b7",
+    "second_sha256": "3356ed0e9509c34b33943fb29c970621974f614725954f1f17cc8e91472a94b7",
+    "status": "PASS"
+  },
+  "status": "PASS"
+}

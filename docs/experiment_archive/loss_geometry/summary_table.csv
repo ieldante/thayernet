@@ -1,0 +1,15 @@
+kind,left_gradient,right_gradient,count,mean_cosine,median_cosine,negative_fraction,severe_conflict_fraction
+near_collision,companion_reconstruction,target_source_sum,64,0.5433460931421692,0.5441967367588452,0.0,0.0
+near_collision,requested_reconstruction,forward,96,-0.14928309295067874,-5.980655644457109e-10,0.6979166666666666,0.0
+near_collision,requested_reconstruction,target_source_sum,64,0.5480060417933204,0.5557262928673756,0.0,0.0
+near_collision,scientific_surrogate,full_objective,96,0.018471800832470787,0.013557501622038821,0.16666666666666666,0.0
+near_collision,set_matching,forward,96,-0.21758936829771747,-6.463001198555059e-10,0.6875,0.3333333333333333
+near_collision,set_matching,ordinary_concentration,0,nan,nan,nan,nan
+near_collision,source_assignment,prompt_swap,32,0.34028522400401207,0.3294889863856806,0.0,0.0
+ordinary,companion_reconstruction,target_source_sum,96,0.36401145013966807,0.4309484940738306,0.13541666666666666,0.0
+ordinary,requested_reconstruction,forward,96,-0.21364688099217913,-0.18358778135295292,0.8020833333333334,0.0
+ordinary,requested_reconstruction,target_source_sum,96,0.361766245185764,0.48604460248580084,0.19791666666666666,0.0
+ordinary,scientific_surrogate,full_objective,96,0.04561174971748582,0.04272275762554891,0.052083333333333336,0.0
+ordinary,set_matching,forward,96,-0.3154892634414222,-0.3087182371514892,0.84375,0.4166666666666667
+ordinary,set_matching,ordinary_concentration,32,0.32428089247561126,0.3071253428726128,0.0,0.0
+ordinary,source_assignment,prompt_swap,96,0.4848455002890982,0.41708773044323033,0.0,0.0

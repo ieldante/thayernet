@@ -1,0 +1,182 @@
+{
+  "authoritative_reports_unchanged": true,
+  "campaign": "Thayer-External-Photometry-Scene-Stratification-v0",
+  "commits_created": 0,
+  "completed_at_utc": "2026-07-19T06:52:18.100667+00:00",
+  "files": {
+    "analysis/finalize_campaign.py": {
+      "bytes": 25641,
+      "sha256": "6646d92b3fcbadd7bb106b06e0449ce0b6a632c329284c75b64533da8bd7bf1f"
+    },
+    "analysis/run_campaign.py": {
+      "bytes": 63498,
+      "sha256": "7d4fefab752bf0e90d7f94aefa356eeeaecee0057f2a469929ac13afabe671ba"
+    },
+    "figures/correlation_matrix.png": {
+      "bytes": 272882,
+      "sha256": "85cef14283a8b2fb862aae533baf31f5665bc4ac04bf9f4ab564b471ff1949d9"
+    },
+    "figures/decision_tree.png": {
+      "bytes": 48095,
+      "sha256": "ed28413dabf25159224e4ace28b06d3bab60f125c616f8cd11eb4411a386da90"
+    },
+    "figures/scene_response_ranking.png": {
+      "bytes": 52913,
+      "sha256": "60939b5e75de4723da6baa06f0059fb8fb852700f32e6b3f9b5a265fba3d6e5e"
+    },
+    "figures/top_feature_scatter_plots.png": {
+      "bytes": 94594,
+      "sha256": "96236d7a6b64d8b946ffb215d9d1cef1f5d4cc8a4fdd9fdff6b944e0df2cbb1c"
+    },
+    "fit_records/scene_000_per_band_source_photometry.json": {
+      "bytes": 17353,
+      "sha256": "43afd1dac82f4a37bb2b17e957852c84e4806fbd349cfc90cd7db6bfcdb2447f"
+    },
+    "fit_records/scene_000_total_source_photometry.json": {
+      "bytes": 17283,
+      "sha256": "7b7c504eda8bafc486d8ed16985bba0c04e02a7029c3402e8ede2603b4a76dce"
+    },
+    "fit_records/scene_003_per_band_source_photometry.json": {
+      "bytes": 16171,
+      "sha256": "bff8452c3028392c48e179db7dfde3eff66bf4810a34f7adcca5d22d5a4d0ddf"
+    },
+    "fit_records/scene_003_total_source_photometry.json": {
+      "bytes": 16314,
+      "sha256": "f35732f781b61ed004107453498d75202e28ac20b72687c94d14815d6ae0b365"
+    },
+    "fit_records/scene_005_per_band_source_photometry.json": {
+      "bytes": 16254,
+      "sha256": "83a980d397f67b48cf1af7380a52b21cf0597efa21e85edb89d9b24ab2801de6"
+    },
+    "fit_records/scene_005_total_source_photometry.json": {
+      "bytes": 16263,
+      "sha256": "18248f1b76c3374e2f294bc5c869e5fca3b63a11a2534c87249d66b1e21b4d6b"
+    },
+    "fit_records/scene_006_per_band_source_photometry.json": {
+      "bytes": 17463,
+      "sha256": "cf54af1333ea8f16588311cbac1931c18a3673df50e91ce8c5b2646e03d071f1"
+    },
+    "fit_records/scene_006_total_source_photometry.json": {
+      "bytes": 17311,
+      "sha256": "3ba86df9ed4bff41b4cc48f097429bd6490509b7864d537194b534aa77995000"
+    },
+    "fit_records/scene_018_per_band_source_photometry.json": {
+      "bytes": 16352,
+      "sha256": "6e337fc7f4401dbc8089f082dc7855bb1c23c90bcc726f1fa03d91fbbfe5811c"
+    },
+    "fit_records/scene_018_total_source_photometry.json": {
+      "bytes": 16463,
+      "sha256": "03031ca573232831f060a177ecc0c43a5c4bd3aac9328a65db098f1f3e2355ca"
+    },
+    "fit_records/scene_051_per_band_source_photometry.json": {
+      "bytes": 16350,
+      "sha256": "487ab06fa588f99b15b82b8f3855e5394d3b9499d2b1ded3085eaf62429e30d2"
+    },
+    "fit_records/scene_051_total_source_photometry.json": {
+      "bytes": 16325,
+      "sha256": "2186c39f4190dcf077900d7a4c3394f4dbdece9ced45d869073e89a10c117835"
+    },
+    "fit_records/scene_073_per_band_source_photometry.json": {
+      "bytes": 16279,
+      "sha256": "a62bd8e3c86696cf0e4f37b4504b2246a17b19478e4885f51d01c0d27eafefdc"
+    },
+    "fit_records/scene_073_total_source_photometry.json": {
+      "bytes": 16255,
+      "sha256": "28004df450d5d6d53b94f90b8ecffdd637bac266d99a81c66d2eb938e7286c6a"
+    },
+    "fit_records/scene_081_per_band_source_photometry.json": {
+      "bytes": 16202,
+      "sha256": "6a1dec4871ef8b787ba97808804b47927540b65d3ffaea2c0535fc44fd47a58c"
+    },
+    "fit_records/scene_081_total_source_photometry.json": {
+      "bytes": 16306,
+      "sha256": "748356be094669b576b5587fa1dd3f0ca31f3e80ef10b9c414b0b24591b8cfd9"
+    },
+    "manifests/end_snapshot.json": {
+      "bytes": 1303,
+      "sha256": "ec79e9ecd0a83c0c4c20f69fd0797a8d516a5000247b25713030a5b3f9b10722"
+    },
+    "manifests/input_hashes.json": {
+      "bytes": 4589,
+      "sha256": "8fbfb0cb51fd1a8d3aec48fd9a7bc4f13571f5d315c3518cb6fc1097e338d7bb"
+    },
+    "manifests/start_snapshot.json": {
+      "bytes": 1364,
+      "sha256": "54480a918f4cc903e3ceffeb08815d6ccd7a99420ef2b331b0f0c97f6333ccd0"
+    },
+    "preregistration/frozen_protocol.md": {
+      "bytes": 6300,
+      "sha256": "d2d824e5170c4c64bba8c3b2de5c9bdc475e4bcb2fa56eec7dc3f65acf82b0d1"
+    },
+    "reports/final_report.md": {
+      "bytes": 6688,
+      "sha256": "f53dbdaa08f0615e9c76afcf184a01058408769af0c897db9dbb7da7a3474e32"
+    },
+    "tables/correlation_matrix.csv": {
+      "bytes": 6783,
+      "sha256": "abe3b6ba9dbfc7cd73bb088fe3d88d05469ada68f253b60333a1d916fcec9466"
+    },
+    "tables/decision_rules.csv": {
+      "bytes": 580,
+      "sha256": "8cf6162c4e0cd9e9829bd4431aba589b6b67089103317d7897343162e46cebfe"
+    },
+    "tables/decision_tree.json": {
+      "bytes": 1444,
+      "sha256": "8f2b435610d975653186a98e5527be437393eeeb0cc7f660a565c7093654140a"
+    },
+    "tables/external_photometry_measurements.csv": {
+      "bytes": 16100,
+      "sha256": "7fdca1ab99c9ca9e7f6a186043a86c313ad3e3ccc29e072c5cd549ece25f3c95"
+    },
+    "tables/feature_ranking.csv": {
+      "bytes": 2832,
+      "sha256": "9b45424cd5ea11032e3132f14fb2fe770b4196c7f88a1e85f593eaab9c2182ab"
+    },
+    "tables/multistart_endpoints.csv": {
+      "bytes": 124086,
+      "sha256": "7f5f9f73a8c2c6a007df9f9c22c8aefb1c60c032fe23b4bcb85ff0da0e0587cc"
+    },
+    "tables/oracle_information_audit.csv": {
+      "bytes": 1625,
+      "sha256": "488f4077fc5b8437493dbb81d6422ca9f8bbfedb89f9b336e6cdf272f2f2c0ca"
+    },
+    "tables/photometry_response.csv": {
+      "bytes": 10097,
+      "sha256": "6b948b340586d96bee1973b04c7b8fbdab95ae61d953584b30ed420b7d372d17"
+    },
+    "tables/scene_features.csv": {
+      "bytes": 3639,
+      "sha256": "053525bc3b38262d28a61db55c3bf6487985e73ca81047f3f88e60bce0390379"
+    },
+    "tables/scene_ranking.csv": {
+      "bytes": 5988,
+      "sha256": "5ed4c3e1d6f53d5e5f8613e8114f4f39c11b52ebb30d102db96e69adf0001bb1"
+    },
+    "tables/summary_table.csv": {
+      "bytes": 4682,
+      "sha256": "15e450f42706cf92e7e6d41dea6a6319c9ae2dbf0077bb599a196438cf193e31"
+    }
+  },
+  "finalizer": "analysis/finalize_campaign.py",
+  "git_index_empty": true,
+  "head_unchanged": true,
+  "initial_runner_postprocessing_failure": "math domain error from log10(P2/infinite unresolved condition)",
+  "protected_data_access": {
+    "atlas": 0,
+    "development": 0,
+    "lockbox": 0
+  },
+  "readme_unchanged": true,
+  "resolved_primary_scenes": [
+    0,
+    3,
+    6,
+    51,
+    73,
+    81
+  ],
+  "unresolved_primary_scenes": [
+    5,
+    18
+  ]
+}

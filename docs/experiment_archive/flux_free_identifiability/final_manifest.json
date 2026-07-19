@@ -1,0 +1,62 @@
+{
+  "all_required_artifacts_present": true,
+  "campaign": "Thayer-Flux-Free-Identifiability-v0",
+  "commits_created": 0,
+  "final_report_sha256": "bef0adbcd6ce1e9b0e2251a3986ffbebdb8554e8a61830d1a8b99f3fed3f1a19",
+  "historical_integrity_status": "PASS",
+  "level_4_unique_count": 0,
+  "level_5_unique_count": 0,
+  "outcome": "FLUX_FREE_UNIQUENESS_COLLAPSES",
+  "previous_oracle_flux_union_unique_count": 7,
+  "priornet_authorized": false,
+  "readme_unchanged": true,
+  "recommended_next_experiment": "Thayer-PSF-Diverse-Flux-Identifiability-v0",
+  "required_artifacts": {
+    "figures/flux_free_recoverability_frontier.png": {
+      "exists": true,
+      "sha256": "26354ace2117652feb77cb477e25d0bae3717094f63a001c1a889ba5025b82d2"
+    },
+    "manifests/historical_integrity.json": {
+      "exists": true,
+      "sha256": "8bd49e79966284dc4f4242c59ec9ac0dff7e36df120951ad5e46293a9dc6238d"
+    },
+    "manifests/input_hashes.json": {
+      "exists": true,
+      "sha256": "c486f509edd67f55a8b131f02e6b8808ab33f7056a0dbc5b4a714fcd59337de1"
+    },
+    "preregistration/frozen_protocol.md": {
+      "exists": true,
+      "sha256": "5b37499d0ea957ddb36b3737a5c24ae4aa489f5fd066b3012dafbb475157695b"
+    },
+    "reports/final_report.md": {
+      "exists": true,
+      "sha256": "bef0adbcd6ce1e9b0e2251a3986ffbebdb8554e8a61830d1a8b99f3fed3f1a19"
+    },
+    "tables/comparison_to_oracle_flux_v1.csv": {
+      "exists": true,
+      "sha256": "3aa4923d53074d5995e8acb954f11de3a8435ad3a0f8f2c47815eb2566f922a2"
+    },
+    "tables/fitted_source_fluxes.csv": {
+      "exists": true,
+      "sha256": "ec95e98f772de8b3127d7776e81498c262490c31a5a716f8289aa94f2c6c26fe"
+    },
+    "tables/full_flux_free_identifiability_metrics.csv": {
+      "exists": true,
+      "sha256": "6366a408d026c2815c78553bbe213ce79ecd09f94dc3aa0953dc4494905293e6"
+    },
+    "tables/multistart_endpoints.csv": {
+      "exists": true,
+      "sha256": "d472a009c9cf7d434d341ca977c376bc97c4c6e699088c72bd262bb135d9cdda"
+    },
+    "tables/oracle_information_audit.csv": {
+      "exists": true,
+      "sha256": "07be2c6347edaffc74218003335a6d77ff2aae8b1096968087d611a086b8b931"
+    },
+    "tables/scene_family_summary.csv": {
+      "exists": true,
+      "sha256": "d69abf3b0ff609960a499cc6b227712ebf24d709caca7231f10755ab970a3735"
+    }
+  },
+  "staged_index_empty": true,
+  "union_unique_count": 0
+}

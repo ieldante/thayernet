@@ -1,0 +1,7 @@
+partition,family,safe,unsafe
+training,Condition C,0,3998
+training,Thayer-PU,0,3998
+validation,Condition C,0,793
+validation,Thayer-PU,0,793
+calibration,Condition C,0,2800
+calibration,Thayer-PU,0,2800

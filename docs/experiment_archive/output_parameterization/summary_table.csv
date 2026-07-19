@@ -1,0 +1,4 @@
+mapping,representability_pass,stop_self_tests_pass,synthetic_fit_pass,ordinary_one_scene_pass,ambiguous_one_scene_pass,eight_scene_run,eight_ordinary_coverage,eight_own_coverage,eight_alternate_coverage,eight_both_mode_coverage,eight_minimum_coverage,projected_target_loss,ordinary_expert_diameter,stagnation_fraction,z_band_projected_target_mse,physical_negative_fraction,set_prompt_swap,selected
+relu,True,True,True,False,False,False,,,,,,,,,,0.0,1.0,False
+square,True,True,True,False,False,False,,,,,,,,,,0.0,1.0,False
+absolute,True,True,True,False,False,False,,,,,,,,,,0.0,1.0,False

@@ -1,0 +1,4 @@
+rule_type,feature,threshold,direction,rule,resubstitution_accuracy,resubstitution_balanced_accuracy,true_positive,false_positive,true_negative,false_negative,prediction,samples,helpful_samples,empirical_precision
+best_single_split,bulge_fraction_difference,0.004913344229132974,<=,Photometry Helpful when bulge_fraction_difference <= 0.00491334,1.0,1.0,4,0,4,0,,,,
+decision_tree_terminal_path,,,,bulge_fraction_difference <= 0.00491334,,,,,,,Photometry Helpful,4,4,1.0
+decision_tree_terminal_path,,,,bulge_fraction_difference > 0.00491334,,,,,,,Photometry Not Helpful,4,0,1.0
